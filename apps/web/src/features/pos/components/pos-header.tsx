@@ -2,13 +2,13 @@
 
 import { motion } from "motion/react";
 import { Moon, Search, Settings, User } from "lucide-react";
-import { ICON_HOVER } from "@/config/motion.config";
+import { ICON_MOTION, SPRING } from "@/config/motion.config";
 import { Input } from "@/components/ui/input";
 
 const ACTIONS = [
-  { key: "theme", icon: Moon, label: "Tema" },
-  { key: "settings", icon: Settings, label: "Pengaturan" },
-  { key: "profile", icon: User, label: "Profil" },
+  { key: "theme", icon: Moon, label: "Tema", motion: "swing" },
+  { key: "settings", icon: Settings, label: "Pengaturan", motion: "spin" },
+  { key: "profile", icon: User, label: "Profil", motion: "bounce" },
 ] as const;
 
 type Props = {
@@ -39,10 +39,15 @@ export function PosHeader({ keyword, onKeywordChange }: Props) {
             key={action.key}
             type="button"
             aria-label={action.label}
-            {...ICON_HOVER}
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.9 }}
+            transition={SPRING.snappy}
             className="grid size-11 shrink-0 place-items-center rounded-xl bg-white shadow-sm"
           >
-            <Icon className="size-4 text-neutral-700" />
+
+            <motion.span whileHover={ICON_MOTION[action.motion]}>
+                <Icon className="size-4 text-neutral-700"/>
+            </motion.span>
           </motion.button>
         );
       })}

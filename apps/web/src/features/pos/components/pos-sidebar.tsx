@@ -78,7 +78,7 @@ export function PosSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex w-[76px] shrink-0 flex-col items-center gap-1 rounded-3xl bg-brand py-5">
+    <aside className="flex w-19 shrink-0 flex-col items-center gap-1 rounded-3xl bg-brand py-5">
       <motion.div
         whileHover={{ borderRadius: 14, scale: 1.05 }}
         transition={SPRING.snappy}
