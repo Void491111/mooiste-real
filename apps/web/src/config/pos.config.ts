@@ -1,7 +1,7 @@
 export const POS_CONFIG = {
     currency: { locale: "id-ID", prefix: "Rp", fractionDigits: 0 },
     tax: { rate: 0.1, label: "Tax" },
-    stock: { lowTresholds: 10 },
+    stock: { lowThreshold: 10 },
     grid: {minCardWidth: 190 }, 
 } as const;
 
