@@ -1,3 +1,5 @@
+import type { TargetAndTransition } from "motion/react";
+
 export const DURATION = {
   instant: 0.12,
   fast: 0.18,
@@ -52,3 +54,14 @@ export const VARIANTS = {
 export const STAGGER = {
   grid: { staggerChildren: 0.02, delayChildren: 0.03 },
 } as const;
+
+export const ICON_MOTION = {
+  wiggle: { rotate: [0, -14, 12, -8, 0], transition: { duration: 0.45 } },
+  bounce: { y: [0, -5, 0], transition: { duration: 0.4, repeat: Infinity, repeatDelay: 0.1 } },
+  spin: { rotate: 360, transition: { duration: 0.7, ease: "easeInOut" } },
+  swing: { rotate: [0, 16, -10, 6, 0], transition: { duration: 0.5 } },
+  pop: { scale: 1.28, transition: SPRING.snappy },
+} satisfies Record<string, TargetAndTransition>;
+
+export type IconMotion = keyof typeof ICON_MOTION;
+
