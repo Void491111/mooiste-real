@@ -128,3 +128,19 @@
     @apply font-sans;
   }
 }
+
+@theme {
+  --color-brand: #16243f;
+  --color-brand-soft: #1e3050;
+  --color-selected: #fdf3cf;
+  --color-selected-ring: #e8cf7a;
+  --color-danger-soft: #f4918f;
+  --color-stock-ok: #16a34a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
