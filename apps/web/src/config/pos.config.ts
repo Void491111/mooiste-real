@@ -13,7 +13,7 @@ export const ORDER_TYPES = [
 export const CATEGORIES = [
     { value: "ALL", label: "Semua" },
     { value: "COFFEE", label: "Coffee" },
-    { value: "NON-COFFEE", label: "Non Coffee" },
+    { value: "NON_COFFEE", label: "Non Coffee" },
     { value: "FOOD", label: "Food" },
     { value: "SNACK", label: "Snack"},
 ] as const;
