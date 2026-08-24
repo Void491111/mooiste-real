@@ -15,6 +15,7 @@ export const EASE = {
 export const SPRING = {
   snappy: { type: "spring", stiffness: 500, damping: 32, mass: 0.6 },
   soft: { type: "spring", stiffness: 300, damping: 30 },
+  crisp: {type: "spring", stiffness: 900, damping: 34, mass: 0.4 }
 } as const;
 
 export const TAP = {
@@ -64,4 +65,6 @@ export const ICON_MOTION = {
 } satisfies Record<string, TargetAndTransition>;
 
 export type IconMotion = keyof typeof ICON_MOTION;
+
+
 
