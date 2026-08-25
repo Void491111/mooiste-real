@@ -56,6 +56,11 @@ export const STAGGER = {
   grid: { stop: 0.028, max: 0.22 },
 } as const;
 
+export const CARD_HOVER = {
+  y: -4,
+  transition: SPRING.soft,
+} as const;
+
 export const ICON_MOTION = {
   wiggle: { rotate: [0, -14, 12, -8, 0], transition: { duration: 0.45 } },
   bounce: { y: [0, -5, 0], transition: { duration: 0.4, repeat: Infinity, repeatDelay: 0.1 } },

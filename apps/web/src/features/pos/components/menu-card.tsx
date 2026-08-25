@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { SPRING, VARIANTS } from "@/config/motion.config";
+import { CARD_HOVER, SPRING, VARIANTS } from "@/config/motion.config";
 import { cn } from "@/lib/utils";
 import { useMenuCard } from "../hooks/use-menu-card";
 import { stopBubble } from "../lib/dom";
@@ -28,9 +28,10 @@ export function MenuCard({ menu, index }: Props) {
       transition={SPRING.snappy}
       whileTap={card.isOut ? undefined : { scale: 0.97 }}
       onClick={card.increase}
-      style={{ minHeight: POS_CONFIG.grid.cardHeight }}
+      whileHover={card.isOut ? undefined : CARD_HOVER}
       className={cn(
-        "flex flex-col gap-1 rounded-card border p-3 shadow-sm",
+        "group flex flex-col gap-1 rounded-card border p-3 shadow-sm transition-shadow duration-300",
+        !card.isOut && "hover:shadow-lg",
         card.isSelected && "border-selected-ring bg-selected",
         !card.isSelected && !card.isOut && "border-neutral-200 bg-white",
         card.isOut ? "cursor-not-allowed border-neutral-200 bg-neutral-100" : "cursor-pointer",
