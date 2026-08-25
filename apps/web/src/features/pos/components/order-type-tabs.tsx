@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ORDER_TYPES } from "@/config/pos.config"; 
+import { ORDER_TYPES } from "@/types/shared"; 
 import { SPRING } from "@/config/motion.config";
 import { cn } from "@/lib/utils";
 import type { OrderType } from "../types";
