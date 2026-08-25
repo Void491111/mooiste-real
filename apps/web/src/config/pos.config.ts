@@ -5,10 +5,7 @@ export const POS_CONFIG = {
     grid: { cardWidth: 210, cardHeight: 0 },
 } as const;
 
-export const ORDER_TYPES = [
-    { value: "DINE_IN", label: "Dine In"},
-    { value: "TAKEAWAY", label: "Takeaway"},
-] as const;
+
 
 export const CATEGORIES = [
     { value: "ALL", label: "Semua" },

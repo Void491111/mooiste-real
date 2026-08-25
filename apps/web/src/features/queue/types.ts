@@ -1,5 +1,5 @@
 import type { STATION_BY_CATEGORY } from "@/config/queue.config";
-import type { OrderType } from "@/features/pos/types";
+import type { OrderType } from "@/types/shared";
 
 export type Station = (typeof STATION_BY_CATEGORY)[keyof typeof STATION_BY_CATEGORY];
 export type Urgency = "normal" | "warn" | "late";
