@@ -4,7 +4,7 @@ import { CategoryChips } from "@/features/pos/components/category-chips";
 import { MenuGrid } from "@/features/pos/components/menu-grid";
 import { PosHeader } from "@/features/pos/components/pos-header";
 import { PosSidebar } from "@/features/pos/components/pos-sidebar";
-import { useCartHydration } from "@/features/pos/hooks/use-cart.hydration";
+import { useCartHydration } from "@/features/pos/hooks/use-cart-hydration";
 import { useMenuFilter } from "@/features/pos/hooks/use-menu-filter";
 import { MENUS_MOCK } from "@/features/pos/mock/menus.mock";
 import { CartPanel } from "@/features/pos/components/cart-panel";
