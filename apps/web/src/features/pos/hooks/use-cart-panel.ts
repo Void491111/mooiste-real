@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCartTotals } from "../store/cart.selectors";
 import { useCartStore } from "../store/cart.store";
 
@@ -12,6 +12,11 @@ export function useCartPanel() {
   const totals = useCartTotals();
 
   const [isClearOpen, setIsClearOpen] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(function markReady() {
+    setIsReady(true);
+  }, []);
 
   function askClear() {
     setIsClearOpen(true);
@@ -30,6 +35,7 @@ export function useCartPanel() {
     items,
     orderType,
     totals,
+    isReady,
     isEmpty: items.length === 0,
     isClearOpen,
     setOrderType,
