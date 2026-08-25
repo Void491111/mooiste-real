@@ -24,8 +24,8 @@ export function MenuGrid({ menus }: Props) {
       style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${POS_CONFIG.grid.minCardWidth}px, 1fr))` }}
     >
       <AnimatePresence mode="popLayout">
-        {menus.map(function renderCard(menu) {
-          return <MenuCard key={menu.id} menu={menu} />;
+        {menus.map(function renderCard(menu, index) {
+          return <MenuCard key={menu.id} menu={menu} index={index} />;
         })}
       </AnimatePresence>
     </div>

@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { POS_CONFIG } from "@/config/pos.config";
-import { SPRING, VARIANTS } from "@/config/motion.config";
+import { SPRING, STAGGER, VARIANTS } from "@/config/motion.config";
 import { cn } from "@/lib/utils";
 import { makeLineId } from "../lib/cart";
 import { formatMoney } from "../lib/format";
@@ -13,9 +13,10 @@ import { QtyStepper } from "./qty-stepper";
 
 type Props = {
   menu: Menu;
+  index: number;
 };
 
-export function MenuCard({ menu }: Props) {
+export function MenuCard({ menu, index }: Props) {
   const qty = useMenuQty(menu.id);
   const add = useCartStore((state) => state.add);
   const setQty = useCartStore((state) => state.setQty);
@@ -24,6 +25,7 @@ export function MenuCard({ menu }: Props) {
   const isSelected = qty > 0;
   const isLow = !isOut && menu.stock <= POS_CONFIG.stock.lowThreshold;
   const lineId = makeLineId(menu.id, "");
+  const enterDelay = Math.min(index * STAGGER.grid.stop, STAGGER.grid.max);
 
   function handleAdd() {
     if (isOut) return;
@@ -42,7 +44,7 @@ export function MenuCard({ menu }: Props) {
     <motion.div
       layout
       initial={VARIANTS.card.initial}
-      animate={VARIANTS.card.animate}
+      animate={{ ...VARIANTS.card.animate, transition: { ...SPRING.snappy, delay: enterDelay } }}
       exit={VARIANTS.card.exit}
       transition={SPRING.snappy}
       whileTap={isOut ? undefined : { scale: 0.97 }}
