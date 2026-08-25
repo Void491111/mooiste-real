@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { NAV_ITEMS } from "@/config/nav.config";
 import { ICON_MOTION, SPRING } from "@/config/motion.config";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 type NavItemProps = {
   item: (typeof NAV_ITEMS)[number];
@@ -80,11 +81,11 @@ export function PosSidebar() {
   return (
     <aside className="flex w-19 shrink-0 flex-col items-center gap-1 rounded-3xl bg-brand py-5">
       <motion.div
-        whileHover={{ borderRadius: 14, scale: 1.05 }}
+        whileHover={{ scale: 1.08 }}
         transition={SPRING.snappy}
-        className="mb-4 grid size-11 place-items-center rounded-3xl bg-white/10 text-lg font-bold text-white"
+        className="mb-4 grid size-11 place-items-center"
       >
-        M
+        <Image src="/logo.png" alt="De Mooiste" width={40} height={40} className="size-9" priority />
       </motion.div>
 
       {NAV_ITEMS.map(function renderNavItem(item) {
