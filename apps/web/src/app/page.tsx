@@ -7,6 +7,7 @@ import { PosSidebar } from "@/features/pos/components/pos-sidebar";
 import { useCartHydration } from "@/features/pos/hooks/use-cart.hydration";
 import { useMenuFilter } from "@/features/pos/hooks/use-menu-filter";
 import { MENUS_MOCK } from "@/features/pos/mock/menus.mock";
+import { CartPanel } from "@/features/pos/components/cart-panel";
 
 export default function PosPage() {
   useCartHydration();
@@ -23,9 +24,8 @@ export default function PosPage() {
         <MenuGrid menus={filtered} />
       </main>
 
-      <aside className="grid w-85 shrink-0 place-items-center rounded-2xl border border-dashed border-neutral-300 text-sm text-neutral-400">
-        Cart panel
-      </aside>
+      <CartPanel />
+      
     </div>
   );
 }
