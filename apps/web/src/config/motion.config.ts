@@ -31,9 +31,9 @@ export const ICON_HOVER = {
 
 export const VARIANTS = {
   page: {
-    initial: { opacity: 0, y: 8 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -8 },
+    initial: { opacity: 0, scale: 0.94, filter: "blur(10px)" },
+    animate: { opacity: 1, scle: 1, filter: ("blur(0px)") },
+    exit: { opacity: 0, scale: 0.94, filter: "blur(10px)" },
   },
   card: {
     initial: { opacity: 0, scale: 0.96 },
@@ -53,7 +53,7 @@ export const VARIANTS = {
 } as const;
 
 export const STAGGER = {
-  grid: { staggerChildren: 0.02, delayChildren: 0.03 },
+  grid: { stop: 0.028, max: 0.22 },
 } as const;
 
 export const ICON_MOTION = {
