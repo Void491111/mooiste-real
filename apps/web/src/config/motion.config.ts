@@ -1,4 +1,5 @@
 import type { TargetAndTransition } from "motion/react";
+export const THEME_TRANSITION_MS = 280;
 
 export const DURATION = {
   instant: 0.12,

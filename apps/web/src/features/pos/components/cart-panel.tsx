@@ -15,10 +15,10 @@ export function CartPanel() {
   const panel = useCartPanel();
 
   return (
-    <aside className="flex w-[340px] shrink-0 flex-col gap-3 rounded-card bg-card p-4 shadow-sm">
+    <aside className="flex w-85 shrink-0 flex-col gap-3 rounded-card bg-card p-4 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h2 className="text-base font-bold text-white">Pesanan</h2>
+          <h2 className="text-base font-bold text-foreground">Pesanan</h2>
           <motion.span
             key={panel.totals.itemCount}
             initial={{ scale: 0.5 }}
@@ -56,15 +56,18 @@ export function CartPanel() {
 
       <CartSummary totals={panel.totals} />
 
-      <motion.button
-        type="button"
-        disabled={panel.isEmpty}
-        whileTap={panel.isEmpty ? undefined : { scale: 0.98 }}
+      <motion.div
+        whileTap={!panel.isReady || panel.isEmpty ? undefined : { scale: 0.98 }}
         transition={SPRING.snappy}
-        className="h-12 w-full rounded-card bg-brand text-base font-bold text-white transition-colors hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-40"
       >
-        Checkout
-      </motion.button>
+        <button
+          type="button"
+          disabled={!panel.isReady || panel.isEmpty}
+          className="h-12 w-full rounded-card bg-brand text-base font-bold text-white transition-colors hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Checkout
+        </button>
+      </motion.div>
 
       <ConfirmDialog
         open={panel.isClearOpen}

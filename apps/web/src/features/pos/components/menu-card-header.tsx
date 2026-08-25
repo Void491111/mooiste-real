@@ -34,7 +34,7 @@ export function MenuCardHeader({ stock, qty, isOut, isSelected }: Props) {
       )}
 
       <span className="ml-auto rounded-full border-2 border-stock-ok bg-card px-2.5 py-0.5 text-[11px] font-bold">
-        <span className="text-neutral-900">Stock: </span>
+        <span className="text-foreground">Stock: </span>
         <span className="text-stock-ok">{stock}</span>
       </span>
     </div>
