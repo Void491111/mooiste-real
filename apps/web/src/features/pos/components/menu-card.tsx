@@ -38,7 +38,7 @@ export function MenuCard({ menu, index, onEditNote }: Props) {
       )}
     >
       <MenuCardHeader
-        stock={menu.stock}
+        stock={card.available}
         qty={card.qty}
         isOut={card.isOut}
         isSelected={card.isSelected}

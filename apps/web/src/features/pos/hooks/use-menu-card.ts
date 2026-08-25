@@ -1,7 +1,7 @@
 "use client";
 
 import { STAGGER } from "@/config/motion.config";
-import { makeLineId } from "../lib/cart";
+import { availableStock, makeLineId } from "../lib/cart";
 import { useMenuQty } from "../store/cart.selectors";
 import { useCartStore } from "../store/cart.store";
 import type { Menu } from "../types";
@@ -13,6 +13,7 @@ export function useMenuCard(menu: Menu, index: number) {
 
   const isOut = menu.stock <= 0;
   const lineId = makeLineId(menu.id, "");
+  const available = availableStock(menu.stock, qty);
 
   function increase() {
     if (isOut) return;
@@ -23,11 +24,14 @@ export function useMenuCard(menu: Menu, index: number) {
     setQty(lineId, qty - 1);
   }
 
+  
+
   return {
     qty,
+    available,
     isOut,
     isSelected: qty > 0,
-    canIncrease: qty < menu.stock,
+    canIncrease: available > 0,
     enterDelay: Math.min(index * STAGGER.grid.stop, STAGGER.grid.max),
     increase,
     decrease,
