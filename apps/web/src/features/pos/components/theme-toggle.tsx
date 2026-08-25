@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Moon, Sun } from "lucide-react";
 import { SPRING } from "@/config/motion.config";
-import { useThemeToggle } from "../hooks/use-theme-toggle"; 
+import { useThemeToggle } from "../../../hooks/use-theme-toggle"; 
 
 export function ThemeToggle() {
   const theme = useThemeToggle();
