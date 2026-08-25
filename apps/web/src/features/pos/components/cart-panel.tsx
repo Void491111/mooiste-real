@@ -7,6 +7,7 @@ import { SPRING } from "@/config/motion.config";
 import { useCartPanel } from "../hooks/use-cart-panel";
 import { CartRow } from "./cart-row";
 import { CartSummary } from "./cart-summary";
+import { ConfirmDialog } from "./confirm-dialog";
 import { IconButton } from "./icon-button";
 import { OrderTypeTabs } from "./order-type-tabs";
 
@@ -30,7 +31,7 @@ export function CartPanel() {
         </div>
 
         {!panel.isEmpty && (
-          <IconButton label="Kosongkan pesanan" onClick={panel.clear} className="hover:text-danger-soft">
+          <IconButton label="Kosongkan pesanan" onClick={panel.askClear} className="hover:text-danger-soft">
             <Trash2 className="size-4" />
           </IconButton>
         )}
@@ -61,6 +62,16 @@ export function CartPanel() {
       >
         Checkout
       </Button>
+
+      <ConfirmDialog
+        open={panel.isClearOpen}
+        title="Kosongkan pesanan?"
+        description={`${panel.totals.itemCount} item bakal dihapus dari pesanan ini. Aksi ini ga bisa dibatalin.`}
+        confirmLabel="Ya, kosongkan"
+        destructive
+        onCancel={panel.cancelClear}
+        onConfirm={panel.confirmClear}
+      />
     </aside>
   );
 }
