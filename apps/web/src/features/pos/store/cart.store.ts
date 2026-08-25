@@ -13,13 +13,41 @@ type CartState = {
   setOrderType: (orderType: OrderType) => void;
 };
 
-export const useCartStore = create<CartState>((set) => ({
-  items: [],
-  orderType: "DINE_IN",
-  add: (menu) => set((state) => ({ items: cart.addItem(state.items, menu) })),
-  setQty: (lineId, qty) => set((state) => ({ items: cart.setQty(state.items, lineId, qty) })),
-  setNote: (lineId, note) => set((state) => ({ items: cart.setNote(state.items, lineId, note) })),
-  remove: (lineId) => set((state) => ({ items: cart.removeItem(state.items, lineId) })),
-  clear: () => set({ items: [] }),
-  setOrderType: (orderType) => set({ orderType }),
-}));
+export const useCartStore = create<CartState>(function createCartStore(set) {
+  return {
+    items: [],
+    orderType: "DINE_IN",
+
+    add: function addMenu(menu) {
+      set(function applyAdd(state) {
+        return { items: cart.addItem(state.items, menu) };
+      });
+    },
+
+    setQty: function changeQty(lineId, qty) {
+      set(function applySetQty(state) {
+        return { items: cart.setQty(state.items, lineId, qty) };
+      });
+    },
+
+    setNote: function changeNote(lineId, note) {
+      set(function applySetNote(state) {
+        return { items: cart.setNote(state.items, lineId, note) };
+      });
+    },
+
+    remove: function removeLine(lineId) {
+      set(function applyRemove(state) {
+        return { items: cart.removeItem(state.items, lineId) };
+      });
+    },
+
+    clear: function clearCart() {
+      set({ items: [] });
+    },
+
+    setOrderType: function changeOrderType(orderType) {
+      set({ orderType });
+    },
+  };
+});
