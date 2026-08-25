@@ -44,17 +44,17 @@ export function MenuCard({ menu, index }: Props) {
       />
 
       <div className={cn("grid aspect-4/3 place-items-center", card.isOut && "opacity-45")}>
-        <div className="grid size-20 place-items-center rounded-card bg-neutral-200/60 text-3xl font-bold text-neutral-400 transition-transform duration-500 ease-out group-hover:scale-110">
+        <div className="grid size-20 place-items-center rounded-card bg-muted-foreground/15 text-3xl font-bold text-muted-foreground/60 transition-transform duration-500 ease-out group-hover:scale-110">
           {menu.name.slice(0, 1)}
         </div>
       </div>
 
       <motion.div layout className="flex items-end justify-between gap-2">
         <motion.div layout className="min-w-0">
-          <p className={cn("truncate text-[15px] font-bold", card.isOut ? "text-neutral-400" : "text-neutral-900")}>
+          <p className={cn("truncate text-[15px] font-bold", card.isOut ? "text-muted-foreground/60" : "text-foreground")}>
             {menu.name}
           </p>
-          <p className={cn("text-sm", card.isOut ? "text-neutral-400" : "text-neutral-500")}>
+          <p className={cn("text-sm", card.isOut ? "text-muted-foreground/60" : "text-muted-foreground")}>
             {formatMoney(menu.price)}
           </p>
         </motion.div>

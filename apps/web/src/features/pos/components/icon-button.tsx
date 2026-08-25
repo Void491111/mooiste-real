@@ -20,7 +20,7 @@ export function IconButton ({ label, onClick, className, children }: Props) {
             whileHover={{ scale: 1.12 }}
             whileTap={{ scale: 0.88 }}
             transition={SPRING.snappy}
-            className={cn("grid size-8 place-items-center rounded-card text-neutral-500 hover:text-neutral-900", className)}
+            className={cn("grid size-8 place-items-center rounded-card text-muted-foreground hover:text-foreground", className)}
         >
             {children}
         </motion.button>

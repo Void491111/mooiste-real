@@ -28,7 +28,7 @@ export function CategoryChips({ value, onChange }: Props) {
             }}
             className={cn(
               "relative shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors duration-150 xl:px-4 xl:py-2 xl:text-sm",
-              isActive ? "text-white" : "text-neutral-500 hover:text-neutral-900",
+              isActive ? "text-white" : "text-muted-foreground hover:text-foreground",
             )}
           >
             {isActive && (

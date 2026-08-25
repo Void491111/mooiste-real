@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useNow } from "@/hooks/useNow";
+import { useNow } from "@/hooks/use-now";
 import { seedOrders, sortByOldest } from "../lib/queue";
 import { QUEUE_MOCK } from "../mock/orders.mock";
 import { useQueueStore } from "../store/queue.store";

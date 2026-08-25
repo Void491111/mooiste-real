@@ -42,7 +42,7 @@ export function ConfirmDialog({
     >
       <AlertDialogContent className="rounded-card">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-neutral-900">{title}</AlertDialogTitle>
+          <AlertDialogTitle className="text-foreground">{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -52,7 +52,7 @@ export function ConfirmDialog({
             onClick={onConfirm}
             className={cn(
               "rounded-card",
-              destructive && "bg-danger-soft text-neutral-900 hover:bg-danger-soft/80",
+              destructive && "bg-danger-soft text-foreground hover:bg-danger-soft/80",
             )}
           >
             {confirmLabel}

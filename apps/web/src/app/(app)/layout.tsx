@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/features/pos/components/pos-sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 export default function AppLayout({ children }: LayoutProps<"/">) {
   return (

@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { Search, Settings, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { ThemeToggle } from "./theme-toggle"; 
+import { ThemeToggle } from "@/components/theme-toggle"; 
 import { ICON_MOTION, SPRING } from "@/config/motion.config";
 
 const ACTIONS = [

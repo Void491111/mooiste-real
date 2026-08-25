@@ -40,7 +40,7 @@ export function CartPanel() {
       <OrderTypeTabs value={panel.orderType} onChange={panel.setOrderType} />
 
       {panel.isEmpty ? (
-        <div className="flex flex-1 flex-col items-center justify-center gap-2 text-neutral-300">
+        <div className="flex flex-1 flex-col items-center justify-center gap-2 text-muted-foreground/40">
           <ShoppingBag className="size-10" />
           <p className="text-sm">Belum ada pesanan</p>
         </div>

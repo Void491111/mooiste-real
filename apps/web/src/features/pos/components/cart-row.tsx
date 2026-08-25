@@ -34,14 +34,14 @@ export function CartRow({ item }: Props) {
 
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
-            <p className="truncate text-sm font-semibold text-neutral-900">{item.name}</p>
+            <p className="truncate text-sm font-semibold text-foreground">{item.name}</p>
             <p className="shrink-0 text-sm font-bold tabular-nums">{formatMoney(lineTotal(item))}</p>
           </div>
 
-          <p className="text-xs text-neutral-500">{formatMoney(item.price)}</p>
+          <p className="text-xs text-muted-foreground">{formatMoney(item.price)}</p>
 
           {item.note && !row.isEditing && (
-            <p className="mt-1 truncate text-xs italic text-neutral-500">{item.note}</p>
+            <p className="mt-1 truncate text-xs italic text-muted-foreground">{item.note}</p>
           )}
 
           <div className="mt-1.5 flex items-center justify-between">
