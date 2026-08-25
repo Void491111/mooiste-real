@@ -33,7 +33,7 @@ export function MenuCard({ menu, index }: Props) {
         !card.isOut && "hover:shadow-lg",
         card.isSelected && "border-selected-ring bg-selected",
         !card.isSelected && !card.isOut && "border-border bg-card",
-        card.isOut ? "cursor-not-allowed border-neutral-200 bg-neutral-100" : "cursor-pointer",
+        card.isOut ? "cursor-not-allowed border-border bg-muted" : "cursor-pointer",
       )}
     >
       <MenuCardHeader
