@@ -15,7 +15,7 @@ export default function PosPage() {
   const { keyword, setKeyword, category, setCategory, filtered } = useMenuFilter(MENUS_MOCK);
 
   return (
-    <div className="flex h-screen gap-4 bg-neutral-100 p-4">
+    <div className="flex h-screen gap-4 bg-background p-4">
       <PosSidebar />
 
       <main className="flex min-w-0 flex-1 flex-col gap-3">

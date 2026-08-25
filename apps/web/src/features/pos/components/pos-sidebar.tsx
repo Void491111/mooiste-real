@@ -64,7 +64,7 @@ function NavItem({ item, isActive }: NavItemProps) {
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: -8, scale: 0.9 }}
             transition={SPRING.snappy}
-            className="pointer-events-none absolute left-full z-30 ml-1 whitespace-nowrap rounded-lg bg-neutral-900 px-2.5 py-1.5 text-xs font-semibold text-white shadow-lg"
+            className="pointer-events-none absolute left-full z-30 ml-1 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1.5 text-xs font-semibold text-background shadow-lg"
           >
             {item.label}
           </motion.span>

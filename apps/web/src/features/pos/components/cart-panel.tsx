@@ -24,7 +24,7 @@ export function CartPanel() {
             initial={{ scale: 0.5 }}
             animate={{ scale: 1 }}
             transition={SPRING.crisp}
-            className="grid size-6 place-items-center rounded-full bg-neutral-900 text-xs font-bold text-white"
+            className="grid size-6 place-items-center rounded-full bg-foreground text-xs font-bold text-background"
           >
             {panel.totals.itemCount}
           </motion.span>
