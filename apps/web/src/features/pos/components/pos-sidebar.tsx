@@ -75,7 +75,7 @@ function NavItem({ item, isActive }: NavItemProps) {
   );
 }
 
-export function PosSidebar() {
+export function AppSidebar() {
   const pathname = usePathname();
 
   return (
