@@ -8,6 +8,7 @@ import { MENUS_MOCK } from "@/features/pos/mock/menus.mock";
 import { useCartHydration } from "@/features/pos/hooks/use-cart.hydration";
 
 export default function PosPage() {
+  useCartHydration();
   const { keyword, setKeyword, category, setCategory, filtered } = useMenuFilter(MENUS_MOCK);
 
   return (
