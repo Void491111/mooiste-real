@@ -14,10 +14,9 @@ import { POS_CONFIG } from "@/config/pos.config";
 type Props = {
   menu: Menu;
   index: number;
-  onEditNote?: (menuId: string) => void;
 };
 
-export function MenuCard({ menu, index, onEditNote }: Props) {
+export function MenuCard({ menu, index }: Props) {
   const card = useMenuCard(menu, index);
 
   return (
