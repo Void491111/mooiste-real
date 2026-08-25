@@ -9,6 +9,7 @@ import { formatMoney } from "../lib/format";
 import type { Menu } from "../types";
 import { MenuCardHeader } from "./menu-card-header";
 import { QtyStepper } from "./qty-stepper";
+import { POS_CONFIG } from "@/config/pos.config";
 
 type Props = {
   menu: Menu;
@@ -20,7 +21,7 @@ export function MenuCard({ menu, index, onEditNote }: Props) {
   const card = useMenuCard(menu, index);
 
   return (
-    <motion.div
+        <motion.div
       layout
       initial={VARIANTS.card.initial}
       animate={{ ...VARIANTS.card.animate, transition: { ...SPRING.snappy, delay: card.enterDelay } }}
@@ -28,8 +29,9 @@ export function MenuCard({ menu, index, onEditNote }: Props) {
       transition={SPRING.snappy}
       whileTap={card.isOut ? undefined : { scale: 0.97 }}
       onClick={card.increase}
+      style={{ minHeight: POS_CONFIG.grid.cardHeight }}
       className={cn(
-        "flex flex-col gap-1 rounded-3xl border p-3 shadow-sm",
+        "flex flex-col gap-1 rounded-card border p-3 shadow-sm",
         card.isSelected && "border-selected-ring bg-selected",
         !card.isSelected && !card.isOut && "border-neutral-200 bg-white",
         card.isOut ? "cursor-not-allowed border-neutral-200 bg-neutral-100" : "cursor-pointer",

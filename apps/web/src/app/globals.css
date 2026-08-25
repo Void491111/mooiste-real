@@ -130,6 +130,9 @@
 }
 
 @theme {
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 7px;
+
   --color-brand: #16243f;
   --color-brand-soft: #1e3050;
   --color-selected: #fdf3cf;
