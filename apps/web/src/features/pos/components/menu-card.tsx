@@ -47,7 +47,7 @@ export function MenuCard({ menu, index, onEditNote }: Props) {
         }}
       />
 
-      <div className={cn("grid aspect-[4/3] place-items-center", card.isOut && "opacity-45")}>
+      <div className={cn("grid aspect-4/3 place-items-center", card.isOut && "opacity-45")}>
         <div className="grid size-20 place-items-center rounded-2xl bg-neutral-200/60 text-3xl font-bold text-neutral-400">
           {menu.name.slice(0, 1)}
         </div>

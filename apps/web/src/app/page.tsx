@@ -23,7 +23,7 @@ export default function PosPage() {
         <MenuGrid menus={filtered} />
       </main>
 
-      <aside className="grid w-[340px] shrink-0 place-items-center rounded-2xl border border-dashed border-neutral-300 text-sm text-neutral-400">
+      <aside className="grid w-85 shrink-0 place-items-center rounded-2xl border border-dashed border-neutral-300 text-sm text-neutral-400">
         Cart panel
       </aside>
     </div>
