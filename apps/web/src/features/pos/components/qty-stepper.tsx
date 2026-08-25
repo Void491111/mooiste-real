@@ -43,15 +43,19 @@ export function QtyStepper({ qty, onDecrease, onIncrease, disabled = false, canI
         <Minus className="size-3.5" />
       </StepButton>
 
-      <motion.span
-        key={qty}
-        initial={{ scale: 0.6, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={SPRING.snappy}
-        className="w-6 text-center text-sm font-semibold tabular-nums"
-      >
-        {qty}
-      </motion.span>
+            {qty > 0 ? (
+        <motion.span
+          key={qty}
+          initial={{ scale: 0.6, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={SPRING.snappy}
+          className="w-6 text-center text-sm font-semibold tabular-nums"
+        >
+          {qty}
+        </motion.span>
+      ) : (
+        <span className="w-6 text-center text-sm text-neutral-300">|</span>
+      )}
 
       <StepButton label="Tambah" disabled={disabled || !canIncrease} onClick={onIncrease}>
         <Plus className="size-3.5" />
