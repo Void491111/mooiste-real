@@ -6,7 +6,7 @@ import { SPRING, STAGGER, VARIANTS } from "@/config/motion.config";
 import { cn } from "@/lib/utils";
 import { makeLineId } from "../lib/cart";
 import { formatMoney } from "../lib/format";
-import { useMenuQty } from "../store/cart.selector";
+import { useMenuQty } from "../store/cart.selectors";
 import { useCartStore } from "../store/cart.store";
 import type { Menu } from "../types";
 import { QtyStepper } from "./qty-stepper";
