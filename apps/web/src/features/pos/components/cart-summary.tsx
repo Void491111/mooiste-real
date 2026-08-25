@@ -10,7 +10,7 @@ type Props = {
     totals: CartTotals;
 };
 
-export function cartSummary({ totals }: Props) {
+export function CartSummary({ totals }: Props) {
     const taxPercent = Math.round(POS_CONFIG.tax.rate * 100);
 
     return (
