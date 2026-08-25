@@ -38,7 +38,7 @@ type Props = {
 
 export function QtyStepper({ qty, onDecrease, onIncrease, disabled = false, canIncrease = true }: Props) {
   return (
-    <div className={cn("flex w-fit items-center rounded-full border border-neutral-200 bg-white p-0.5", disabled && "opacity-40")}>
+    <div className={cn("flex w-fit items-center rounded-full border border-border bg-card p-0.5", disabled && "opacity-40")}>
       <StepButton label="Kurangi" disabled={disabled || qty <= 0} onClick={onDecrease}>
         <Minus className="size-3.5" />
       </StepButton>

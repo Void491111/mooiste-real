@@ -13,11 +13,9 @@ type Props = {
 export function MenuCardHeader({ stock, qty, isOut, isSelected }: Props) {
   if (isOut) {
     return (
-      <div className="flex h-8 items-center">
-        <div className="w-full rounded-card bg-danger-soft py-1.5 text-center text-xs font-semibold text-neutral-700">
-          Out Of Stock
-        </div>
-      </div>
+      <div className="w-full rounded-card bg-danger-soft py-1.5 text-center text-xs font-semibold text-danger-soft-fg">
+        Out Of Stock
+      </div>  
     );
   }
 
@@ -35,7 +33,7 @@ export function MenuCardHeader({ stock, qty, isOut, isSelected }: Props) {
         </motion.span>
       )}
 
-      <span className="ml-auto rounded-full border-2 border-stock-ok bg-white px-2.5 py-0.5 text-[11px] font-bold">
+      <span className="ml-auto rounded-full border-2 border-stock-ok bg-card px-2.5 py-0.5 text-[11px] font-bold">
         <span className="text-neutral-900">Stock: </span>
         <span className="text-stock-ok">{stock}</span>
       </span>

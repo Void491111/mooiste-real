@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -46,6 +46,15 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --radius-card: 7px;
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-selected: var(--selected);
+  --color-selected-ring: var(--selected-ring);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-soft-fg: var(--danger-soft-fg);
+  --color-stock-ok: var(--stock-ok);
 }
 
 :root {
@@ -81,6 +90,14 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --brand: #16243f;
+  --brand-soft: #1e3050;
+  --selected: #fdf3cf;
+  --selected-ring: #e8cf7a;
+  --danger-soft: #f4918f;
+  --danger-soft-fg: #4a1f1e;
+  --stock-ok: #16a34a;
 }
 
 .dark {
@@ -115,6 +132,14 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  --brand: #0e1626;
+  --brand-soft: #1b2740;
+  --selected: #3a3116;
+  --selected-ring: #6b5a24;
+  --danger-soft: #8a3f3d;
+  --danger-soft-fg: #ffd9d7;
+  --stock-ok: #4ade80;
 }
 
 @layer base {
@@ -127,18 +152,6 @@
   html {
     @apply font-sans;
   }
-}
-
-@theme {
-  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
-  --radius-card: 7px;
-
-  --color-brand: #16243f;
-  --color-brand-soft: #1e3050;
-  --color-selected: #fdf3cf;
-  --color-selected-ring: #e8cf7a;
-  --color-danger-soft: #f4918f;
-  --color-stock-ok: #16a34a;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -32,7 +32,7 @@ export function MenuCard({ menu, index }: Props) {
         "group flex flex-col gap-1 rounded-card border p-3 shadow-sm transition-shadow duration-300",
         !card.isOut && "hover:shadow-lg",
         card.isSelected && "border-selected-ring bg-selected",
-        !card.isSelected && !card.isOut && "border-neutral-200 bg-white",
+        !card.isSelected && !card.isOut && "border-border bg-card",
         card.isOut ? "cursor-not-allowed border-neutral-200 bg-neutral-100" : "cursor-pointer",
       )}
     >

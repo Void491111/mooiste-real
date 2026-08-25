@@ -13,7 +13,7 @@ type Props = {
 
 export function OrderTypeTabs({ value, onChange }: Props) {
     return (
-    <div className="flex gap-1 rounded-card bg-neutral-100 p-1">
+        <div className="flex gap-1 rounded-card bg-muted p-1">
         {ORDER_TYPES.map(function renderTab(type) {
             const isActive = type.value === value;
 
@@ -28,14 +28,14 @@ export function OrderTypeTabs({ value, onChange }: Props) {
                     }}
                     className={cn(
                         "relative flex-1 rounded-card py-2 text-sm font-semibold transition-colors duration-150",
-                         isActive ? "text-neutral-900" : "text-neutral-500",
-                    )}
+                        isActive ? "text-foreground" : "text-muted-foreground",
+                        )}
                 >
                     {isActive && (
                         <motion.span 
                             layoutId="order-type-active"
                             transition={SPRING.crisp}
-                            className="absolute inset-0 rounded-card bg-white shadow-sm"
+                            className="absolute inset-0 rounded-card bg-card shadow-sm"
                         />
                     )}
                     <span className="relative">{type.label}</span>
