@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import * as cart from "../lib/cart";
 import type { CartItem, Menu, OrderType } from "../types";
 
@@ -13,41 +14,52 @@ type CartState = {
   setOrderType: (orderType: OrderType) => void;
 };
 
-export const useCartStore = create<CartState>(function createCartStore(set) {
-  return {
-    items: [],
-    orderType: "DINE_IN",
+export const useCartStore = create<CartState>()(
+  persist(
+    function createCartStore(set) {
+      return {
+        items: [],
+        orderType: "DINE_IN",
 
-    add: function addMenu(menu) {
-      set(function applyAdd(state) {
-        return { items: cart.addItem(state.items, menu) };
-      });
-    },
+        add: function addMenu(menu) {
+          set(function applyAdd(state) {
+            return { items: cart.addItem(state.items, menu) };
+          });
+        },
 
-    setQty: function changeQty(lineId, qty) {
-      set(function applySetQty(state) {
-        return { items: cart.setQty(state.items, lineId, qty) };
-      });
-    },
+        setQty: function changeQty(lineId, qty) {
+          set(function applySetQty(state) {
+            return { items: cart.setQty(state.items, lineId, qty) };
+          });
+        },
 
-    setNote: function changeNote(lineId, note) {
-      set(function applySetNote(state) {
-        return { items: cart.setNote(state.items, lineId, note) };
-      });
-    },
+        setNote: function changeNote(lineId, note) {
+          set(function applySetNote(state) {
+            return { items: cart.setNote(state.items, lineId, note) };
+          });
+        },
 
-    remove: function removeLine(lineId) {
-      set(function applyRemove(state) {
-        return { items: cart.removeItem(state.items, lineId) };
-      });
-    },
+        remove: function removeLine(lineId) {
+          set(function applyRemove(state) {
+            return { items: cart.removeItem(state.items, lineId) };
+          });
+        },
 
-    clear: function clearCart() {
-      set({ items: [] });
-    },
+        clear: function clearCart() {
+          set({ items: [] });
+        },
 
-    setOrderType: function changeOrderType(orderType) {
-      set({ orderType });
+        setOrderType: function changeOrderType(orderType) {
+          set({ orderType });
+        },
+      };
     },
-  };
-});
+    {
+      name: "mooiste-cart",
+      skipHydration: true,
+      partialize: function pickPersisted(state) {
+        return { items: state.items, orderType: state.orderType };
+      },
+    },
+  ),
+);
