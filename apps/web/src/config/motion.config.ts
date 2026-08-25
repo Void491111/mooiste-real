@@ -61,6 +61,12 @@ export const CARD_HOVER = {
   transition: SPRING.soft,
 } as const;
 
+export const STEPPER_REVEAL = {
+  initial: { opacity: 0, x: 14, scale: 0.8 },
+  animate: { opacity: 1, x: 0, scale: 1 },
+  exit: { opacity: 0, x: 14, scale: 0.8 },
+} as const;
+
 export const ICON_MOTION = {
   wiggle: { rotate: [0, -14, 12, -8, 0], transition: { duration: 0.45 } },
   bounce: { y: [0, -5, 0], transition: { duration: 0.4, repeat: Infinity, repeatDelay: 0.1 } },
