@@ -73,3 +73,7 @@ export function calcTotals(items: CartItem[]): CartTotals {
     itemCount: items.reduce((total, item) => total + item.qty, 0),
   };
 }
+
+export function lineTotal(item: CartItem) {
+  return item.price * item.qty;
+}
