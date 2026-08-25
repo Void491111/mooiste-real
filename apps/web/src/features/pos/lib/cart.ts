@@ -77,3 +77,7 @@ export function calcTotals(items: CartItem[]): CartTotals {
 export function lineTotal(item: CartItem) {
   return item.price * item.qty;
 }
+
+export function availableStock(stock: number, qtyInCart: number) {
+  return Math.max(stock - qtyInCart, 0);
+}

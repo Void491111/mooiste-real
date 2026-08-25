@@ -42,9 +42,6 @@ export function MenuCard({ menu, index, onEditNote }: Props) {
         qty={card.qty}
         isOut={card.isOut}
         isSelected={card.isSelected}
-        onEdit={function requestEdit() {
-          onEditNote?.(menu.id);
-        }}
       />
 
       <div className={cn("grid aspect-4/3 place-items-center", card.isOut && "opacity-45")}>
