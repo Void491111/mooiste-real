@@ -5,6 +5,7 @@ import { PosHeader } from "@/features/pos/components/pos-header";
 import { PosSidebar } from "@/features/pos/components/pos-sidebar";
 import { useMenuFilter } from "@/features/pos/hooks/use-menu-filter";
 import { MENUS_MOCK } from "@/features/pos/mock/menus.mock";
+import { useCartHydration } from "@/features/pos/hooks/use-cart.hydration";
 
 export default function PosPage() {
   const { keyword, setKeyword, category, setCategory, filtered } = useMenuFilter(MENUS_MOCK);
