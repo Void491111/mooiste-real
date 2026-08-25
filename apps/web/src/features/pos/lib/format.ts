@@ -8,5 +8,5 @@ const formatter = new Intl.NumberFormat(locale, {
 });
 
 export function formatMoney(value: number) {
-    return `{prefix} ${formatter.format(value)}` 
+    return `${prefix} ${formatter.format(value)}`; 
 }
