@@ -26,22 +26,19 @@ export function QueueCard({ order, now }: Props) {
       exit={VARIANTS.card.exit}
       transition={SPRING.snappy}
       className={cn(
-        "flex flex-col gap-3 rounded-card border bg-card p-3 shadow-sm",
+        "flex flex-col gap-2 rounded-card border bg-card p-3",
         card.urgency === "late" ? "border-danger-soft" : "border-border",
       )}
     >
-      <header className="flex items-start justify-between gap-2">
-        <div>
-          <p className="text-2xl font-bold leading-none text-foreground">{order.number}</p>
-          <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            {orderTypeLabel(order.orderType)}
-          </p>
-        </div>
-
+      <header className="flex items-center gap-2">
+        <span className="text-base font-semibold text-foreground">{order.number}</span>
+        <span className="truncate text-xs text-muted-foreground">
+          {orderTypeLabel(order.orderType)}
+        </span>
         <QueueTimer minutes={card.minutes} urgency={card.urgency} />
       </header>
 
-      <div className="space-y-1.5">
+      <div>
         {card.barItems.map(function renderBarItem(item) {
           return <QueueItemRow key={item.id} item={item} onToggle={card.toggle} />;
         })}
@@ -55,13 +52,13 @@ export function QueueCard({ order, now }: Props) {
         whileTap={{ scale: 0.98 }}
         transition={SPRING.snappy}
         className={cn(
-          "mt-auto h-11 w-full rounded-card text-sm font-bold transition-colors",
+          "mt-auto h-9 w-full rounded-card text-xs font-medium transition-colors",
           card.isBarDone
             ? "bg-brand text-white hover:bg-brand-soft"
-            : "border border-border text-foreground hover:bg-muted",
+            : "text-muted-foreground hover:bg-muted hover:text-foreground",
         )}
       >
-        {card.isBarDone ? "Serahkan" : `Tandai semua siap · ${card.barDone}/${card.barItems.length}`}
+        {card.isBarDone ? "Serahkan" : "Tandai semua"}
       </motion.button>
     </motion.article>
   );
