@@ -7,7 +7,7 @@ import type { QueueOrder } from "../types";
 export function useQueueCard(order: QueueOrder, now: number) {
   const toggleItem = useQueueStore((state) => state.toggleItem);
   const markStationDone = useQueueStore((state) => state.markStationDone);
-  const removeOrder = useQueueStore((state) => state.removeOrder);
+  const handOverOrder = useQueueStore((state) => state.handOver);
 
   const barItems = itemsOf(order, "BAR");
   const kitchenItems = itemsOf(order, "KITCHEN");
@@ -22,7 +22,7 @@ export function useQueueCard(order: QueueOrder, now: number) {
   }
 
   function handOver() {
-    removeOrder(order.id);
+    handOverOrder(order.id);
   }
 
   return {
