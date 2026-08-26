@@ -14,7 +14,7 @@ export function QueueBoard({ orders, now }: Props) {
   return (
     <div
       className="grid flex-1 auto-rows-min content-start gap-3 overflow-y-auto pb-2"
-      style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${QUEUE_CONFIG.card.minWidth}px, 1fr))` }}
+      style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${QUEUE_CONFIG.card.minWidth}px, ${QUEUE_CONFIG.card.maxWidth}px))` }}
     >
       <AnimatePresence mode="popLayout">
         {orders.map(function renderCard(order) {

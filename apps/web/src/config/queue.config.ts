@@ -1,7 +1,8 @@
 export const QUEUE_CONFIG = {
   urgency: { warnMinutes: 5, lateMinutes: 10 },
   tick: { intervalMs: 15_000 },
-  card: { minWidth: 260 },
+  card: { minWidth: 260, maxWidth: 320 },
+  recent: { limit: 5 }
 } as const;
 
 export const STATION_BY_CATEGORY = {
