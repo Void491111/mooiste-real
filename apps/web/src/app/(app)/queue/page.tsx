@@ -1,10 +1,12 @@
 "use client";
 
 import { QueueBoard } from "@/features/queue/components/queue-board";
+import { QueueRecent } from "@/features/queue/components/queue-recent";
 import { useQueueBoard } from "@/features/queue/hooks/use-queue-board";
 
 export default function QueuePage() {
-  const { now, orders, isEmpty } = useQueueBoard();
+  const { now, orders, isEmpty, recent, restore } = useQueueBoard();
+  
 
   return (
     <main className="flex min-w-0 flex-1 flex-col gap-3">
@@ -22,6 +24,8 @@ export default function QueuePage() {
       ) : (
         <QueueBoard orders={orders} now={now} />
       )}
+
+      <QueueRecent orders={recent} onRestore={restore} />
     </main>
   );
 }
