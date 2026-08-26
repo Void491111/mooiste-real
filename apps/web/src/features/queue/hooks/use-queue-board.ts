@@ -10,6 +10,8 @@ export function useQueueBoard() {
   const orders = useQueueStore((state) => state.orders);
   const seed = useQueueStore((state) => state.seed);
   const now = useNow();
+  const recent = useQueueStore((state) => state.recent);
+  const restore = useQueueStore((state) => state.restore);
 
   useEffect(
     function seedFromMock() {
@@ -24,5 +26,7 @@ export function useQueueBoard() {
     orders: sortByOldest(orders),
     isReady: now !== null,
     isEmpty: now !== null && orders.length === 0,
+    recent,
+    restore,
   };
 }
