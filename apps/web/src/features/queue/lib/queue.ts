@@ -74,3 +74,28 @@ export function summarizeItems(items: QueueItem[]) {
     return `${item.qty} ${item.name}`;
   }).join(", ");
 }
+
+export function moveToRecent(
+  orders: QueueOrder[],
+  recent: QueueOrder[],
+  orderId: string,
+  limit: number,
+) {
+  const target = orders.find((order) => order.id === orderId);
+  if (!target) return { orders, recent };
+
+  return {
+    orders: orders.filter((order) => order.id !== orderId),
+    recent: [ target, ...recent].slice(0, limit),
+  };
+}
+
+export function restoreFromRecent(orders: QueueOrder[], recent: QueueOrder[], orderId: string) {
+  const target = recent.find((order) => order.id === orderId);
+  if (!target) return { orders, recent };
+
+  return {
+    orders: [...orders, target],
+    recent: recent.filter((order) => order.id !==orderId),
+  };
+}
