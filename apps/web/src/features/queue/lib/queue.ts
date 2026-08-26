@@ -68,3 +68,9 @@ export function sortByOldest(orders: QueueOrder[]): QueueOrder[] {
     return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
   });
 }
+
+export function summarizeItems(items: QueueItem[]) {
+  return items.map(function toLabel(item) {
+    return `${item.qty} ${item.name}`;
+  }).join(", ");
+}
