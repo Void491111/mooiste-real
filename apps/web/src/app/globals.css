@@ -91,7 +91,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --note: #b45309
+  --note: #b45309;
+  --theme-transition-duration: 280ms;
 
   --brand: #1c2739;
   --brand-soft: #2a3850;
@@ -169,9 +170,7 @@
     stroke var(--theme-transition-duration) ease !important;
 }
 
-:root {
-  --theme-transition-duration: 280ms;
-}
+
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
