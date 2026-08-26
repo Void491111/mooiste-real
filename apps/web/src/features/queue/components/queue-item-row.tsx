@@ -18,38 +18,34 @@ export function QueueItemRow({ item, onToggle }: Props) {
       onClick={function handleToggle() {
         onToggle(item.id);
       }}
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ scale: 0.99 }}
       transition={SPRING.snappy}
-      className={cn(
-        "flex w-full items-start gap-3 rounded-card p-2.5 text-left transition-colors",
-        item.isDone ? "bg-muted/50" : "bg-muted",
-      )}
+      className="flex w-full items-start gap-2.5 rounded-card px-1 py-1.5 text-left hover:bg-muted"
     >
       <span
         className={cn(
-          "mt-0.5 grid size-6 shrink-0 place-items-center rounded-md border-2 transition-colors",
+          "mt-px grid size-5 shrink-0 place-items-center rounded border transition-colors",
           item.isDone ? "border-stock-ok bg-stock-ok text-white" : "border-border",
         )}
       >
-        {item.isDone && <Check className="size-4" strokeWidth={3} />}
+        {item.isDone && <Check className="size-3" strokeWidth={3} />}
       </span>
 
       <span className="min-w-0 flex-1">
         <span
           className={cn(
-            "flex items-baseline gap-2 text-[15px] font-bold",
+            "block truncate text-sm",
             item.isDone ? "text-muted-foreground line-through" : "text-foreground",
           )}
         >
-          <span className="tabular-nums">{item.qty}×</span>
-          <span className="truncate">{item.name}</span>
+          <span className="tabular-nums text-muted-foreground">{item.qty}</span> {item.name}
         </span>
 
         {item.note !== "" && (
           <span
             className={cn(
-              "mt-1 block rounded-md px-2 py-1 text-sm font-semibold",
-              item.isDone ? "text-muted-foreground" : "bg-selected text-foreground",
+              "mt-0.5 block truncate text-xs",
+              item.isDone ? "text-muted-foreground/60" : "text-note",
             )}
           >
             {item.note}
