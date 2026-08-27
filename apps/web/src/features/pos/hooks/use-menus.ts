@@ -32,5 +32,5 @@ export function useMenus() {
         };
     }, []);
 
-    return { menus, isLoading, Error };
+    return { menus, isLoading, error };
 }
