@@ -12,7 +12,7 @@ type Props = {
 export function MenuGrid({ menus }: Props) {
   if (menus.length === 0) {
     return (
-      <div className="grid flex-1 place-items-center rounded-2xl border border-dashed border-border text-sm text-muted-foreground/60">
+      <div className="grid flex-1 place-items-center rounded-card border border-dashed border-border text-sm text-muted-foreground/60">
         Menu ga ketemu
       </div>
     );
