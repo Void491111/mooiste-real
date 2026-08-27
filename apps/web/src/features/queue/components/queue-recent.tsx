@@ -32,10 +32,10 @@ export function QueueRecent({ orders, onRestore }: Props) {
                                 onClick={function handleNoteChange() {
                                     onRestore(order.id)
                                 }}
-                                className="group flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+                                    className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
                             >
                                 {order.number}
-                                <Undo2 className="size-3 opacity-0 transition-opacity group-hover:opacity-100"/>
+                                <Undo2 className="size-3"/>
                             </motion.button>
                         );
                     })}

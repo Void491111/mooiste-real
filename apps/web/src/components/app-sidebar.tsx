@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { NAV_ITEMS } from "@/config/nav.config";
 import { ICON_MOTION, SPRING } from "@/config/motion.config";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 type NavItemProps = {
   item: (typeof NAV_ITEMS)[number];
@@ -17,7 +17,7 @@ type NavItemProps = {
 function NavItem({ item, isActive }: NavItemProps) {
   const [hovered, setHovered] = useState(false);
   const Icon = item.icon;
-  const pillHeight = isActive ? 26 : hovered ? 14 : 0;
+  const pillHeight = isActive ? 30 : hovered ? 16 : 0;
 
   function handleEnter() {
     setHovered(true);
@@ -30,20 +30,19 @@ function NavItem({ item, isActive }: NavItemProps) {
   return (
     <Link
       href={item.href}
-      aria-label={item.label}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      className="relative flex h-14 w-full items-center justify-center"
+      className="relative flex w-full flex-col items-center gap-1 py-2.5"
     >
       <motion.span
         animate={{ height: pillHeight }}
         transition={SPRING.snappy}
-        className="absolute left-0 w-1 rounded-r-full bg-white"
+        className="absolute left-0 top-1/2 w-1 -translate-y-1/2 rounded-r-full bg-white"
       />
 
       <motion.span
         animate={{
-          borderRadius: isActive || hovered ? 14 : 24,
+          borderRadius: isActive || hovered ? 12 : 20,
           backgroundColor: isActive
             ? "rgba(255,255,255,0.16)"
             : hovered
@@ -51,26 +50,16 @@ function NavItem({ item, isActive }: NavItemProps) {
               : "rgba(255,255,255,0)",
         }}
         transition={SPRING.snappy}
-        className="grid size-11 place-items-center"
+        className="grid size-10 place-items-center"
       >
         <motion.span whileHover={ICON_MOTION[item.motion]}>
           <Icon className={cn("size-5", isActive ? "text-white" : "text-white/60")} />
         </motion.span>
       </motion.span>
 
-      <AnimatePresence>
-        {hovered && (
-          <motion.span
-            initial={{ opacity: 0, x: -8, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -8, scale: 0.9 }}
-            transition={SPRING.snappy}
-            className="pointer-events-none absolute left-full z-30 ml-1 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1.5 text-xs font-semibold text-background shadow-lg"
-          >
-            {item.label}
-          </motion.span>
-        )}
-      </AnimatePresence>
+      <span className={cn("text-[10px] leading-none", isActive ? "text-white" : "text-white/50")}>
+        {item.label}
+      </span>
     </Link>
   );
 }
@@ -79,13 +68,13 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex w-19 shrink-0 flex-col items-center gap-1 rounded-3xl bg-brand py-5">
+    <aside className="flex w-22 shrink-0 flex-col items-center gap-0.5 rounded-3xl bg-brand py-5">
       <motion.div
         whileHover={{ scale: 1.08 }}
         transition={SPRING.snappy}
         className="mb-4 grid size-11 place-items-center"
       >
-        <Image src="/logo.png" alt="De Mooiste" width={40} height={40} className="size-9" priority />
+        <Image src="/logo.png" alt="De Mooiste" width={44} height={44} className="size-11" priority />
       </motion.div>
 
       {NAV_ITEMS.map(function renderNavItem(item) {
