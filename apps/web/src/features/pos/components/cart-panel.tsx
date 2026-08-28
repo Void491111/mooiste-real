@@ -2,17 +2,24 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { ShoppingBag, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { SPRING } from "@/config/motion.config";
 import { useCartPanel } from "../hooks/use-cart-panel";
+import { useCheckout } from "../hooks/use-checkout";
 import { CartRow } from "./cart-row";
 import { CartSummary } from "./cart-summary";
 import { ConfirmDialog } from "./confirm-dialog";
 import { IconButton } from "./icon-button";
 import { OrderTypeTabs } from "./order-type-tabs";
 
-export function CartPanel() {
+type Props = {
+  onCheckoutSuccess?: () => void;
+};
+
+export function CartPanel({ onCheckoutSuccess }: Props) {
   const panel = useCartPanel();
+  const submit = useCheckout(onCheckoutSuccess);
+
+  const isDisabled = !panel.isReady || panel.isEmpty || submit.isSubmitting;
 
   return (
     <aside className="flex w-85 shrink-0 flex-col gap-3 rounded-card bg-card p-4 shadow-sm">
@@ -43,6 +50,9 @@ export function CartPanel() {
         <div className="flex flex-1 flex-col items-center justify-center gap-2 text-muted-foreground/40">
           <ShoppingBag className="size-10" />
           <p className="text-sm">Belum ada pesanan</p>
+          {submit.lastNumber !== null && (
+            <p className="text-xs text-stock-ok">Order {submit.lastNumber} terkirim</p>
+          )}
         </div>
       ) : (
         <div className="flex flex-1 flex-col gap-2 overflow-y-auto">
@@ -54,18 +64,22 @@ export function CartPanel() {
         </div>
       )}
 
+      {submit.error !== null && (
+        <p className="rounded-card bg-danger-soft px-3 py-2 text-xs text-danger-soft-fg">
+          {submit.error}
+        </p>
+      )}
+
       <CartSummary totals={panel.totals} />
 
-      <motion.div
-        whileTap={!panel.isReady || panel.isEmpty ? undefined : { scale: 0.98 }}
-        transition={SPRING.snappy}
-      >
+      <motion.div whileTap={isDisabled ? undefined : { scale: 0.98 }} transition={SPRING.snappy}>
         <button
           type="button"
-          disabled={!panel.isReady || panel.isEmpty}
+          disabled={isDisabled}
+          onClick={submit.checkout}
           className="h-12 w-full rounded-card bg-brand text-base font-bold text-white transition-colors hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-40"
         >
-          Checkout
+          {submit.isSubmitting ? "Memproses…" : "Checkout"}
         </button>
       </motion.div>
 

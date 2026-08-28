@@ -11,7 +11,7 @@ import { useMenus } from "@/features/pos/hooks/use-menus";
 export default function PosPage() {
   useCartHydration();
 
-  const { menus, isLoading, error } = useMenus();
+  const { menus, isLoading, error, refetch } = useMenus();
   const { keyword, setKeyword, category, setCategory, filtered } = useMenuFilter(menus);
 
   return (
@@ -31,7 +31,7 @@ export default function PosPage() {
         )}
       </main>
 
-      <CartPanel />
+      <CartPanel onCheckoutSuccess={refetch} />
     </>
   );
 }
