@@ -24,8 +24,8 @@ export function OrderRow({ order }: Props) {
   }
 
   return (
-    <motion.li layout className="overflow-hidden rounded-card border border-border bg-card">
-      <button
+    <motion.li className="shrink-0 overflow-hidden rounded-card border border-border bg-card">
+            <button
         type="button"
         onClick={toggleOpen}
         className="flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-muted"
@@ -34,22 +34,16 @@ export function OrderRow({ order }: Props) {
         <span className="w-12 shrink-0 text-xs text-muted-foreground">
           {formatTime(order.createdAt)}
         </span>
-        <span className="w-20 shrink-0 truncate text-xs text-muted-foreground">
-          {orderTypeLabel(order.orderType)}
-        </span>
 
-        <OrderStatusBadge status={order.status} />
+        {order.orderType === "TAKEAWAY" && (
+          <span className="shrink-0 text-xs text-muted-foreground">Takeaway</span>
+        )}
+
+        {order.status !== "DONE" && <OrderStatusBadge status={order.status} />}
 
         <span className="ml-auto shrink-0 text-sm font-semibold tabular-nums text-foreground">
           {formatMoney(order.total)}
         </span>
-
-        <ChevronDown
-          className={cn(
-            "size-4 shrink-0 text-muted-foreground transition-transform",
-            isOpen && "rotate-180",
-          )}
-        />
       </button>
 
       <AnimatePresence initial={false}>
