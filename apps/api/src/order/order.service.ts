@@ -23,25 +23,35 @@ export class OrderService {
     }
 
     return this.prisma.$transaction(async function runCreateOrder(tx) {
+      const qtyByMenu = new Map<string, number>();
+
+      for (const item of dto.items) {
+        qtyByMenu.set(item.menuId, (qtyByMenu.get(item.menuId) ?? 0) + item.qty);
+      }
+
       const menus = await tx.menu.findMany({
-        where: { id: { in: dto.items.map((item) => item.menuId) }, isActive: true },
+        where: { id: { in: [...qtyByMenu.keys()] }, isActive: true },
         include: { category: true },
       });
 
       const menuById = new Map(menus.map((menu) => [menu.id, menu]));
 
-      const items = dto.items.map(function toOrderItem(item) {
-        const menu = menuById.get(item.menuId);
+      for (const [menuId, totalQty] of qtyByMenu) {
+        const menu = menuById.get(menuId);
 
         if (!menu) {
-          throw new NotFoundException(`Menu tidak ditemukan: ${item.menuId}`);
+          throw new NotFoundException(`Menu tidak ditemukan: ${menuId}`);
         }
 
         const available = menu.stock - menu.reservedQty;
 
-        if (item.qty > available) {
+        if (totalQty > available) {
           throw new BadRequestException(`Stok ${menu.name} tinggal ${available}`);
         }
+      }
+
+      const items = dto.items.map(function toOrderItem(item) {
+        const menu = menuById.get(item.menuId)!;
 
         return {
           menuId: menu.id,
@@ -56,12 +66,12 @@ export class OrderService {
       const subtotal = items.reduce((total, item) => total + item.price * item.qty, 0);
       const tax = Math.round(subtotal * POS_CONFIG.tax.rate);
 
-      for (const item of items) {
+      for (const [menuId, totalQty] of qtyByMenu) {
         await tx.menu.update({
-          where: { id: item.menuId },
+          where: { id: menuId },
           data: isPaidOnCreate
-            ? { stock: { decrement: item.qty } }
-            : { reservedQty: { increment: item.qty } },
+            ? { stock: { decrement: totalQty } }
+            : { reservedQty: { increment: totalQty } },
         });
       }
 
