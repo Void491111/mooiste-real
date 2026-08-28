@@ -94,4 +94,49 @@ export class OrderService {
       });
     });
   }
+
+  findQueue() {
+    return this.prisma.order.findMany({
+      where: { status: { in: [OrderStatus.PAID, OrderStatus.IN_PROGRESS] } },
+      include: { items: true },
+      orderBy: { createdAt: "asc" },
+    });
+  }
+
+  findRecent() {
+    return this.prisma.order.findMany({
+      where: { status: OrderStatus.DONE },
+      include: { items: true },
+      orderBy: { updatedAt: "desc" },
+      take: POS_CONFIG.queue.recentLimit,
+    });
+  }
+
+  async toggleItem(orderId: string, itemId: string) {
+    const item = await this.prisma.orderItem.findFirst({
+      where: { id: itemId, orderId },
+    });
+
+    if (!item) {
+      throw new NotFoundException("Item pesanan tidak ditemukan");
+    }
+
+    await this.prisma.orderItem.update({
+      where: { id: itemId },
+      data: { isDone: !item.isDone },
+    });
+
+    return this.prisma.order.findUniqueOrThrow({
+      where: { id: orderId },
+      include: { items: true },
+    });
+  }
+
+  setStatus(orderId: string, status: OrderStatus) {
+    return this.prisma.order.update({
+      where: { id: orderId },
+      data: { status },
+      include: { items: true },
+    });
+  }
 }
