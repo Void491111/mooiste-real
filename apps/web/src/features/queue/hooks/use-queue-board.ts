@@ -1,32 +1,56 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNow } from "@/hooks/use-now";
-import { seedOrders, sortByOldest } from "../lib/queue";
-import { QUEUE_MOCK } from "../mock/orders.mock";
+import { getQueue, getRecent, setOrderStatus } from "../api/queue.api";
 import { useQueueStore } from "../store/queue.store";
 
 export function useQueueBoard() {
   const orders = useQueueStore((state) => state.orders);
-  const seed = useQueueStore((state) => state.seed);
-  const now = useNow();
   const recent = useQueueStore((state) => state.recent);
-  const restore = useQueueStore((state) => state.restore);
+  const setOrders = useQueueStore((state) => state.setOrders);
+  const setRecent = useQueueStore((state) => state.setRecent);
+
+  const now = useNow();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = useCallback(
+    async function loadQueue() {
+      try {
+        setError(null);
+        const [queue, done] = await Promise.all([getQueue(), getRecent()]);
+        setOrders(queue);
+        setRecent(done);
+      } catch (caught) {
+        setError(caught instanceof Error ? caught.message : "Gagal memuat antrian");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [setOrders, setRecent],
+  );
 
   useEffect(
-    function seedFromMock() {
-      if (now === null || orders.length > 0) return;
-      seed(seedOrders(QUEUE_MOCK, now));
+    function loadOnMount() {
+      load();
     },
-    [now, orders.length, seed],
+    [load],
   );
+
+  async function restore(orderId: string) {
+    await setOrderStatus(orderId, "PAID");
+    await load();
+  }
 
   return {
     now,
-    orders: sortByOldest(orders),
-    isReady: now !== null,
-    isEmpty: now !== null && orders.length === 0,
+    orders,
     recent,
+    isLoading,
+    error,
+    isEmpty: orders.length === 0,
+    refetch: load,
     restore,
   };
 }
