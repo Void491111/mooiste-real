@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseEnumPipe, Patch, Post, Query } from "@nestjs/common";
+import { OrderStatus } from "@prisma/client";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateStatusDto } from "./dto/update-status.dto";
 import { OrderService } from "./order.service";
@@ -20,6 +21,14 @@ export class OrderController {
   @Get("recent")
   findRecent() {
     return this.orderService.findRecent();
+  }
+
+  @Get()
+  findToday(
+    @Query("status", new ParseEnumPipe(OrderStatus, { optional: true }))
+    status?: OrderStatus,
+  ) {
+    return this.orderService.findToday(status);
   }
 
   @Patch(":orderId/items/:itemId/toggle")
