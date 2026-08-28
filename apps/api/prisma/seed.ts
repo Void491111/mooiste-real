@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -7,7 +8,7 @@ const CATEGORIES = [
   { code: "NON_COFFEE", label: "Non Coffee", sortOrder: 2, station: "BAR" as const },
   { code: "FOOD", label: "Food", sortOrder: 3, station: "KITCHEN" as const },
   { code: "SNACK", label: "Snack", sortOrder: 4, station: "KITCHEN" as const },
-];  
+];
 
 const MENUS = [
   { name: "Kopi Gula Aren", price: 28000, stock: 73, category: "COFFEE" },
@@ -20,6 +21,11 @@ const MENUS = [
   { name: "Kentang Goreng", price: 20000, stock: 15, category: "SNACK" },
   { name: "Roti Bakar Coklat", price: 16000, stock: 0, category: "SNACK" },
   { name: "Onion Ring", price: 22000, stock: 7, category: "SNACK" },
+];
+
+const USERS = [
+  { email: "admin@mooiste.test", name: "Admin", password: "admin123", role: "ADMIN" as const },
+  { email: "kasir@mooiste.test", name: "Kasir", password: "kasir123", role: "CASHIER" as const },
 ];
 
 async function seedCategories() {
@@ -57,9 +63,22 @@ async function seedMenus() {
   }
 }
 
+async function seedUsers() {
+  for (const user of USERS) {
+    const password = await bcrypt.hash(user.password, 10);
+
+    await prisma.user.upsert({
+      where: { email: user.email },
+      update: { name: user.name, role: user.role },
+      create: { ...user, password },
+    });
+  }
+}
+
 async function main() {
   await seedCategories();
   await seedMenus();
+  await seedUsers();
   console.log("Seed selesai");
 }
 

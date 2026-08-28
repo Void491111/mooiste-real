@@ -105,3 +105,20 @@ model OrderItem {
 
   @@index([orderId])
 }
+
+enum Role {
+  ADMIN
+  CASHIER
+}
+
+model User {
+  id       String  @id @default(cuid())
+  email    String  @unique
+  name     String
+  password String
+  role     Role    @default(CASHIER)
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
