@@ -8,6 +8,11 @@ import { motion } from "motion/react";
 import { NAV_ITEMS } from "@/config/nav.config";
 import { ICON_MOTION, SPRING } from "@/config/motion.config";
 import { cn } from "@/lib/utils";
+import { LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { logout } from "@/features/auth/api/auth.api";
+import { useSession } from "@/features/auth/hooks/use-session";
+import { useSessionStore } from "@/features/auth/store/session.store";
 
 type NavItemProps = {
   item: (typeof NAV_ITEMS)[number];
@@ -66,6 +71,19 @@ function NavItem({ item, isActive }: NavItemProps) {
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useSession();
+  const setUser = useSessionStore((state) => state.setUser);
+
+  const items = NAV_ITEMS.filter(function byRole(item) {
+    return user !== null && item.roles.includes(user.role);
+  });
+
+  async function handleLogout() {
+    await logout();
+    setUser(null);
+    router.replace("/login");
+  }
 
   return (
     <aside className="flex w-22 shrink-0 flex-col items-center gap-0.5 rounded-3xl bg-brand py-5">
@@ -77,9 +95,21 @@ export function AppSidebar() {
         <Image src="/logo.png" alt="De Mooiste" width={44} height={44} className="size-11" priority />
       </motion.div>
 
-      {NAV_ITEMS.map(function renderNavItem(item) {
+      {items.map(function renderNavItem(item) {
         return <NavItem key={item.href} item={item} isActive={pathname === item.href} />;
       })}
+
+      <motion.button
+        type="button"
+        aria-label="Keluar"
+        onClick={handleLogout}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        transition={SPRING.snappy}
+        className="mt-auto grid size-10 place-items-center rounded-xl text-white/50 hover:text-white"
+      >
+        <LogOut className="size-5" />
+      </motion.button>
     </aside>
   );
 }
