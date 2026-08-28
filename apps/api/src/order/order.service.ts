@@ -3,7 +3,8 @@ import { OrderSource, OrderStatus } from "@prisma/client";
 import { POS_CONFIG } from "../config/pos.config";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
-import { nextOrderNumber } from "./order.number";
+import { nextOrderNumber, startOfBusinessDay } from "./order.number";
+
 
 @Injectable()
 export class OrderService {
@@ -109,6 +110,17 @@ export class OrderService {
       include: { items: true },
       orderBy: { updatedAt: "desc" },
       take: POS_CONFIG.queue.recentLimit,
+    });
+  }
+
+    findToday(status?: OrderStatus) {
+    return this.prisma.order.findMany({
+      where: {
+        createdAt: { gte: startOfBusinessDay(new Date()) },
+        ...(status ? { status } : {}),
+      },
+      include: { items: true },
+      orderBy: { createdAt: "desc" },
     });
   }
 
