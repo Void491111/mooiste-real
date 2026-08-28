@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 import { createOrder } from "../api/order.api";
 import { useCartStore } from "../store/cart.store";
 
@@ -36,9 +37,12 @@ export function useCheckout(onSuccess?: () => void) {
       setLastNumber(order.number);
       idempotencyKey.current = null;
       clear();
+      toast.success(`Order ${order.number} masuk antrian`);
       onSuccess?.();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Checkout gagal");
+      const message = caught instanceof Error ? caught.message : "Checkout gagal";
+      setError(message);
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
