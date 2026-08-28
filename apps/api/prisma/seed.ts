@@ -3,11 +3,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const CATEGORIES = [
-  { code: "COFFEE", label: "Coffee", sortOrder: 1 },
-  { code: "NON_COFFEE", label: "Non Coffee", sortOrder: 2 },
-  { code: "FOOD", label: "Food", sortOrder: 3 },
-  { code: "SNACK", label: "Snack", sortOrder: 4 },
-];
+  { code: "COFFEE", label: "Coffee", sortOrder: 1, station: "BAR" as const },
+  { code: "NON_COFFEE", label: "Non Coffee", sortOrder: 2, station: "BAR" as const },
+  { code: "FOOD", label: "Food", sortOrder: 3, station: "KITCHEN" as const },
+  { code: "SNACK", label: "Snack", sortOrder: 4, station: "KITCHEN" as const },
+];  
 
 const MENUS = [
   { name: "Kopi Gula Aren", price: 28000, stock: 73, category: "COFFEE" },
@@ -26,7 +26,11 @@ async function seedCategories() {
   for (const category of CATEGORIES) {
     await prisma.category.upsert({
       where: { code: category.code },
-      update: { label: category.label, sortOrder: category.sortOrder },
+      update: {
+        label: category.label,
+        sortOrder: category.sortOrder,
+        station: category.station,
+      },
       create: category,
     });
   }
