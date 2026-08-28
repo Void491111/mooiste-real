@@ -1,28 +1,41 @@
 "use client";
 
+import { useState } from "react";
+import { setOrderStatus, toggleQueueItem } from "../api/queue.api";
 import { doneCount, elapsedMinutes, isStationDone, itemsOf, urgencyOf } from "../lib/queue";
 import { useQueueStore } from "../store/queue.store";
 import type { QueueOrder } from "../types";
 
-export function useQueueCard(order: QueueOrder, now: number) {
-  const toggleItem = useQueueStore((state) => state.toggleItem);
-  const markStationDone = useQueueStore((state) => state.markStationDone);
-  const handOverOrder = useQueueStore((state) => state.handOver);
+export function useQueueCard(order: QueueOrder, now: number, onHandedOver: () => void) {
+  const replaceOrder = useQueueStore((state) => state.replaceOrder);
+  const [isBusy, setIsBusy] = useState(false);
 
   const barItems = itemsOf(order, "BAR");
   const kitchenItems = itemsOf(order, "KITCHEN");
   const minutes = elapsedMinutes(order.createdAt, now);
 
-  function toggle(itemId: string) {
-    toggleItem(order.id, itemId);
+  async function toggle(itemId: string) {
+    if (isBusy) return;
+    setIsBusy(true);
+
+    try {
+      const updated = await toggleQueueItem(order.id, itemId);
+      replaceOrder(updated);
+    } finally {
+      setIsBusy(false);
+    }
   }
 
-  function finishBar() {
-    markStationDone(order.id, "BAR");
-  }
+  async function handOver() {
+    if (isBusy) return;
+    setIsBusy(true);
 
-  function handOver() {
-    handOverOrder(order.id);
+    try {
+      await setOrderStatus(order.id, "DONE");
+      onHandedOver();
+    } finally {
+      setIsBusy(false);
+    }
   }
 
   return {
@@ -32,8 +45,8 @@ export function useQueueCard(order: QueueOrder, now: number) {
     urgency: urgencyOf(minutes),
     barDone: doneCount(barItems),
     isBarDone: isStationDone(order, "BAR"),
+    isBusy,
     toggle,
-    finishBar,
     handOver,
   };
 }
