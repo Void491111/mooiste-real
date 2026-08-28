@@ -13,10 +13,12 @@ import { QueueTimer } from "./queue-timer";
 type Props = {
   order: QueueOrder;
   now: number;
+  onHandedOver: () => void;
 };
 
-export function QueueCard({ order, now }: Props) {
-  const card = useQueueCard(order, now);
+export function QueueCard({ order, now, onHandedOver }: Props) {
+  const card = useQueueCard(order, now, onHandedOver);
+  const canHandOver = card.isBarDone && !card.isBusy;
 
   return (
     <motion.article
@@ -48,17 +50,18 @@ export function QueueCard({ order, now }: Props) {
 
       <motion.button
         type="button"
-        onClick={card.isBarDone ? card.handOver : card.finishBar}
-        whileTap={{ scale: 0.98 }}
+        disabled={!canHandOver}
+        onClick={card.handOver}
+        whileTap={canHandOver ? { scale: 0.98 } : undefined}
         transition={SPRING.snappy}
         className={cn(
           "mt-auto h-9 w-full rounded-card text-xs font-medium transition-colors",
-          card.isBarDone
+          canHandOver
             ? "bg-brand text-white hover:bg-brand-soft"
-            : "text-muted-foreground hover:bg-muted hover:text-foreground",
+            : "text-muted-foreground/60",
         )}
       >
-        {card.isBarDone ? "Serahkan" : "Tandai semua"}
+        {card.isBarDone ? "Serahkan" : `Siap ${card.barDone}/${card.barItems.length}`}
       </motion.button>
     </motion.article>
   );
