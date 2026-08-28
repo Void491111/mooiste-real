@@ -4,7 +4,8 @@ import { motion } from "motion/react";
 import { ORDER_FILTERS } from "@/config/orders.config";
 import { SPRING } from "@/config/motion.config";
 import { cn } from "@/lib/utils";
-import { OrderList } from "@/features/orders/components/order-list";
+import { OrderPagination } from "@/features/orders/components/order-pagination";
+import { OrderTable } from "@/features/orders/components/order-table";
 import { useOrders } from "@/features/orders/hooks/use-orders";
 
 export default function OrdersPage() {
@@ -14,7 +15,7 @@ export default function OrdersPage() {
     <main className="flex min-w-0 flex-1 flex-col gap-3">
       <header className="flex items-baseline justify-between">
         <h1 className="text-xl font-bold text-foreground">Pesanan Hari Ini</h1>
-        <p className="text-sm text-muted-foreground">{page.orders.length} pesanan</p>
+        <p className="text-sm text-muted-foreground">{page.total} pesanan</p>
       </header>
 
       <div className="flex flex-wrap gap-1.5">
@@ -59,7 +60,10 @@ export default function OrdersPage() {
           Belum ada pesanan hari ini
         </div>
       ) : (
-        <OrderList orders={page.orders} />
+        <>
+          <OrderTable rows={page.rows} />
+          <OrderPagination page={page.page} totalPages={page.totalPages} onChange={page.goToPage} />
+        </>
       )}
     </main>
   );

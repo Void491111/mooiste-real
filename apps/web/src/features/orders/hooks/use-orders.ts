@@ -1,11 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { ORDERS_CONFIG } from "@/config/orders.config";
 import { getOrders } from "../api/orders.api";
+import { pageCount, paginate } from "../lib/orders";
 import type { OrderFilter, OrderRow } from "../types";
 
 export function useOrders() {
   const [filter, setFilter] = useState<OrderFilter>("ALL");
+  const [page, setPage] = useState(1);
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,6 +21,7 @@ export function useOrders() {
         setError(null);
         const data = await getOrders(filter);
         setOrders(data);
+        setPage(1);
       } catch (caught) {
         setError(caught instanceof Error ? caught.message : "Gagal memuat pesanan");
       } finally {
@@ -34,13 +38,23 @@ export function useOrders() {
     [load],
   );
 
+  const totalPages = pageCount(orders.length, ORDERS_CONFIG.pageSize);
+
+  function goToPage(next: number) {
+    setPage(Math.min(Math.max(next, 1), totalPages));
+  }
+
   return {
-    orders,
+    rows: paginate(orders, page, ORDERS_CONFIG.pageSize),
+    total: orders.length,
     filter,
+    page,
+    totalPages,
     isLoading,
     error,
     isEmpty: orders.length === 0,
     setFilter,
+    goToPage,
     refetch: load,
   };
 }
