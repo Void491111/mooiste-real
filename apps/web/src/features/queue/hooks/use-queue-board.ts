@@ -32,10 +32,11 @@ export function useQueueBoard() {
   );
 
   useEffect(
-    function loadOnMount() {
+    function refetchOnTick() {
+      if (now === null) return;
       load();
     },
-    [load],
+    [now, load],
   );
 
   async function restore(orderId: string) {
