@@ -8,31 +8,100 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum Station {
+  BAR
+  KITCHEN
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  IN_PROGRESS
+  READY
+  DONE
+  EXPIRED
+  CANCELLED
+}
+
+enum OrderType {
+  DINE_IN
+  TAKEAWAY
+}
+
+enum OrderSource {
+  CASHIER
+  QR
+}
+
 model Category {
   id        String   @id @default(cuid())
   code      String   @unique
   label     String
   sortOrder Int      @default(0)
+  station   Station  @default(BAR)
   menus     Menu[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Menu {
-  id          String   @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   price       Int
   image       String?
-  stock       Int      @default(0)
-  reservedQty Int      @default(0)
-  isActive    Boolean  @default(true)
-  sortOrder   Int      @default(0)
+  stock       Int     @default(0)
+  reservedQty Int     @default(0)
+  isActive    Boolean @default(true)
+  sortOrder   Int     @default(0)
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
+
+  orderItems OrderItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([categoryId])
+}
+
+model Order {
+  id     String      @id @default(cuid())
+  number String      @unique
+  status OrderStatus @default(PENDING_PAYMENT)
+  type   OrderType
+  source OrderSource @default(CASHIER)
+
+  subtotal Int
+  tax      Int
+  total    Int
+
+  idempotencyKey String? @unique
+
+  items OrderItem[]
+
+  createdAt DateTime  @default(now())
+  paidAt    DateTime?
+  updatedAt DateTime  @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model OrderItem {
+  id String @id @default(cuid())
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  menuId String
+  menu   Menu   @relation(fields: [menuId], references: [id])
+
+  name    String
+  price   Int
+  qty     Int
+  note    String  @default("")
+  station Station
+  isDone  Boolean @default(false)
+
+  @@index([orderId])
 }
