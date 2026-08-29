@@ -10,18 +10,27 @@ type Props = {
   rows: OrderRow[];
 };
 
-const HEADERS = ["Nomor", "Waktu", "Menu", "Total", "Status"];
+const HEADERS = [
+  { label: "Nomor", className: "text-left" },
+  { label: "Waktu", className: "text-left" },
+  { label: "Menu", className: "text-left" },
+  { label: "Total", className: "pr-10 text-right" },
+  { label: "Status", className: "text-left" },
+];
 
 export function OrderTable({ rows }: Props) {
   return (
     <div className="flex-1 overflow-auto rounded-card border border-border">
       <table className="w-full text-sm">
         <thead className="sticky top-0 bg-card">
-          <tr className="border-b border-border text-left text-xs text-muted-foreground">
+          <tr className="border-b border-border text-xs text-muted-foreground">
             {HEADERS.map(function renderHeader(header) {
               return (
-                <th key={header} className="whitespace-nowrap px-3 py-2 font-medium">
-                  {header}
+                <th
+                  key={header.label}
+                  className={cn("whitespace-nowrap px-4 py-3 font-medium", header.className)}
+                >
+                  {header.label}
                 </th>
               );
             })}
@@ -38,7 +47,7 @@ export function OrderTable({ rows }: Props) {
                 key={order.id}
                 className="border-b border-border transition-colors last:border-0 hover:bg-muted"
               >
-                <td className="whitespace-nowrap px-3 py-2.5">
+                <td className="whitespace-nowrap px-4 py-3">
                   <span className="flex items-center gap-1.5">
                     <span className="font-semibold text-foreground">{order.number}</span>
                     {order.source === "QR" && (
@@ -47,11 +56,11 @@ export function OrderTable({ rows }: Props) {
                   </span>
                 </td>
 
-                <td className="whitespace-nowrap px-3 py-2.5 text-muted-foreground">
+                <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
                   {formatTime(order.createdAt)}
                 </td>
 
-                <td className="max-w-[320px] px-3 py-2.5">
+                <td className="max-w-[320px] px-4 py-3">
                   <span className="block truncate text-foreground">
                     {summarizeItems(order.items)}
                   </span>
@@ -60,11 +69,11 @@ export function OrderTable({ rows }: Props) {
                   )}
                 </td>
 
-                <td className="whitespace-nowrap px-3 py-2.5 text-right font-semibold tabular-nums text-foreground">
+                <td className="whitespace-nowrap px-4 py-3 pr-10 text-right font-semibold tabular-nums text-foreground">
                   {formatMoney(order.total)}
                 </td>
 
-                <td className="px-3 py-2.5">
+                <td className="px-4 py-3">
                   {isDone ? (
                     <span className="whitespace-nowrap text-xs text-muted-foreground">
                       {status.label}

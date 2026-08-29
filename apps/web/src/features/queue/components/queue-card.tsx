@@ -18,7 +18,6 @@ type Props = {
 
 export function QueueCard({ order, now, onHandedOver }: Props) {
   const card = useQueueCard(order, now, onHandedOver);
-  const canHandOver = card.isBarDone;
 
   return (
     <motion.article
@@ -46,22 +45,24 @@ export function QueueCard({ order, now, onHandedOver }: Props) {
         })}
       </div>
 
-      <QueueKitchenList items={card.kitchenItems} />
+      <QueueKitchenList
+        items={card.kitchenItems}
+        checkable={card.kitchenCheckable}
+        onToggle={card.toggle}
+      />
 
-      <motion.button
+            <motion.button
         type="button"
-        disabled={!canHandOver}
+        disabled={!card.isReady}
         onClick={card.handOver}
-        whileTap={canHandOver ? { scale: 0.98 } : undefined}
+        whileTap={card.isReady ? { scale: 0.98 } : undefined}
         transition={SPRING.snappy}
         className={cn(
           "mt-auto h-9 w-full rounded-card text-xs font-medium transition-colors",
-          canHandOver
-            ? "bg-brand text-white hover:bg-brand-soft"
-            : "text-muted-foreground/60",
+          card.isReady ? "bg-brand text-white hover:bg-brand-soft" : "text-muted-foreground/60",
         )}
       >
-        {card.isBarDone ? "Serahkan" : `Siap ${card.barDone}/${card.barItems.length}`}
+        {card.isReady ? "Serahkan" : `Siap ${card.readyCount}/${card.requiredCount}`}
       </motion.button>
     </motion.article>
   );
