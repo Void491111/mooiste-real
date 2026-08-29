@@ -31,3 +31,17 @@ export function summarizeItems(items: QueueItem[]) {
     })
     .join(", ");
 }
+
+export function toggleItemIn(orders: QueueOrder[], orderId: string, itemId: string): QueueOrder[] {
+  return orders.map(function updateOrder(order) {
+    if (order.id !== orderId) return order;
+
+    return {
+      ...order,
+      items: order.items.map(function updateItem(item) {
+        if (item.id !== itemId) return item;
+        return { ...item, isDone: !item.isDone };
+      }),
+    };
+  });
+}
