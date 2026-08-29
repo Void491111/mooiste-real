@@ -39,6 +39,7 @@ export function useQueueCard(order: QueueOrder, now: number, onHandedOver: () =>
 
     try {
       await setOrderStatus(order.id, "DONE");
+      toast.success(`${order.number} diserahkan`);
     } catch {
       toast.error("Gagal menyerahkan pesanan");
     } finally {
