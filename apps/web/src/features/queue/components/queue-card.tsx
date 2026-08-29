@@ -18,7 +18,7 @@ type Props = {
 
 export function QueueCard({ order, now, onHandedOver }: Props) {
   const card = useQueueCard(order, now, onHandedOver);
-  const canHandOver = card.isBarDone && !card.isBusy;
+  const canHandOver = card.isBarDone;
 
   return (
     <motion.article

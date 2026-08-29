@@ -10,6 +10,7 @@ export function useQueueBoard() {
   const recent = useQueueStore((state) => state.recent);
   const setOrders = useQueueStore((state) => state.setOrders);
   const setRecent = useQueueStore((state) => state.setRecent);
+  const pending = useQueueStore((state) => state.pending);
 
   const now = useNow();
   const [isLoading, setIsLoading] = useState(true);
@@ -33,10 +34,10 @@ export function useQueueBoard() {
 
   useEffect(
     function refetchOnTick() {
-      if (now === null) return;
+      if ( now === null || pending > 0) return;
       load();
     },
-    [now, load],
+    [now, pending, load],
   );
 
   async function restore(orderId: string) {

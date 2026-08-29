@@ -12,6 +12,7 @@ export function useQueueCard(order: QueueOrder, now: number, onHandedOver: () =>
   const removeOrderLocal = useQueueStore((state) => state.removeOrderLocal);
   const beginMutation = useQueueStore((state) => state.beginMutation);
   const endMutation = useQueueStore((state) => state.endMutation);
+  
 
   const barItems = itemsOf(order, "BAR");
   const kitchenItems = itemsOf(order, "KITCHEN");
