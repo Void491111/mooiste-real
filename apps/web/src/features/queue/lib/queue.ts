@@ -31,6 +31,18 @@ export function summarizeItems(items: QueueItem[]) {
     .join(", ");
 }
 
+export function needsKitchenConfirm(orderType: string) {
+  return (QUEUE_CONFIG.requireKitchenConfirm as readonly string[]).includes(orderType);
+}
+
+export function canHandOver(order: QueueOrder) {
+  const barReady = isStationDone(order, "BAR");
+
+  if (!needsKitchenConfirm(order.orderType)) return barReady;
+
+  return barReady && isStationDone(order, "KITCHEN");
+}
+
 export function toggleItemIn(orders: QueueOrder[], orderId: string, itemId: string): QueueOrder[] {
   return orders.map(function updateOrder(order) {
     if (order.id !== orderId) return order;
