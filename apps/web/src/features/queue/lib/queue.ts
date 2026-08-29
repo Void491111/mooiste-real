@@ -20,8 +20,7 @@ export function doneCount(items: QueueItem[]) {
 }
 
 export function isStationDone(order: QueueOrder, station: Station) {
-  const items = itemsOf(order, station);
-  return items.length > 0 && items.every((item) => item.isDone);
+  return itemsOf(order, station).every((item) => item.isDone);
 }
 
 export function summarizeItems(items: QueueItem[]) {
