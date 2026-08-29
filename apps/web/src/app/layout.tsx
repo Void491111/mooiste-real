@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
+import { TOAST_CONFIG } from "@/config/toast.config";
 import "./globals.css";
-
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -19,10 +20,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning className={`${poppins.variable} h-full`}>
-      <head>
+      <body className="h-full antialiased">
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
-      </head>
-      <body className="h-full antialiased">{children}</body>
+        {children}
+        <Toaster position={TOAST_CONFIG.position} duration={TOAST_CONFIG.durationMs} richColors />
+      </body>
     </html>
   );
 }
