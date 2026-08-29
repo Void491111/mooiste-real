@@ -75,6 +75,7 @@ export function CartPanel({ onCheckoutSuccess }: Props) {
       <motion.div whileTap={isDisabled ? undefined : { scale: 0.98 }} transition={SPRING.snappy}>
         <button
           type="button"
+          suppressHydrationWarning
           disabled={isDisabled}
           onClick={submit.checkout}
           className="h-12 w-full rounded-card bg-brand text-base font-bold text-white transition-colors hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-40"

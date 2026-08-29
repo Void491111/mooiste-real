@@ -66,11 +66,12 @@ model Menu {
 }
 
 model Order {
-  id     String      @id @default(cuid())
-  number String      @unique
-  status OrderStatus @default(PENDING_PAYMENT)
-  type   OrderType
-  source OrderSource @default(CASHIER)
+  id           String      @id @default(cuid())
+  number       String
+  businessDate DateTime    @db.Date
+  status       OrderStatus @default(PENDING_PAYMENT)
+  type         OrderType
+  source       OrderSource @default(CASHIER)
 
   subtotal Int
   tax      Int
@@ -84,6 +85,7 @@ model Order {
   paidAt    DateTime?
   updatedAt DateTime  @updatedAt
 
+  @@unique([businessDate, number])
   @@index([status, createdAt])
 }
 
