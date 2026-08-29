@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { toast } from "sonner";
 import { setOrderStatus, toggleQueueItem } from "../api/queue.api";
 import { doneCount, elapsedMinutes, isStationDone, itemsOf, urgencyOf } from "../lib/queue";
 import { useQueueStore } from "../store/queue.store";
@@ -8,33 +8,41 @@ import type { QueueOrder } from "../types";
 
 export function useQueueCard(order: QueueOrder, now: number, onHandedOver: () => void) {
   const replaceOrder = useQueueStore((state) => state.replaceOrder);
-  const [isBusy, setIsBusy] = useState(false);
+  const toggleItemLocal = useQueueStore((state) => state.toggleItemLocal);
+  const removeOrderLocal = useQueueStore((state) => state.removeOrderLocal);
+  const beginMutation = useQueueStore((state) => state.beginMutation);
+  const endMutation = useQueueStore((state) => state.endMutation);
 
   const barItems = itemsOf(order, "BAR");
   const kitchenItems = itemsOf(order, "KITCHEN");
   const minutes = elapsedMinutes(order.createdAt, now);
 
   async function toggle(itemId: string) {
-    if (isBusy) return;
-    setIsBusy(true);
+    toggleItemLocal(order.id, itemId);
+    beginMutation();
 
     try {
       const updated = await toggleQueueItem(order.id, itemId);
       replaceOrder(updated);
+    } catch {
+      toggleItemLocal(order.id, itemId);
+      toast.error("Gagal simpan centang");
     } finally {
-      setIsBusy(false);
+      endMutation();
     }
   }
 
   async function handOver() {
-    if (isBusy) return;
-    setIsBusy(true);
+    removeOrderLocal(order.id);
+    beginMutation();
 
     try {
       await setOrderStatus(order.id, "DONE");
-      onHandedOver();
+    } catch {
+      toast.error("Gagal menyerahkan pesanan");
     } finally {
-      setIsBusy(false);
+      endMutation();
+      onHandedOver();
     }
   }
 
@@ -45,7 +53,6 @@ export function useQueueCard(order: QueueOrder, now: number, onHandedOver: () =>
     urgency: urgencyOf(minutes),
     barDone: doneCount(barItems),
     isBarDone: isStationDone(order, "BAR"),
-    isBusy,
     toggle,
     handOver,
   };
