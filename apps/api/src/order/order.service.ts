@@ -76,11 +76,13 @@ export class OrderService {
         });
       }
 
-      const now = new Date();
+            const now = new Date();
+      const businessDate = startOfBusinessDay(now);
 
       return tx.order.create({
         data: {
-          number: await nextOrderNumber(tx, now),
+          number: await nextOrderNumber(tx, businessDate),
+          businessDate,
           type: dto.type,
           source,
           status: isPaidOnCreate ? OrderStatus.PAID : OrderStatus.PENDING_PAYMENT,
@@ -113,10 +115,10 @@ export class OrderService {
     });
   }
 
-    findToday(status?: OrderStatus) {
+      findToday(status?: OrderStatus) {
     return this.prisma.order.findMany({
       where: {
-        createdAt: { gte: startOfBusinessDay(new Date()) },
+        businessDate: startOfBusinessDay(new Date()),
         ...(status ? { status } : {}),
       },
       include: { items: true },
