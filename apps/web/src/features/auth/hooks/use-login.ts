@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "../api/auth.api";
 import { useSessionStore } from "../store/session.store";
+import { toast } from "sonner";
 
 export function useLogin() {
   const router = useRouter();
@@ -23,6 +24,9 @@ export function useLogin() {
     try {
       const user = await login(email, password);
       setUser(user);
+      toast.success(`Selamat datang, ${user.name}`);
+      router.replace("/");
+
       router.replace("/");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Login gagal");
