@@ -1,8 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { InventoryRow } from "./inventory-row";
+import { groupByCategory } from "../lib/inventory";
 import type { InventoryRow as InventoryRowData } from "../types";
+import { InventoryRow } from "./inventory-row";
 
 type Props = {
   rows: InventoryRowData[];
@@ -11,24 +12,25 @@ type Props = {
 };
 
 const HEADERS = [
-  { label: "Menu", className: "text-left" },
-  { label: "Kategori", className: "text-left" },
-  { label: "Stok", className: "text-right" },
-  { label: "Dipesan", className: "text-right" },
-  { label: "Tersedia", className: "pr-8 text-right" },
-  { label: "", className: "text-right" },
+  { key: "menu", label: "Menu", className: "text-left" },
+  { key: "stock", label: "Stok", className: "text-right" },
+  { key: "reserved", label: "Dipesan", className: "text-right" },
+  { key: "available", label: "Tersedia", className: "pr-8 text-right" },
+  { key: "action", label: "", className: "text-right" },
 ];
 
 export function InventoryTable({ rows, canEditStock, onUpdated }: Props) {
+  const groups = groupByCategory(rows);
+
   return (
     <div className="flex-1 overflow-auto rounded-card border border-border">
       <table className="w-full text-sm">
-        <thead className="sticky top-0 bg-card">
+        <thead className="sticky top-0 z-10 bg-card">
           <tr className="border-b border-border text-xs text-muted-foreground">
-            {HEADERS.map(function renderHeader(header, index) {
+            {HEADERS.map(function renderHeader(header) {
               return (
                 <th
-                  key={header.label === "" ? `spacer-${index}` : header.label}
+                  key={header.key}
                   className={cn("whitespace-nowrap px-4 py-3 font-medium", header.className)}
                 >
                   {header.label}
@@ -38,18 +40,31 @@ export function InventoryTable({ rows, canEditStock, onUpdated }: Props) {
           </tr>
         </thead>
 
-        <tbody>
-          {rows.map(function renderRow(row) {
-            return (
-              <InventoryRow
-                key={row.id}
-                row={row}
-                canEditStock={canEditStock}
-                onUpdated={onUpdated}
-              />
-            );
-          })}
-        </tbody>
+        {groups.map(function renderGroup(group) {
+          return (
+            <tbody key={group.category}>
+              <tr className="bg-muted/50">
+                <td
+                  colSpan={HEADERS.length}
+                  className="px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                >
+                  {group.category}
+                </td>
+              </tr>
+
+              {group.items.map(function renderRow(row) {
+                return (
+                  <InventoryRow
+                    key={row.id}
+                    row={row}
+                    canEditStock={canEditStock}
+                    onUpdated={onUpdated}
+                  />
+                );
+              })}
+            </tbody>
+          );
+        })}
       </table>
     </div>
   );
