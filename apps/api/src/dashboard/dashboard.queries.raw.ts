@@ -67,11 +67,13 @@ export async function fetchMenuRanks(
         AND o."status"::text IN (${Prisma.join(REVENUE_STATUSES)})
       GROUP BY i."menuId"
     )
-    SELECT m.id                      AS "menuId",
+        SELECT m.id                      AS "menuId",
            m.name                    AS "name",
+           c.label                   AS "category",
            COALESCE(s.qty, 0)        AS "qty",
            COALESCE(s.revenue, 0)    AS "revenue"
     FROM "Menu" m
+    JOIN "Category" c ON c.id = m."categoryId"
     LEFT JOIN sold s ON s.menu_id = m.id
     WHERE m."isActive" = true
     ORDER BY "qty" DESC, m.name ASC
