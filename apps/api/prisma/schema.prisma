@@ -85,14 +85,13 @@ model Order {
   paidAt    DateTime?
   updatedAt DateTime  @updatedAt
 
-  @@unique([businessDate, number])
-  @@index([status, createdAt])
-
   paymentMethod PaymentMethod?
 
   cashierId String?
   cashier   User?   @relation(fields: [cashierId], references: [id])
 
+  @@unique([businessDate, number])
+  @@index([status, createdAt])
   @@index([cashierId])
 }
 
