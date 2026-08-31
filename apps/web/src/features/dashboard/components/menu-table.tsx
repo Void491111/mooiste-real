@@ -1,5 +1,6 @@
 import { formatMoney } from "@/lib/format";
 import type { MenuRank } from "../types";
+import { CATEGORY_COLORS } from "@/config/dashboard.config";
 
 export function MenuTable({ menus }: { menus: MenuRank[] }) {
   const max = menus.reduce(function keepMax(best, item) {
@@ -21,10 +22,13 @@ export function MenuTable({ menus }: { menus: MenuRank[] }) {
             <tr key={item.menuId} className="border-t border-border">
               <td className="w-full py-2.5 pr-6">
                 <span className="text-foreground">{item.name}</span>
-                <span
+                                <span
                   aria-hidden="true"
-                  className="mt-1.5 block h-1 rounded-full bg-brand"
-                  style={{ width: `${max > 0 ? (item.qty / max) * 100 : 0}%` }}
+                  className="mt-1.5 block h-1 rounded-full"
+                  style={{
+                    width: `${max > 0 ? (item.qty / max) * 100 : 0}%`,
+                    background: CATEGORY_COLORS[item.category] ?? "var(--chart-1)",
+                  }}
                 />
               </td>
               <td className="py-2.5 pl-6 text-right tabular-nums text-foreground">

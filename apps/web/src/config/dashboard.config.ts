@@ -8,3 +8,10 @@ export const DASHBOARD_CONFIG = {
     defaultDays: 30,
     chartHeight: 260,
 } as const;
+
+export const CATEGORY_COLORS: Record<string, string> = {
+  Coffee: "var(--chart-1)",
+  "Non Coffee": "var(--chart-3)",
+  Food: "var(--chart-2)",
+  Snack: "var(--chart-4)",
+};
