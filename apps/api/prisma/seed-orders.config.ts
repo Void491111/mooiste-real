@@ -6,7 +6,7 @@ import { OrderSource, OrderType, PaymentMethod } from "@prisma/client";
  */
 export const SEED_ORDERS_CONFIG = {
   /** Berapa hari ke belakang data disebar. */
-  days: 30,
+  days: 60,
 
   /** Rata-rata order per hari. Angka harian diacak di sekitar ini. */
   ordersPerDay: 10,
@@ -40,10 +40,10 @@ export const SEED_ORDERS_CONFIG = {
   ],
 
   /** Berapa jenis menu dalam satu order. */
-  linesPerOrder: { min: 1, max: 4 },
+  linesPerOrder: { min: 1, max: 3 },
 
   /** Berapa porsi per jenis menu. */
-  qtyPerLine: { min: 1, max: 3 },
+  qtyPerLine: { min: 1, max: 2 },
 
   typeWeights: [
     { value: OrderType.DINE_IN, weight: 6 },
