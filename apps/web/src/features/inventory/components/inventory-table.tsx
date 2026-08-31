@@ -13,9 +13,7 @@ type Props = {
 
 const HEADERS = [
   { key: "menu", label: "Menu", className: "text-left" },
-  { key: "stock", label: "Stok", className: "text-right" },
-  { key: "reserved", label: "Dipesan", className: "text-right" },
-  { key: "available", label: "Tersedia", className: "pr-8 text-right" },
+  { key: "available", label: "Stok", className: "pr-8 text-right" },
   { key: "action", label: "", className: "text-right" },
 ];
 
