@@ -30,7 +30,7 @@ function DeltaLine({ growth }: { growth: number | null }) {
 export function StatCard({ label, value, previous, kind }: StatCardProps) {
   return (
     <div className="rounded-card border border-border bg-card p-5">
-      <p className="text-xs text-note">{label}</p>
+        <p className="text-xs text-muted-foreground">{label}</p>
         <p className="mt-2 text-[22px] font-medium tracking-tight text-foreground">
         {kind === "money" ? formatMoney(value) : value.toLocaleString("id-ID")}
       </p>

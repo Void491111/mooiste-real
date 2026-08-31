@@ -63,9 +63,9 @@ export function HourlyChart({ hourly }: { hourly: HourlyPoint[] }) {
         <Bar dataKey="orders" radius={[4, 4, 0, 0]} maxBarSize={28}>
           {hourly.map(function toCell(point) {
             return (
-              <Cell
+            <Cell
                 key={point.hour}
-                fill="var(--chart-1)"
+                fill="var(--viz-1)"
                 fillOpacity={intensityOf(point.orders, max)}
               />
             );

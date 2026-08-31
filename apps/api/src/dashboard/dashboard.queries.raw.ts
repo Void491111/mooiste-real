@@ -4,6 +4,7 @@ import { DASHBOARD_CONFIG } from "./dashboard.config";
 import { toDateParam, type DateRange } from "./dashboard.range";
 import type { HourlyPoint, menuRank } from "./dashboard.types";
 
+
 const REVENUE_STATUSES = [...DASHBOARD_CONFIG.revenueStatuses];
 
 export async function fetchHourly(

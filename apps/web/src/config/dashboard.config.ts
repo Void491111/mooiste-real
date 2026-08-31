@@ -10,8 +10,8 @@ export const DASHBOARD_CONFIG = {
 } as const;
 
 export const CATEGORY_COLORS: Record<string, string> = {
-  Coffee: "var(--chart-1)",
-  "Non Coffee": "var(--chart-3)",
-  Food: "var(--chart-2)",
-  Snack: "var(--chart-4)",
+  Coffee: "var(--viz-1)",
+  "Non Coffee": "var(--viz-3)",
+  Food: "var(--viz-2)",
+  Snack: "var(--viz-4)",
 };

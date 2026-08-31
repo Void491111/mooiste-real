@@ -3,8 +3,8 @@ import { shareOf, sumPayments } from "../lib/dashboard";
 import type { PaymentSplit } from "../types";
 
 const METHOD_META: Record<string, { label: string; color: string }> = {
-  QRIS: { label: "QRIS", color: "var(--chart-1)" },
-  CASH: { label: "Tunai", color: "var(--chart-2)" },
+  QRIS: { label: "QRIS", color: "var(--viz-1)" },
+  CASH: { label: "Tunai", color: "var(--viz-2)" },
 };
 
 export function PaymentMeter({ payments }: { payments: PaymentSplit[] }) {
