@@ -38,3 +38,14 @@ export type DashboardSummary = {
   slowMenus: MenuRank[];
   payments: PaymentSplit[];
 };
+
+/** 1200000 -> "1,2jt". Buat sumbu Y, biar angkanya tidak menabrak. */
+export function formatCompactMoney(value: number) {
+  if (value >= 1_000_000) {
+    return `${(value / 1_000_000).toFixed(1).replace(".", ",")}jt`;
+  }
+
+  if (value >= 1_000) return `${Math.round(value / 1_000)}rb`;
+
+  return String(value);
+}
