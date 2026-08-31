@@ -86,7 +86,7 @@ export function AppSidebar() {
   }
 
   return (
-    <aside className="flex w-22 shrink-0 flex-col items-center gap-0.5 rounded-3xl bg-brand py-5">
+     <aside className="flex h-full w-22 shrink-0 flex-col items-center gap-0.5 bg-brand py-5">
       <motion.div
         whileHover={{ scale: 1.08 }}
         transition={SPRING.snappy}

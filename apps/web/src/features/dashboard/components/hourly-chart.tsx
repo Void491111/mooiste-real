@@ -4,13 +4,14 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import { DASHBOARD_CONFIG } from "@/config/dashboard.config";
-import { formatHourLabel } from "../lib/dashboard";
+import { formatHourLabel, intensityOf } from "../lib/dashboard";
 import type { HourlyPoint } from "../types";
 import { ChartTip } from "./chart-tip";
 
@@ -23,6 +24,10 @@ function formatOrderCount(value: number) {
 }
 
 export function HourlyChart({ hourly }: { hourly: HourlyPoint[] }) {
+  const max = hourly.reduce(function keepMax(best, point) {
+    return Math.max(best, point.orders);
+  }, 0);
+
   return (
     <ResponsiveContainer width="100%" height={DASHBOARD_CONFIG.chartHeight}>
       <BarChart data={hourly} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
@@ -55,12 +60,17 @@ export function HourlyChart({ hourly }: { hourly: HourlyPoint[] }) {
           }
         />
 
-        <Bar
-          dataKey="orders"
-          fill="var(--brand)"
-          radius={[4, 4, 0, 0]}
-          maxBarSize={28}
-        />
+        <Bar dataKey="orders" radius={[4, 4, 0, 0]} maxBarSize={28}>
+          {hourly.map(function toCell(point) {
+            return (
+              <Cell
+                key={point.hour}
+                fill="var(--chart-1)"
+                fillOpacity={intensityOf(point.orders, max)}
+              />
+            );
+          })}
+        </Bar>
       </BarChart>
     </ResponsiveContainer>
   );

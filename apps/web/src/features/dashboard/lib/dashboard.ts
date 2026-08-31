@@ -64,3 +64,8 @@ export function formatCompactMoney(value: number) {
 
   return String(value);
 }
+
+/** 0,4 sampai 1,0 — batang jam sepi lebih pudar dari jam ramai. */
+export function intensityOf(value: number, max: number) {
+  return max > 0 ? 0.4 + (value / max) * 0.6 : 0.4;
+}

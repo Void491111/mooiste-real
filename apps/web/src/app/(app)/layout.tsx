@@ -2,9 +2,11 @@ import { AppSidebar } from "@/components/app-sidebar";
 
 export default function AppLayout({ children }: LayoutProps<"/">) {
   return (
-    <div className="flex h-screen gap-4 bg-background p-4">
+    <div className="flex h-screen bg-background">
       <AppSidebar />
-      {children}
+      <div className="flex min-w-0 flex-1 gap-4 overflow-y-auto p-4 [scrollbar-gutter:stable]">
+        {children}
+      </div>
     </div>
   );
 }
