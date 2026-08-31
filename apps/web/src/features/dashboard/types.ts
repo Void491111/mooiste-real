@@ -34,8 +34,7 @@ export type DashboardSummary = {
   previous: PeriodTotals;
   daily: DailyPoint[];
   hourly: HourlyPoint[];
-  topMenus: MenuRank[];
-  slowMenus: MenuRank[];
+  menus: MenuRank[];
   payments: PaymentSplit[];
 };
 
