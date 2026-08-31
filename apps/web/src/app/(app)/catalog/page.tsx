@@ -18,7 +18,7 @@ export default function CatalogPage() {
           <button
             type="button"
             onClick={form.openCreate}
-            className="h-9 rounded-[var(--radius-card)] bg-brand px-4 text-sm text-white"
+            className="h-9 rounded-(--radius-card) bg-brand px-4 text-sm text-white"
           >
             Tambah menu
           </button>
@@ -43,7 +43,7 @@ export default function CatalogPage() {
         <p className="text-sm text-danger-soft">{catalog.error}</p>
       ) : null}
 
-      <div className="rounded-[var(--radius-card)] border border-border bg-card p-5">
+      <div className="rounded-(--radiurs-card) border border-border bg-card p-5">
         {catalog.isLoading ? (
           <p className="text-sm text-muted-foreground">Memuat…</p>
         ) : (

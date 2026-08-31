@@ -8,7 +8,7 @@ import { ICON_MOTION, SPRING } from "@/config/motion.config";
 
 const ACTIONS = [
   { key: "settings", icon: Settings, label: "Pengaturan", motion: "spin" },
-  { key: "profile", icon: User, label: "Profil", motion: "bounce" },
+  { key: "profile", icon: User, label: "Profil", motion: "pop" },
 ] as const;
 
 type Props = {

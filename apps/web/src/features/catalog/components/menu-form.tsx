@@ -55,7 +55,7 @@ export function MenuForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-[var(--radius-card)] border border-border bg-card p-5"
+      className="rounded-(--radius-card) border border-border bg-card p-5"
     >
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <label className="lg:col-span-2">
@@ -117,7 +117,7 @@ export function MenuForm({
         <button
           type="button"
           onClick={onCancel}
-          className="h-9 rounded-[var(--radius-card)] px-4 text-sm text-muted-foreground hover:text-foreground"
+          className="h-9 rounded-(--radius-card) px-4 text-sm text-muted-foreground hover:text-foreground"
         >
           Batal
         </button>
@@ -125,7 +125,7 @@ export function MenuForm({
         <button
           type="submit"
           disabled={!canSubmit || isSaving}
-          className="h-9 rounded-[var(--radius-card)] bg-brand px-4 text-sm text-white disabled:opacity-40"
+          className="h-9 rounded-(--radius-card) bg-brand px-4 text-sm text-white disabled:opacity-40"
         >
           {isSaving
             ? "Menyimpan…"

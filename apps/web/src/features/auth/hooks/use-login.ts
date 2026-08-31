@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { login } from "../api/auth.api";
 import { useSessionStore } from "../store/session.store";
 import { toast } from "sonner";
+import { homeHrefFor } from "@/config/nav.config";
 
 export function useLogin() {
   const router = useRouter();
@@ -25,9 +26,7 @@ export function useLogin() {
       const user = await login(email, password);
       setUser(user);
       toast.success(`Selamat datang, ${user.name}`);
-      router.replace("/");
-
-      router.replace("/");
+      router.replace(homeHrefFor(user.role));
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Login gagal");
       setIsSubmitting(false);
