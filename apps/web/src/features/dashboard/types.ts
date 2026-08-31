@@ -18,6 +18,7 @@ export type HourlyPoint = {
 export type MenuRank = {
   menuId: string;
   name: string;
+  category: string;
   qty: number;
   revenue: number;
 };

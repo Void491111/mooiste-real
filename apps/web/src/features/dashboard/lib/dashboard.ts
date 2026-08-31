@@ -1,4 +1,4 @@
-import type { DailyPoint, HourlyPoint, PaymentSplit } from "../types";
+import type { DailyPoint, HourlyPoint, MenuRank, PaymentSplit } from "../types";
 
 const MONTHS = [
   "Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
@@ -68,4 +68,20 @@ export function formatCompactMoney(value: number) {
 /** 0,4 sampai 1,0 — batang jam sepi lebih pudar dari jam ramai. */
 export function intensityOf(value: number, max: number) {
   return max > 0 ? 0.4 + (value / max) * 0.6 : 0.4;
+}
+
+export type CategorySlice = { category: string; revenue: number };
+
+export function groupByCategory(menus: MenuRank[]): CategorySlice[] {
+  const totals = new Map<string, number>();
+
+  for (const menu of menus) {
+    totals.set(menu.category, (totals.get(menu.category) ?? 0) + menu.revenue);
+  }
+
+  return Array.from(totals, function toSlice(entry) {
+    return { category: entry[0], revenue: entry[1] };
+  }).sort(function byRevenue(a, b) {
+    return b.revenue - a.revenue;
+  });
 }
