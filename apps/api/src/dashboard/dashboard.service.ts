@@ -34,8 +34,7 @@ export class DashboardService {
       hourly,
       // ranks sudah urut dari terlaris. Kalau menunya sedikit,
       // dua daftar ini bisa beririsan — tidak apa-apa, jelas terlihat.
-      topMenus: ranks.slice(0, menuRankLimit),
-      slowMenus: [...ranks].reverse().slice(0, menuRankLimit),
+      menus: ranks,
       payments,
     };
   }
