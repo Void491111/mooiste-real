@@ -87,6 +87,13 @@ model Order {
 
   @@unique([businessDate, number])
   @@index([status, createdAt])
+
+  paymentMethod PaymentMethod?
+
+  cashierId String?
+  cashier   User?   @relation(fields: [cashierId], references: [id])
+
+  @@index([cashierId])
 }
 
 model OrderItem {
@@ -123,4 +130,11 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+    
+  orders Order[]
+}
+
+enum PaymentMethod {
+  CASH
+  QRIS
 }
