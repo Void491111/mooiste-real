@@ -1,9 +1,9 @@
-import { Module } from "@nestjs/common";
-import { DashboardController } from "../dashboard/dashboard.controller";
-import { DashboardService } from "../dashboard/dashboard.service";
+import { Global, Module } from "@nestjs/common";
+import { PrismaService } from "./prisma.service";
 
+@Global()
 @Module({
-  controllers: [DashboardController],
-  providers: [DashboardService],
+  providers: [PrismaService],
+  exports: [PrismaService],
 })
-export class DashboardModule {}
+export class PrismaModule {}  
