@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
+import { CreateMenuDto, UpdateMenuDto } from "./dto/menu.dto";
+
 
 type MenuWithCategory = Prisma.MenuGetPayload<{ include: { category: true } }>;
 
@@ -13,6 +15,7 @@ function toManageRow(menu: MenuWithCategory) {
     reservedQty: menu.reservedQty,
     available: Math.max(menu.stock - menu.reservedQty, 0),
     isActive: menu.isActive,
+    categoryId: menu.categoryId,
     category: menu.category.label,
   };
 }
@@ -47,6 +50,57 @@ export class MenuService {
     });
 
     return menus.map(toManageRow);
+  }
+
+    async listCategories() {
+    return this.prisma.category.findMany({
+      orderBy: { sortOrder: "asc" },
+      select: { id: true, code: true, label: true },
+    });
+  }
+
+  async create(dto: CreateMenuDto) {
+    const menu = await this.prisma.menu.create({
+      data: {
+        name: dto.name.trim(),
+        price: dto.price,
+        categoryId: dto.categoryId,
+        stock: dto.stock ?? 0,
+      },
+      include: { category: true },
+    });
+
+    return toManageRow(menu);
+  }
+
+  async update(id: string, dto: UpdateMenuDto) {
+    await this.ensureExists(id);
+
+    // Field yang undefined tidak dikirim ke Prisma, jadi kolom
+    // yang tidak diubah tetap seperti semula.
+    const menu = await this.prisma.menu.update({
+      where: { id },
+      data: {
+        name: dto.name?.trim(),
+        price: dto.price,
+        categoryId: dto.categoryId,
+      },
+      include: { category: true },
+    });
+
+    return toManageRow(menu);
+  }
+
+  async setActive(id: string, isActive: boolean) {
+    await this.ensureExists(id);
+
+    const menu = await this.prisma.menu.update({
+      where: { id },
+      data: { isActive },
+      include: { category: true },
+    });
+
+    return toManageRow(menu);
   }
 
   async setStock(id: string, stock: number) {
