@@ -82,7 +82,7 @@ export function MenuForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-[var(--radius-card)] border border-border bg-card p-5"
+      className="rounded-card border border-border bg-card p-5"
     >
       <div className="mb-4 flex items-center gap-4">
         <MenuThumb src={draft.image || null} name={draft.name} size={64} />
@@ -183,7 +183,7 @@ export function MenuForm({
         <button
           type="button"
           onClick={onCancel}
-          className="h-9 rounded-[var(--radius-card)] px-4 text-sm text-muted-foreground hover:text-foreground"
+          className="h-9 rounded-card px-4 text-sm text-muted-foreground hover:text-foreground"
         >
           Batal
         </button>
@@ -191,7 +191,7 @@ export function MenuForm({
         <button
           type="submit"
           disabled={!canSubmit || isSaving || isUploading}
-          className="h-9 rounded-[var(--radius-card)] bg-brand px-4 text-sm text-white disabled:opacity-40"
+          className="h-9 rounded-card bg-brand px-4 text-sm text-white disabled:opacity-40"
         >
           {isSaving
             ? "Menyimpan…"

@@ -18,7 +18,7 @@ export default function CatalogPage() {
           <button
             type="button"
             onClick={form.openCreate}
-            className="h-9 rounded-(--radius-card) bg-brand px-4 text-sm text-white"
+            className="h-9 rounded-card bg-brand px-4 text-sm text-white"
           >
             Tambah menu
           </button>

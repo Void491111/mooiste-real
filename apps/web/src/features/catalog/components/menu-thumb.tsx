@@ -13,7 +13,7 @@ export function MenuThumb({ src, name, size = 40 }: MenuThumbProps) {
     return (
       <div
         style={{ width: size, height: size }}
-        className="grid shrink-0 place-items-center rounded-[var(--radius-card)] bg-muted text-sm text-muted-foreground"
+        className="grid shrink-0 place-items-center rounded-card bg-muted text-sm text-muted-foreground"
       >
         {name.charAt(0).toUpperCase() || "?"}
       </div>
@@ -27,7 +27,7 @@ export function MenuThumb({ src, name, size = 40 }: MenuThumbProps) {
       width={size}
       height={size}
       style={{ width: size, height: size }}
-      className="shrink-0 rounded-[var(--radius-card)] object-cover"
+      className="shrink-0 rounded-card object-cover"
     />
   );
 }
