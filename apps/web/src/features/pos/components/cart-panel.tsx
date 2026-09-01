@@ -10,8 +10,10 @@ import { CartSummary } from "./cart-summary";
 import { ConfirmDialog } from "./confirm-dialog";
 import { IconButton } from "./icon-button";
 import { OrderTypeTabs } from "./order-type-tabs";
+import { cn } from "@/lib/utils";
 
 type Props = {
+  class: string;
   onCheckoutSuccess?: () => void;
 };
 
