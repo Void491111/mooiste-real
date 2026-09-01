@@ -1,14 +1,18 @@
-import { Body, Controller, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { Role } from "@prisma/client";
 import { Roles } from "../auth/auth.decorators";
 import { UpdateStockDto } from "./dto/stock.dto";
 import { MenuService } from "./menu.service";
 import { CreateMenuDto, SetActiveDto, UpdateMenuDto } from "./dto/menu.dto";
-
+import { FileInterceptor } from "@nestjs/platform-express";
+import { StorageService, type UploadedImage } from "../storage/storage.service";
 
 @Controller("menus")
 export class MenuController {
-  constructor(private readonly menuService: MenuService) {}
+  constructor(
+    private readonly menuService: MenuService,
+    private readonly storage: StorageService,
+  ) {}
 
   @Get()
   findAll() {
@@ -37,16 +41,17 @@ export class MenuController {
     return this.menuService.listCategories();
   }
 
+    @Roles(Role.ADMIN)
+  @Post("image")
+  @UseInterceptors(FileInterceptor("file"))
+  uploadImage(@UploadedFile() file: UploadedImage) {
+    return this.storage.uploadMenuImage(file);
+  }
+
   @Roles(Role.ADMIN)
   @Post()
   create(@Body() dto: CreateMenuDto) {
     return this.menuService.create(dto);
-  }
-
-  @Roles(Role.ADMIN)
-  @Patch(":id/active")
-  setActive(@Param("id") id: string, @Body() dto: SetActiveDto) {
-    return this.menuService.setActive(id, dto.isActive);
   }
 
   @Roles(Role.ADMIN)

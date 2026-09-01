@@ -8,7 +8,12 @@ import {
   Min,
 } from "class-validator";
 
+
 export class CreateMenuDto {
+  @IsOptional()
+  @IsString()
+  image?: string;
+
   @IsString()
   @IsNotEmpty({ message: "Nama menu wajib diisi" })
   @MaxLength(60, { message: "Nama menu maksimal 60 karakter" })
@@ -29,6 +34,10 @@ export class CreateMenuDto {
 }
 
 export class UpdateMenuDto {
+  @IsOptional()
+  @IsString()
+  image?: string;
+
   @IsOptional()
   @IsString()
   @IsNotEmpty({ message: "Nama menu tidak boleh kosong" })
