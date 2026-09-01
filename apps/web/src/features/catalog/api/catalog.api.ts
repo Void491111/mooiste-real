@@ -14,13 +14,14 @@ export function createMenu(body: {
   price: number;
   categoryId: string;
   stock: number;
+  image: string;
 }) {
   return apiPost<MenuRow>("/menus", body);
 }
 
 export function updateMenu(
   id: string,
-  body: { name: string; price: number; categoryId: string },
+  body: { name: string; price: number; categoryId: string; image: string; },
 ) {
   return apiPatch<MenuRow>(`/menus/${id}`, body);
 }
