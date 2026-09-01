@@ -9,6 +9,7 @@ import { formatMoney } from "../lib/format";
 import type { Menu } from "../types";
 import { MenuCardHeader } from "./menu-card-header";
 import { QtyStepper } from "./qty-stepper";
+import { MenuCardImage } from "./menu-card-image";
 
 type Props = {
   menu: Menu;
@@ -43,11 +44,7 @@ export function MenuCard({ menu, index }: Props) {
         isSelected={card.isSelected}
       />
 
-      <div className={cn("grid aspect-4/3 place-items-center", card.isOut && "opacity-45")}>
-        <div className="grid size-20 place-items-center rounded-card bg-muted-foreground/15 text-3xl font-bold text-muted-foreground/60 transition-transform duration-500 ease-out group-hover:scale-110">
-          {menu.name.slice(0, 1)}
-        </div>
-      </div>
+      <MenuCardImage src={menu.image} name={menu.name} isOut={card.isOut} />
 
       <motion.div layout className="flex items-end justify-between gap-2">
         <motion.div layout className="min-w-0">
