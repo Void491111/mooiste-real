@@ -60,3 +60,22 @@ export async function apiPatch<T>(path: string, body?: unknown): Promise<T> {
 
   return data as T;
 }
+
+export async function apiUpload<T>(path: string, file: File): Promise<T> {
+    const form = new FormData();
+    form.append("file", file);
+
+    const response = await fetch(`${BASE_URL}${path}`, {
+      method: "POST",
+      credentials: "include",
+      body: form,
+    });
+
+    const data = await readBody(response);
+
+    if(!response.ok) {
+      throw new Error(toErrorMessage(data, `Gagal mengunggah ke ${path}`));
+    }
+
+    return data as T
+}
