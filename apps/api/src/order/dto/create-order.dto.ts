@@ -11,6 +11,8 @@ import {
   Min,
   ValidateNested,
 } from "class-validator";
+import { PaymentMethod } from "@prisma/client";
+
 
 export class CreateOrderItemDto {
   @IsString()
@@ -27,6 +29,10 @@ export class CreateOrderItemDto {
 }
 
 export class CreateOrderDto {
+  @IsOptional()
+  @IsEnum(PaymentMethod, { message: "Cara bayar tidak dikenali "})
+  paymentMethod?: PaymentMethod;
+
   @IsEnum(OrderType)
   type!: OrderType;
 

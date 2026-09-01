@@ -3,14 +3,15 @@ import { OrderStatus } from "@prisma/client";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateStatusDto } from "./dto/update-status.dto";
 import { OrderService } from "./order.service";
+import { CurrentUser, userIdOf, type SessionUser } from "../auth/auth.decorators";
 
 @Controller("orders")
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  create(@Body() dto: CreateOrderDto) {
-    return this.orderService.create(dto);
+  create(@Body() dto: CreateOrderDto, @CurrentUser() user: SessionUser) {
+    return this.orderService.create(dto, userIdOf(user))
   }
 
   @Get("queue")

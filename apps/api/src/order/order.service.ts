@@ -10,7 +10,9 @@ import { nextOrderNumber, startOfBusinessDay } from "./order.number";
 export class OrderService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateOrderDto) {
+  
+
+  async create(dto: CreateOrderDto, cashierId: string | null) {
     const source = dto.source ?? OrderSource.CASHIER;
     const isPaidOnCreate = source === OrderSource.CASHIER;
 
@@ -93,6 +95,8 @@ export class OrderService {
           total: subtotal + tax,
           idempotencyKey: dto.idempotencyKey ?? null,
           items: { create: items },
+          paymentMethod: dto.paymentMethod ?? null,
+          cashierId,
         },
         include: { items: true },
       });
