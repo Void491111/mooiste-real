@@ -5,8 +5,6 @@ export const POS_CONFIG = {
     grid: { cardWidth: 210, cardHeight: 0 },
 } as const;
 
-
-
 export const CATEGORIES = [
     { value: "ALL", label: "Semua" },
     { value: "COFFEE", label: "Coffee" },
@@ -14,3 +12,10 @@ export const CATEGORIES = [
     { value: "FOOD", label: "Food" },
     { value: "SNACK", label: "Snack"},
 ] as const;
+
+export const PAYMENT_METHODS = [
+  { value: "CASH", label: "Tunai" },
+  { value: "QRIS", label: "QRIS" },
+] as const;
+
+export type PaymentMethod = (typeof PAYMENT_METHODS)[number]["value"];
