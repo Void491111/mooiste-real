@@ -2,6 +2,7 @@
 
 import { formatMoney } from "@/lib/format";
 import type { MenuRow } from "../types";
+import { MenuThumb } from "./menu-thumb";
 
 const ACTION_CLASS =
   "rounded-[var(--radius-card)] px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground disabled:opacity-40";
@@ -61,6 +62,11 @@ export function CatalogRow({
           />
           {row.isActive ? "Aktif" : "Nonaktif"}
         </span>
+      </td>
+
+      <td className="py-2.5 pr-4">
+        <MenuThumb src={row.image} name={row.name}/>
+
       </td>
 
       <td className="whitespace-nowrap py-2.5 text-right">

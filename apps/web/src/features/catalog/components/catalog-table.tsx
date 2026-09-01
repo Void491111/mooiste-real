@@ -8,6 +8,7 @@ const HEADERS = [
   { key: "stock", label: "Stok", className: "text-right" },
   { key: "status", label: "Status", className: "text-left" },
   { key: "action", label: "", className: "text-right" },
+  { key: "image", label: "", className: "text-left" },
 ];
 
 type CatalogTableProps = {

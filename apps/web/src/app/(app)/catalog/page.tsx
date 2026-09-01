@@ -36,6 +36,9 @@ export default function CatalogPage() {
           onFieldChange={form.setField}
           onSubmit={form.submit}
           onCancel={form.close}
+          isUploading={form.isUploading}
+          onPickImage={form.pickImage}
+          onClearImage={form.clearImage}
         />
       ) : null}
 

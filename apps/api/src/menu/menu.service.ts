@@ -15,6 +15,7 @@ function toManageRow(menu: MenuWithCategory) {
     reservedQty: menu.reservedQty,
     available: Math.max(menu.stock - menu.reservedQty, 0),
     isActive: menu.isActive,
+    image: menu.image,
     categoryId: menu.categoryId,
     category: menu.category.label,
   };
@@ -66,6 +67,7 @@ export class MenuService {
         price: dto.price,
         categoryId: dto.categoryId,
         stock: dto.stock ?? 0,
+        image: dto.image ?? null,
       },
       include: { category: true },
     });
@@ -84,6 +86,7 @@ export class MenuService {
         name: dto.name?.trim(),
         price: dto.price,
         categoryId: dto.categoryId,
+        image: dto.image,
       },
       include: { category: true },
     });
