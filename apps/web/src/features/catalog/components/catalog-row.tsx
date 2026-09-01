@@ -3,9 +3,7 @@
 import { formatMoney } from "@/lib/format";
 import type { MenuRow } from "../types";
 import { MenuThumb } from "./menu-thumb";
-
-const ACTION_CLASS =
-  "rounded-[var(--radius-card)] px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground disabled:opacity-40";
+import { ToggleSwitch } from "./toggle-switch";
 
 type CatalogRowProps = {
   row: MenuRow;
@@ -29,57 +27,50 @@ export function CatalogRow({
   }
 
   return (
-    <tr className="border-t border-border">
-      <td className="py-2.5 pr-4">
-        <span
-          className={
-            row.isActive
-              ? "text-foreground"
-              : "text-muted-foreground line-through"
-          }
-        >
-          {row.name}
-        </span>
+    <tr className="border-b border-border/60 last:border-0 even:bg-muted/30">
+      <td className="py-3 pr-4">
+        <div className="flex items-center gap-3">
+          <MenuThumb src={row.image} name={row.name} />
+
+          <div className="min-w-0">
+            <p
+              className={`truncate ${
+                row.isActive ? "text-foreground" : "text-muted-foreground"
+              }`}
+            >
+              {row.name}
+            </p>
+            <p className="truncate text-xs text-muted-foreground">
+              {row.category}
+            </p>
+          </div>
+        </div>
       </td>
 
-      <td className="py-2.5 pr-4 text-muted-foreground">{row.category}</td>
-
-      <td className="whitespace-nowrap py-2.5 pr-4 text-right tabular-nums text-foreground">
+      <td className="py-3 text-right tabular-nums text-foreground">
         {formatMoney(row.price)}
       </td>
 
-      <td className="py-2.5 pr-4 text-right tabular-nums text-muted-foreground">
+      <td className="py-3 text-right tabular-nums text-muted-foreground">
         {row.stock}
       </td>
 
-      <td className="py-2.5 pr-4">
-        <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-          <span
-            aria-hidden="true"
-            className={`size-1.5 rounded-full ${
-              row.isActive ? "bg-stock-ok" : "bg-muted-foreground"
-            }`}
-          />
-          {row.isActive ? "Aktif" : "Nonaktif"}
-        </span>
+      <td className="py-3">
+        <ToggleSwitch
+          checked={row.isActive}
+          disabled={isBusy}
+          label={`Ketersediaan ${row.name}`}
+          onChange={handleToggle}
+        />
       </td>
 
-      <td className="py-2.5 pr-4">
-        <MenuThumb src={row.image} name={row.name}/>
-
-      </td>
-
-      <td className="whitespace-nowrap py-2.5 text-right">
-        <button type="button" onClick={handleEdit} className={ACTION_CLASS}>
-          Ubah
-        </button>
+      <td className="py-3 text-right">
         <button
           type="button"
-          onClick={handleToggle}
-          disabled={isBusy}
-          className={ACTION_CLASS}
+          onClick={handleEdit}
+          className="text-xs text-muted-foreground hover:text-foreground"
         >
-          {row.isActive ? "Nonaktifkan" : "Aktifkan"}
+          Ubah
         </button>
       </td>
     </tr>
