@@ -11,24 +11,38 @@ type Props = {
 };
 
 const HEADERS = [
-  { label: "Nomor", className: "text-left" },
-  { label: "Waktu", className: "text-left" },
+  { label: "Pesanan", className: "text-left" },
   { label: "Menu", className: "text-left" },
-  { label: "Total", className: "pr-10 text-right" },
+  { label: "Total", className: "text-right" },
   { label: "Status", className: "text-left" },
 ];
 
 export function OrderTable({ rows }: Props) {
   return (
     <div className="flex-1 overflow-auto rounded-card border border-border">
-      <table className="w-full text-sm">
+      <table className="w-full table-fixed text-sm">
+        {/*
+          Lebar dipatok supaya kolom tidak bergeser saat isinya berubah
+          panjang — status "Siap" dan "Menunggu bayar" harus menempati
+          ruang yang sama.
+        */}
+        <colgroup>
+          <col className="w-36" />
+          <col />
+          <col className="w-36" />
+          <col className="w-40" />
+        </colgroup>
+
         <thead className="sticky top-0 bg-card">
           <tr className="border-b border-border text-xs text-muted-foreground">
             {HEADERS.map(function renderHeader(header) {
               return (
                 <th
                   key={header.label}
-                  className={cn("whitespace-nowrap px-4 py-3 font-medium", header.className)}
+                  className={cn(
+                    "whitespace-nowrap px-4 py-3 font-normal",
+                    header.className,
+                  )}
                 >
                   {header.label}
                 </th>
@@ -45,49 +59,49 @@ export function OrderTable({ rows }: Props) {
             return (
               <tr
                 key={order.id}
-                className="border-b border-border transition-colors last:border-0 hover:bg-muted"
+                className="border-b border-border/60 last:border-0 even:bg-muted/30"
               >
-                <td className="whitespace-nowrap px-4 py-3">
-                  <span className="flex items-center gap-1.5">
-                    <span className="font-semibold text-foreground">{order.number}</span>
-                    {order.source === "QR" && (
-                      <span className="size-1.5 rounded-full bg-note" title="Pesan via QR" />
-                    )}
-                  </span>
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold text-foreground">
+                      {order.number}
+                    </span>
+                    {order.source === "QR" ? (
+                      <span
+                        className="size-1.5 rounded-full bg-note"
+                        title="Pesan via QR"
+                      />
+                    ) : null}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {formatTime(order.createdAt)}
+                  </p>
                 </td>
 
-                <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
-                  {formatTime(order.createdAt)}
-                </td>
-
-                <td className="max-w-[320px] px-4 py-3">
-                  <span className="block truncate text-foreground">
+                <td className="px-4 py-3">
+                  <p className="truncate text-foreground">
                     {summarizeItems(order.items)}
-                  </span>
-                  {order.orderType === "TAKEAWAY" && (
-                    <span className="text-xs text-muted-foreground">Takeaway</span>
-                  )}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {order.orderType === "TAKEAWAY" ? "Takeaway" : "Dine in"}
+                  </p>
                 </td>
 
-                <td className="whitespace-nowrap px-4 py-3 pr-10 text-right font-semibold tabular-nums text-foreground">
+                <td className="px-4 py-3 text-right font-semibold tabular-nums text-foreground">
                   {formatMoney(order.total)}
                 </td>
 
                 <td className="px-4 py-3">
-                  {isDone ? (
-                    <span className="whitespace-nowrap text-xs text-muted-foreground">
-                      {status.label}
-                    </span>
-                  ) : (
-                    <span
-                      className={cn(
-                        "whitespace-nowrap rounded-full px-2 py-0.5 text-xs",
-                        status.className,
-                      )}
-                    >
-                      {status.label}
-                    </span>
-                  )}
+                  <span
+                    className={cn(
+                      "inline-flex min-w-23 justify-center whitespace-nowrap rounded-full px-2 py-0.5 text-xs",
+                      isDone
+                        ? "bg-muted text-muted-foreground"
+                        : status.className,
+                    )}
+                  >
+                    {status.label}
+                  </span>
                 </td>
               </tr>
             );
