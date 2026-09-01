@@ -28,3 +28,7 @@ export function updateMenu(
 export function setMenuActive(id: string, isActive: boolean) {
   return apiPatch<MenuRow>(`/menus/${id}/active`, { isActive });
 }
+
+export function uploadMenuImage(file: File) {
+  return apiUpload< {url: string }>("/menus/image", file) 
+}
