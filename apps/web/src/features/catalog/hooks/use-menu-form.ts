@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createMenu, updateMenu } from "../api/catalog.api";
+import { createMenu, updateMenu, uploadMenuImage } from "../api/catalog.api";
 import type { MenuDraft, MenuRow } from "../types";
 
 const EMPTY_DRAFT: MenuDraft = {
@@ -9,6 +9,7 @@ const EMPTY_DRAFT: MenuDraft = {
   price: "",
   categoryId: "",
   stock: "0",
+  image: "",
 };
 
 function draftOf(row: MenuRow): MenuDraft {
@@ -17,6 +18,7 @@ function draftOf(row: MenuRow): MenuDraft {
     price: String(row.price),
     categoryId: row.categoryId,
     stock: String(row.stock),
+    image: row.image ?? "",
   };
 }
 
@@ -25,6 +27,7 @@ export function useMenuForm(onSaved: (row: MenuRow) => void) {
   const [editing, setEditing] = useState<MenuRow | null>(null);
   const [draft, setDraft] = useState<MenuDraft>(EMPTY_DRAFT);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const price = Number(draft.price);
@@ -60,6 +63,29 @@ export function useMenuForm(onSaved: (row: MenuRow) => void) {
     });
   }
 
+  // Gambar diunggah begitu dipilih, bukan menunggu tombol Simpan.
+  // Jadi hasilnya langsung kelihatan, dan kalau formatnya ditolak
+  // ketahuan sekarang — bukan setelah semua kolom diisi.
+  async function pickImage(file: File) {
+    setIsUploading(true);
+    setError(null);
+
+    try {
+      const uploaded = await uploadMenuImage(file);
+      setField("image", uploaded.url);
+    } catch (cause) {
+      setError(
+        cause instanceof Error ? cause.message : "Gagal mengunggah gambar",
+      );
+    } finally {
+      setIsUploading(false);
+    }
+  }
+
+  function clearImage() {
+    setField("image", "");
+  }
+
   async function submit() {
     if (!canSubmit) return;
 
@@ -74,12 +100,14 @@ export function useMenuForm(onSaved: (row: MenuRow) => void) {
             name: draft.name.trim(),
             price,
             categoryId: draft.categoryId,
+            image: draft.image,
           })
         : await createMenu({
             name: draft.name.trim(),
             price,
             categoryId: draft.categoryId,
             stock: Number(draft.stock) || 0,
+            image: draft.image,
           });
 
       onSaved(saved);
@@ -96,12 +124,15 @@ export function useMenuForm(onSaved: (row: MenuRow) => void) {
     editing,
     draft,
     isSaving,
+    isUploading,
     canSubmit,
     error,
     openCreate,
     openEdit,
     close,
     setField,
+    pickImage,
+    clearImage,
     submit,
   };
 }
