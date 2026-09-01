@@ -39,8 +39,6 @@ export function MenuForm({
     onSubmit();
   }
 
-  // Satu handler untuk semua kolom. Nama kolomnya diambil dari atribut
-  // name, jadi menambah kolom baru tidak perlu menambah fungsi baru.
   function handleChange(
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) {
