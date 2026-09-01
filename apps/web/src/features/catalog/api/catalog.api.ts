@@ -1,4 +1,4 @@
-import { apiGet, apiPatch, apiPost } from "@/lib/api";
+import { apiGet, apiPatch, apiPost, apiUpload } from "@/lib/api";
 import type { CategoryOption, MenuRow } from "../types";
 
 export function getMenusForManage() {
