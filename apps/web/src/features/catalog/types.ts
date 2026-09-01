@@ -8,6 +8,7 @@ export type MenuRow = {
   isActive: boolean;
   categoryId: string;
   category: string;
+  image: string | null;
 };
 
 export type CategoryOption = {
@@ -22,4 +23,5 @@ export type MenuDraft = {
   price: string;
   categoryId: string;
   stock: string;
+  image: string;
 };
