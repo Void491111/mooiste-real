@@ -27,8 +27,8 @@ export function CatalogRow({
   }
 
   return (
-    <tr className="border-b border-border/60 last:border-0 even:bg-muted/30">
-      <td className="py-3 pr-4">
+        <tr className="border-b border-border/60 last:border-0 even:bg-muted/30">
+      <td className="px-4 py-3">
         <div className="flex items-center gap-3">
           <MenuThumb src={row.image} name={row.name} />
 
@@ -47,15 +47,15 @@ export function CatalogRow({
         </div>
       </td>
 
-      <td className="py-3 text-right tabular-nums text-foreground">
+      <td className="px-4 py-3 text-right tabular-nums text-foreground">
         {formatMoney(row.price)}
       </td>
 
-      <td className="py-3 text-right tabular-nums text-muted-foreground">
+      <td className="px-4 py-3 text-right tabular-nums text-muted-foreground">
         {row.stock}
       </td>
 
-      <td className="py-3">
+      <td className="px-4 py-3">
         <ToggleSwitch
           checked={row.isActive}
           disabled={isBusy}
@@ -64,7 +64,7 @@ export function CatalogRow({
         />
       </td>
 
-      <td className="py-3 text-right">
+      <td className="px-4 py-3 text-right">
         <button
           type="button"
           onClick={handleEdit}

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { getCategories, getMenusForManage, setMenuActive } from "../api/catalog.api";
 import type { CategoryOption, MenuRow } from "../types";
+import { toast } from "sonner";
 
 export function useCatalog() {
   const [rows, setRows] = useState<MenuRow[]>([]);
@@ -53,14 +54,35 @@ export function useCatalog() {
     });
   }
 
-  async function toggleActive(row: MenuRow) {
+    async function toggleActive(row: MenuRow) {
     setBusyId(row.id);
     setError(null);
 
     try {
-      upsertRow(await setMenuActive(row.id, !row.isActive));
+      const saved = await setMenuActive(row.id, !row.isActive);
+      upsertRow(saved);
+
+      toast.success(
+        saved.isActive
+          ? `${saved.name} ditampilkan di kasir`
+          : `${saved.name} disembunyikan dari kasir`,
+        {
+          // row masih memegang keadaan sebelum diubah, jadi memanggil
+          // toggleActive dengan row yang sama mengembalikannya.
+          action: {
+            label: "Urungkan",
+            onClick: function undoToggle() {
+              void toggleActive(row);
+            },
+          },
+        },
+      );
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Gagal mengubah status");
+      const message =
+        cause instanceof Error ? cause.message : "Gagal mengubah status";
+
+      setError(message);
+      toast.error(message);
     } finally {
       setBusyId(null);
     }

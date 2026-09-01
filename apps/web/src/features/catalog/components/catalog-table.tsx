@@ -27,21 +27,21 @@ export function CatalogTable({
           semua kolom di kanannya ikut bergeser.
           Kolom pertama sengaja tanpa lebar — dia yang mengambil sisanya.
         */}
-        <colgroup>
+                <colgroup>
           <col />
-          <col className="w-32" />
-          <col className="w-20" />
+          <col className="w-36" />
+          <col className="w-24" />
           <col className="w-28" />
-          <col className="w-20" />
+          <col className="w-24" />
         </colgroup>
 
         <thead>
           <tr className="border-b border-border text-xs text-muted-foreground">
-            <th className="pb-3 text-left font-normal">Menu</th>
-            <th className="pb-3 text-right font-normal">Harga</th>
-            <th className="pb-3 text-right font-normal">Stok</th>
-            <th className="pb-3 text-left font-normal">Tersedia</th>
-            <th className="pb-3 text-right font-normal">Aksi</th>
+            <th className="px-4 pb-3 text-left font-normal">Menu</th>
+            <th className="px-4 pb-3 text-right font-normal">Harga</th>
+            <th className="px-4 pb-3 text-right font-normal">Stok</th>
+            <th className="px-4 pb-3 text-left font-normal">Tersedia</th>
+            <th className="px-4 pb-3 text-right font-normal">Aksi</th>
           </tr>
         </thead>
 
