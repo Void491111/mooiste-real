@@ -13,7 +13,7 @@ import { OrderTypeTabs } from "./order-type-tabs";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  class: string;
+  className?: string;
   onCheckoutSuccess?: () => void;
 };
 
