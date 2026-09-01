@@ -76,8 +76,9 @@ export class OrderService {
         });
       }
 
-            const now = new Date();
+      const now = new Date();
       const businessDate = startOfBusinessDay(now);
+      const number = await nextOrderNumber(tx, businessDate);
 
       return tx.order.create({
         data: {

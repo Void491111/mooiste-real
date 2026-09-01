@@ -1,20 +1,40 @@
 import { Prisma } from "@prisma/client";
 import { POS_CONFIG } from "../config/pos.config";
 
+/**
+ * Identitas "hari kerja" sebuah waktu, sebagai tanggal murni.
+ *
+ * Dikembalikan sebagai tengah malam UTC, bukan waktu lokal. Kolom
+ * businessDate bertipe @db.Date, dan Postgres mengambil bagian tanggal
+ * dalam UTC — kalau yang dikirim waktu lokal sore/malam, tanggalnya
+ * bisa mundur sehari dari yang dimaksud.
+ */
 export function startOfBusinessDay(now: Date) {
-  const start = new Date(now);
-  start.setHours(POS_CONFIG.order.businessDayStartHour, 0, 0, 0);
+  const shifted = new Date(now);
 
-  if (now.getHours() < POS_CONFIG.order.businessDayStartHour) {
-    start.setDate(start.getDate() - 1);
+  // Sebelum jam buka masih dihitung sebagai hari sebelumnya.
+  if (shifted.getHours() < POS_CONFIG.order.businessDayStartHour) {
+    shifted.setDate(shifted.getDate() - 1);
   }
 
-  return start;
+  return new Date(
+    Date.UTC(shifted.getFullYear(), shifted.getMonth(), shifted.getDate()),
+  );
 }
 
-export async function nextOrderNumber(tx: Prisma.TransactionClient, now: Date) {
+/**
+ * Nomor urut berikutnya untuk satu hari kerja.
+ *
+ * Mencari berdasarkan businessDate — kolom yang sama yang dijaga oleh
+ * @@unique([businessDate, number]). Sebelumnya ini mencari lewat
+ * createdAt, dan dua patokan berbeda itu yang bikin nomor bentrok.
+ */
+export async function nextOrderNumber(
+  tx: Prisma.TransactionClient,
+  businessDate: Date,
+) {
   const last = await tx.order.findFirst({
-    where: { createdAt: { gte: startOfBusinessDay(now) } },
+    where: { businessDate },
     orderBy: { number: "desc" },
     select: { number: true },
   });
