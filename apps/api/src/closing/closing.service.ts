@@ -58,6 +58,14 @@ export class ClosingService {
     };
   }
 
+    async reopen() {
+    const businessDate = startOfBusinessDay(new Date());
+
+    await this.prisma.cashClosing.deleteMany({ where: { businessDate } });
+
+    return this.getSummary(undefined);
+  }
+
   async close(dto: CreateClosingDto, closedById: string | null) {
     if (!closedById) {
       throw new UnauthorizedException("Sesi tidak dikenali");
@@ -87,6 +95,8 @@ export class ClosingService {
         closedById,
       },
     });
+
+    
 
     return this.getSummary(dto.date);
   }

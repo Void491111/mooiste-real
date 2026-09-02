@@ -4,6 +4,9 @@
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
     "dev:web": "npm run dev -w web",
-    "dev:api": "npm run start:dev -w api"
+    "dev:api": "npm run start:dev -w api",
+    "seed:orders": "npm run seed:orders -w api",
+    "prisma": "npm exec -w api -- prisma",
+    "ui": "npm exec -w web -- shadcn"
   }
 }

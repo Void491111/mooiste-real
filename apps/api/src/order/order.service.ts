@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException, ConflictException } from "@nestjs/common";
 import { OrderSource, OrderStatus } from "@prisma/client";
 import { POS_CONFIG } from "../config/pos.config";
 import { PrismaService } from "../prisma/prisma.service";
@@ -13,7 +13,7 @@ export class OrderService {
 
   
 
-  async create(dto: CreateOrderDto, cashierId: string | null) {
+    async create(dto: CreateOrderDto, cashierId: string | null) {
     const source = dto.source ?? OrderSource.CASHIER;
     const isPaidOnCreate = source === OrderSource.CASHIER;
 
@@ -24,6 +24,21 @@ export class OrderService {
       });
 
       if (existing) return existing;
+    }
+
+    const now = new Date();
+    const businessDate = startOfBusinessDay(now);
+
+    // Kas yang sudah ditutup berarti angkanya sudah dibekukan dan
+    // uangnya sudah dihitung. Pesanan baru bikin catatan itu bohong.
+    const closed = await this.prisma.cashClosing.findUnique({
+      where: { businessDate },
+    });
+
+    if (closed) {
+      throw new ConflictException(
+        "Kas hari ini sudah ditutup. Buka kembali dulu di halaman Tutup Kas.",
+      );
     }
 
     return this.prisma.$transaction(async function runCreateOrder(tx) {
@@ -50,7 +65,9 @@ export class OrderService {
         const available = menu.stock - menu.reservedQty;
 
         if (totalQty > available) {
-          throw new BadRequestException(`Stok ${menu.name} tinggal ${available}`);
+          throw new BadRequestException(
+            `Stok ${menu.name} tinggal ${available}`,
+          );
         }
       }
 
@@ -67,7 +84,10 @@ export class OrderService {
         };
       });
 
-      const subtotal = items.reduce((total, item) => total + item.price * item.qty, 0);
+      const subtotal = items.reduce(function sumLine(total, item) {
+        return total + item.price * item.qty;
+      }, 0);
+
       const tax = Math.round(subtotal * POS_CONFIG.tax.rate);
 
       for (const [menuId, totalQty] of qtyByMenu) {
@@ -79,17 +99,17 @@ export class OrderService {
         });
       }
 
-      const now = new Date();
-      const businessDate = startOfBusinessDay(now);
       const number = await nextOrderNumber(tx, businessDate);
 
       return tx.order.create({
         data: {
-          number: await nextOrderNumber(tx, businessDate),
+          number,
           businessDate,
           type: dto.type,
           source,
-          status: isPaidOnCreate ? OrderStatus.PAID : OrderStatus.PENDING_PAYMENT,
+          status: isPaidOnCreate
+            ? OrderStatus.PAID
+            : OrderStatus.PENDING_PAYMENT,
           paidAt: isPaidOnCreate ? now : null,
           subtotal,
           tax,

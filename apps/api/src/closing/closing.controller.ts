@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Query } from "@nestjs/common";
+import { Role } from "@prisma/client";
 import {
   CurrentUser,
+  Roles,
   userIdOf,
   type SessionUser,
 } from "../auth/auth.decorators";
@@ -19,5 +21,12 @@ export class ClosingController {
   @Post()
   close(@Body() dto: CreateClosingDto, @CurrentUser() user: SessionUser) {
     return this.closing.close(dto, userIdOf(user));
+  }
+
+  // Koreksi administratif, bukan transaksi — jadi dikunci ke admin.
+  @Roles(Role.ADMIN)
+  @Delete()
+  reopen() {
+    return this.closing.reopen();
   }
 }

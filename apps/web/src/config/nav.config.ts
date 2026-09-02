@@ -6,6 +6,7 @@ import {
   Package,
   ReceiptText,
   UtensilsCrossed,
+  Wallet,
 } from "lucide-react";
 import type { IconMotion } from "./motion.config";
 import type { Role } from "@/features/auth/types";
@@ -35,4 +36,5 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/inventory", label: "Stok", icon: Package, motion: "wiggle", roles: ["ADMIN", "CASHIER"] },
   { href: "/catalog", label: "Menu", icon: UtensilsCrossed, motion: "pop", roles: ["ADMIN"] },
   { href: "/report", label: "Laporan", icon: BookOpen, motion: "wiggle", roles: ["ADMIN"] },
+  { href: "/closing", label: "Tutup Kas", icon: Wallet, motion: "pop", roles: ["ADMIN", "CASHIER"] },
 ];
