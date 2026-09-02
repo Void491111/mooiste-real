@@ -11,6 +11,7 @@ import { ConfirmDialog } from "./confirm-dialog";
 import { IconButton } from "./icon-button";
 import { OrderTypeTabs } from "./order-type-tabs";
 import { cn } from "@/lib/utils";
+import { PaymentTabs } from "./payment-tabs";
 
 type Props = {
   className?: string;
@@ -73,6 +74,13 @@ export function CartPanel({ onCheckoutSuccess }: Props) {
       )}
 
       <CartSummary totals={panel.totals} />
+
+      {!panel.isEmpty && (
+        <PaymentTabs
+          value={submit.paymentMethod}
+          onChange={submit.setPaymentMethod}
+        />
+      )}
 
       <motion.div whileTap={isDisabled ? undefined : { scale: 0.98 }} transition={SPRING.snappy}>
         <button

@@ -1,4 +1,4 @@
-import type { CATEGORIES } from "@/config/pos.config";
+import type { CATEGORIES, PaymentMethod } from "@/config/pos.config";
 import type { OrderType } from "@/types/shared";
 
 export type CategoryFilter = (typeof CATEGORIES)[number]["value"];
@@ -24,6 +24,7 @@ export type CartItem = {
   stock: number;
   qty: number;
   note: string;
+  paymentMethod: PaymentMethod;
 };
 
 export type CartTotals = {

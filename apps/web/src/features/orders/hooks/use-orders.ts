@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ORDERS_CONFIG } from "@/config/orders.config";
 import { getOrders } from "../api/orders.api";
-import { pageCount, paginate } from "../lib/orders";
+import { pageCount, paginate, todayIso } from "../lib/orders";
 import type { OrderFilter, OrderRow } from "../types";
 
 export function useOrders() {
@@ -12,23 +12,26 @@ export function useOrders() {
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [date, setDate] = useState(todayIso);
 
-  const load = useCallback(
+    const load = useCallback(
     async function loadOrders() {
       setIsLoading(true);
 
       try {
         setError(null);
-        const data = await getOrders(filter);
+        const data = await getOrders(filter, date);
         setOrders(data);
         setPage(1);
       } catch (caught) {
-        setError(caught instanceof Error ? caught.message : "Gagal memuat pesanan");
+        setError(
+          caught instanceof Error ? caught.message : "Gagal memuat pesanan",
+        );
       } finally {
         setIsLoading(false);
       }
     },
-    [filter],
+    [filter, date],
   );
 
   useEffect(
@@ -56,5 +59,7 @@ export function useOrders() {
     setFilter,
     goToPage,
     refetch: load,
+    date,
+    setDate,
   };
 }

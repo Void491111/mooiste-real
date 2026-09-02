@@ -1,9 +1,14 @@
 "use client";
 
+
+
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import type { PaymentMethod } from "@/config/pos.config";
 import { createOrder } from "../api/order.api";
 import { useCartStore } from "../store/cart.store";
+
+const DEFAULT_METHOD: PaymentMethod = "CASH";
 
 export function useCheckout(onSuccess?: () => void) {
   const items = useCartStore((state) => state.items);
@@ -13,6 +18,12 @@ export function useCheckout(onSuccess?: () => void) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastNumber, setLastNumber] = useState<string | null>(null);
+
+  // Cara bayar tidak disimpan bersama keranjang — dia keputusan
+  // sesaat di meja kasir, bukan bagian dari isi pesanan.
+  const [paymentMethod, setPaymentMethod] =
+    useState<PaymentMethod>(DEFAULT_METHOD);
+
   const idempotencyKey = useRef<string | null>(null);
 
   async function checkout() {
@@ -28,6 +39,7 @@ export function useCheckout(onSuccess?: () => void) {
     try {
       const order = await createOrder({
         type: orderType,
+        paymentMethod,
         idempotencyKey: idempotencyKey.current,
         items: items.map(function toPayloadItem(item) {
           return { menuId: item.menuId, qty: item.qty, note: item.note };
@@ -37,10 +49,17 @@ export function useCheckout(onSuccess?: () => void) {
       setLastNumber(order.number);
       idempotencyKey.current = null;
       clear();
+
+      // Dikembalikan ke tunai supaya pesanan berikutnya tidak
+      // diam-diam ikut cara bayar pesanan sebelumnya.
+      setPaymentMethod(DEFAULT_METHOD);
+
       toast.success(`Order ${order.number} masuk antrian`);
       onSuccess?.();
     } catch (caught) {
-      const message = caught instanceof Error ? caught.message : "Checkout gagal";
+      const message =
+        caught instanceof Error ? caught.message : "Checkout gagal";
+
       setError(message);
       toast.error(message);
     } finally {
@@ -48,5 +67,12 @@ export function useCheckout(onSuccess?: () => void) {
     }
   }
 
-  return { checkout, isSubmitting, error, lastNumber };
+  return {
+    checkout,
+    isSubmitting,
+    error,
+    lastNumber,
+    paymentMethod,
+    setPaymentMethod,
+  };
 }

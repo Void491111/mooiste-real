@@ -34,8 +34,10 @@ function toOrderRow(order: ServerOrder): OrderRow {
   };
 }
 
-export async function getOrders(filter: OrderFilter) {
-  const query = filter === "ALL" ? "" : `?status=${filter}`;
-  const orders = await apiGet<ServerOrder[]>(`/orders${query}`);
-  return orders.map(toOrderRow);
+export function getOrders(filter: OrderFilter, date: string) {
+  const params = new URLSearchParams({ date });
+
+  if (filter !== "ALL") params.set("status", filter);
+
+  return apiGet<OrderRow[]>(`/orders?${params.toString()}`);
 }
