@@ -44,3 +44,12 @@ export async function nextOrderNumber(
 
   return `${POS_CONFIG.order.numberPrefix}-${String(next).padStart(3, "0")}`;
 }
+
+export function businessDateFrom(value: string) {
+  const parts = value.split("-").map(Number);
+  const parsed = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+
+  return Number.isNaN(parsed.getTime())
+    ? startOfBusinessDay(new Date())
+    : parsed;
+}

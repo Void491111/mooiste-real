@@ -24,12 +24,13 @@ export class OrderController {
     return this.orderService.findRecent();
   }
 
-  @Get()
-  findToday(
+    @Get()
+  findByDate(
+    @Query("date") date?: string,
     @Query("status", new ParseEnumPipe(OrderStatus, { optional: true }))
     status?: OrderStatus,
   ) {
-    return this.orderService.findToday(status);
+    return this.orderService.findByDate(date, status);
   }
 
   @Patch(":orderId/items/:itemId/toggle")

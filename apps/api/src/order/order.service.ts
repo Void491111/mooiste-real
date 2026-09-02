@@ -3,7 +3,8 @@ import { OrderSource, OrderStatus } from "@prisma/client";
 import { POS_CONFIG } from "../config/pos.config";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
-import { nextOrderNumber, startOfBusinessDay } from "./order.number";
+import { nextOrderNumber, startOfBusinessDay, businessDateFrom } from "./order.number";
+
 
 
 @Injectable()
@@ -120,10 +121,14 @@ export class OrderService {
     });
   }
 
-      findToday(status?: OrderStatus) {
+        findByDate(date: string | undefined, status?: OrderStatus) {
+    const businessDate = date
+      ? businessDateFrom(date)
+      : startOfBusinessDay(new Date());
+
     return this.prisma.order.findMany({
       where: {
-        businessDate: startOfBusinessDay(new Date()),
+        businessDate,
         ...(status ? { status } : {}),
       },
       include: { items: true },
