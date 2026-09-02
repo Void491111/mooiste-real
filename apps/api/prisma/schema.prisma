@@ -131,6 +131,7 @@ model User {
   updatedAt DateTime @updatedAt
     
   orders Order[]
+  closings CashClosing[]
 }
 
 enum PaymentMethod {
