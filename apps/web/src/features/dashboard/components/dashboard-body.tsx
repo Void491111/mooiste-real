@@ -4,6 +4,7 @@ import {
   formatDayLabel,
   formatHourLabel,
   groupByCategory,
+  rangeLabel,
 } from "../lib/dashboard";
 import type { DashboardSummary } from "../types";
 import { CategoryDonut } from "./category-donut";
@@ -18,17 +19,20 @@ export function DashboardBody({ summary }: { summary: DashboardSummary }) {
   const peak = busiestHour(summary.hourly);
   const best = bestDay(summary.daily);
   const slices = groupByCategory(summary.menus);
+  const isSingleDay = summary.days === 1;
 
   return (
     <div className="space-y-5">
       <StatRow summary={summary} />
 
-      <Panel
-        title="Omzet harian"
-        hint={best ? `Tertinggi ${formatDayLabel(best.date)}` : undefined}
-      >
-        <RevenueChart daily={summary.daily} />
-      </Panel>
+      {isSingleDay ? null : (
+        <Panel
+          title="Omzet harian"
+          hint={best ? `Tertinggi ${formatDayLabel(best.date)}` : undefined}
+        >
+          <RevenueChart daily={summary.daily} />
+        </Panel>
+      )}
 
       <Panel
         title="Sebaran jam"
@@ -38,11 +42,11 @@ export function DashboardBody({ summary }: { summary: DashboardSummary }) {
       </Panel>
 
       <div className="grid gap-5 lg:grid-cols-2">
-        <Panel title="Omzet per kategori" hint="Bagian dari total penjualan">
+        <Panel title="Omzet per kategori" hint={rangeLabel(summary.days)}>
           <CategoryDonut slices={slices} />
         </Panel>
 
-        <Panel title="Cara bayar" hint={`${summary.days} hari terakhir`}>
+        <Panel title="Cara bayar" hint={rangeLabel(summary.days)}>
           <PaymentMeter payments={summary.payments} />
         </Panel>
       </div>

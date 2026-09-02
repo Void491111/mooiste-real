@@ -70,6 +70,10 @@ export function intensityOf(value: number, max: number) {
   return max > 0 ? 0.4 + (value / max) * 0.6 : 0.4;
 }
 
+export function rangeLabel(days: number) {
+  return days === 1 ? "Hari ini" : `${days} hari terakhir`;
+}
+
 export type CategorySlice = { category: string; revenue: number };
 
 export function groupByCategory(menus: MenuRank[]): CategorySlice[] {
