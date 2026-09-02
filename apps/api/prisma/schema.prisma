@@ -137,3 +137,28 @@ enum PaymentMethod {
   CASH
   QRIS
 }
+
+model CashClosing {
+  id           String   @id @default(cuid())
+  businessDate DateTime @db.Date @unique
+
+  /** Dihitung sistem dari pesanan tunai hari itu. */
+  expectedCash Int
+  /** Uang fisik yang dihitung kasir. */
+  countedCash  Int
+  /** countedCash - expectedCash. Minus berarti kurang. */
+  difference   Int
+
+  /** Disimpan sebagai jepretan saat ditutup, bukan dihitung ulang nanti. */
+  totalRevenue Int
+  orderCount   Int
+
+  note String @default("")
+
+  closedById String
+  closedBy   User   @relation(fields: [closedById], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([closedById])
+}
