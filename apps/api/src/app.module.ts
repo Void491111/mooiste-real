@@ -7,9 +7,19 @@ import { DashboardModule } from "./dashboard/dashboard.module";
 import { MenuModule } from "./menu/menu.module";
 import { OrderModule } from "./order/order.module";
 import { PrismaModule } from "./prisma/prisma.module";
+import { ClosingModule } from "./closing/closing.module";
+
+
 
 @Module({
-  imports: [PrismaModule, AuthModule, MenuModule, OrderModule, DashboardModule],
+    imports: [
+    PrismaModule,
+    AuthModule,
+    MenuModule,
+    OrderModule,
+    DashboardModule,
+    ClosingModule,
+  ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },

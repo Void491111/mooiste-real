@@ -24,8 +24,6 @@ export class DashboardService {
         fetchPayments(this.prisma, current),
       ]);
 
-    const { menuRankLimit } = DASHBOARD_CONFIG;
-
     return {
       days,
       current: currentTotals,
