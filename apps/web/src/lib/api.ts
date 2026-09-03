@@ -79,3 +79,19 @@ export async function apiUpload<T>(path: string, file: File): Promise<T> {
 
     return data as T
 }
+
+export async function apiDelete<T>(path: string): Promise<T> {
+  const response = await fetch(`${BASE_URL}${path}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json"},
+    credentials: "include",
+  });
+
+  const data = await readBody(response);
+
+  if(!response.ok) {
+    throw new Error(toErrorMessage(data, `Gagal menghapus ${path}`));
+  }
+
+  return data as T
+}
