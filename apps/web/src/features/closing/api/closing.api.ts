@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from "@/lib/api";
+import { apiGet, apiPost, apiDelete } from "@/lib/api";
 import type { ClosingSummary } from "../types";
 
 export function getClosingSummary() {
@@ -7,4 +7,8 @@ export function getClosingSummary() {
 
 export function closeCash(body: { countedCash: number; note: string }) {
   return apiPost<ClosingSummary>("/closings", body);
+}
+
+export function reopen() {
+  return apiDelete<ClosingSummary>("/Closing");
 }
