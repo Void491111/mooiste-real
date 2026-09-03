@@ -1,11 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException, ConflictException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException, ConflictException, UnauthorizedException } from "@nestjs/common";
 import { OrderSource, OrderStatus } from "@prisma/client";
 import { POS_CONFIG } from "../config/pos.config";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { nextOrderNumber, startOfBusinessDay, businessDateFrom } from "./order.number";
-
-
+import { CancelOrderDto } from "./dto/cancel-order-dto";
 
 @Injectable()
 export class OrderService {
@@ -28,9 +27,6 @@ export class OrderService {
 
     const now = new Date();
     const businessDate = startOfBusinessDay(now);
-
-    // Kas yang sudah ditutup berarti angkanya sudah dibekukan dan
-    // uangnya sudah dihitung. Pesanan baru bikin catatan itu bohong.
     const closed = await this.prisma.cashClosing.findUnique({
       where: { businessDate },
     });
@@ -181,6 +177,63 @@ export class OrderService {
       where: { id: orderId },
       data: { status },
       include: { items: true },
+    });
+  }
+
+    async cancel(
+    orderId: string,
+    dto: CancelOrderDto,
+    cancelledById: string | null,
+  ) {
+    if (!cancelledById) {
+      throw new UnauthorizedException("Sesi tidak dikenali");
+    }
+
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: { items: true },
+    });
+
+    if (!order) {
+      throw new NotFoundException("Pesanan tidak ditemukan");
+    }
+
+    if (order.status === OrderStatus.CANCELLED) {
+      throw new ConflictException("Pesanan ini sudah dibatalkan");
+    }
+
+    const closed = await this.prisma.cashClosing.findUnique({
+      where: { businessDate: order.businessDate },
+    });
+
+    if (closed) {
+      throw new ConflictException(
+        "Kas tanggal ini sudah ditutup, pesanan tidak bisa dibatalkan.",
+      );
+    }
+
+    const stockWasTaken = order.source === OrderSource.CASHIER;
+
+    return this.prisma.$transaction(async function runCancel(tx) {
+      for (const item of order.items) {
+        await tx.menu.update({
+          where: { id: item.menuId },
+          data: stockWasTaken
+            ? { stock: { increment: item.qty } }
+            : { reservedQty: { decrement: item.qty } },
+        });
+      }
+
+      return tx.order.update({
+        where: { id: orderId },
+        data: {
+        status: OrderStatus.CANCELLED,
+        cancelReason: dto.reason.trim(),
+        cancelledAt: new Date(),
+        cancelledById,
+        },
+        include: { items: true },
+      });
     });
   }
 }
