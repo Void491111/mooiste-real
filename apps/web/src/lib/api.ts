@@ -1,3 +1,5 @@
+import { ClosingSummary } from "@/features/closing/types";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 async function readBody(response: Response) {
@@ -79,6 +81,8 @@ export async function apiUpload<T>(path: string, file: File): Promise<T> {
 
     return data as T
 }
+
+
 
 export async function apiDelete<T>(path: string): Promise<T> {
   const response = await fetch(`${BASE_URL}${path}`, {
