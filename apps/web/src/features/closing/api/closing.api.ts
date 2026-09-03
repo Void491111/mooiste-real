@@ -9,6 +9,6 @@ export function closeCash(body: { countedCash: number; note: string }) {
   return apiPost<ClosingSummary>("/closings", body);
 }
 
-export function reopen() {
+export function reopenCash() {
   return apiDelete<ClosingSummary>("/Closing");
 }

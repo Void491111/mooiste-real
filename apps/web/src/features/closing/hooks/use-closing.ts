@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { closeCash, getClosingSummary } from "../api/closing.api";
+import { closeCash, getClosingSummary, reopenCash } from "../api/closing.api";
 import type { ClosingSummary } from "../types";
 
 export function useClosing() {
@@ -11,6 +11,7 @@ export function useClosing() {
   const [note, setNote] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isReopening, setIsReopening] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async function loadSummary() {
@@ -67,6 +68,24 @@ export function useClosing() {
     }
   }
 
+  async function reopen() {
+    setIsReopening(true);
+    setError(null);
+
+    try {
+      setSummary(await reopenCash());
+      toast.success("Kas kembali dibuka");
+    } catch (cause) {
+      const message = 
+        cause instanceof Error ? cause.message : "Gagal membuka kas";
+
+      setError(message);
+      toast.error(message);
+    } finally {
+      setIsReopening(false);
+    }
+  }
+
   return {
     summary,
     counted,
@@ -79,5 +98,7 @@ export function useClosing() {
     setCounted,
     setNote,
     submit,
+    isReopening,
+    reopen,
   };
 }
