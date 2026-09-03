@@ -88,11 +88,17 @@ model Order {
   paymentMethod PaymentMethod?
 
   cashierId String?
-  cashier   User?   @relation(fields: [cashierId], references: [id])
+  cashier User? @relation("CashierOrders", fields: [cashierId], references: [id])
 
   @@unique([businessDate, number])
   @@index([status, createdAt])
   @@index([cashierId])
+  @@index([cancelledById])
+
+  cancelReason  String?
+  cancelledAt   DateTime?
+  cancelledById String?
+  cancelledBy   User?     @relation("CancelledOrders", fields: [cancelledById], references: [id])
 }
 
 model OrderItem {
@@ -130,8 +136,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
     
-  orders Order[]
   closings CashClosing[]
+
+  orders          Order[] @relation("CashierOrders")
+  cancelledOrders Order[] @relation("CancelledOrders")
 }
 
 enum PaymentMethod {
@@ -163,3 +171,4 @@ model CashClosing {
 
   @@index([closedById])
 }
+
