@@ -3,14 +3,17 @@
 import { motion } from "motion/react";
 import { SPRING } from "@/config/motion.config";
 import { ORDER_FILTERS } from "@/config/orders.config";
+import { CancelDialog } from "@/features/orders/components/cancel-dialog";
 import { OrderDatePicker } from "@/features/orders/components/order-date-picker";
 import { OrderPagination } from "@/features/orders/components/order-pagination";
 import { OrderTable } from "@/features/orders/components/order-table";
+import { useOrderCancel } from "@/features/orders/hooks/use-order-cancel";
 import { useOrders } from "@/features/orders/hooks/use-orders";
 import { cn } from "@/lib/utils";
 
 export default function OrdersPage() {
   const page = useOrders();
+  const cancel = useOrderCancel(page.refetch);
 
   return (
     <main className="flex min-w-0 flex-1 flex-col gap-3">
@@ -68,7 +71,7 @@ export default function OrdersPage() {
         </div>
       ) : (
         <>
-          <OrderTable rows={page.rows} />
+          <OrderTable rows={page.rows} onCancel={cancel.ask} />
           <OrderPagination
             page={page.page}
             totalPages={page.totalPages}
@@ -76,6 +79,16 @@ export default function OrdersPage() {
           />
         </>
       )}
+
+      <CancelDialog
+        order={cancel.target}
+        reason={cancel.reason}
+        canSubmit={cancel.canSubmit}
+        isSaving={cancel.isSaving}
+        onReasonChange={cancel.setReason}
+        onCancel={cancel.close}
+        onConfirm={cancel.confirm}
+      />
     </main>
   );
 }

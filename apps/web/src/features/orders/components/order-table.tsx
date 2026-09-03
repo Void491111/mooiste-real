@@ -8,6 +8,7 @@ import type { OrderRow } from "../types";
 
 type Props = {
   rows: OrderRow[];
+  onCancel: (order: OrderRow) => void;
 };
 
 const HEADERS = [
@@ -15,22 +16,20 @@ const HEADERS = [
   { label: "Menu", className: "text-left" },
   { label: "Total", className: "text-right" },
   { label: "Status", className: "text-left" },
+  { label: "", className: "text-right" },
 ];
 
-export function OrderTable({ rows }: Props) {
+export function OrderTable({ rows, onCancel }: Props) {
   return (
     <div className="flex-1 overflow-auto rounded-card border border-border">
       <table className="w-full table-fixed text-sm">
-        {/*
-          Lebar dipatok supaya kolom tidak bergeser saat isinya berubah
-          panjang — status "Siap" dan "Menunggu bayar" harus menempati
-          ruang yang sama.
-        */}
+        {}
         <colgroup>
           <col className="w-36" />
           <col />
           <col className="w-36" />
           <col className="w-40" />
+          <col className="w-24" />
         </colgroup>
 
         <thead className="sticky top-0 bg-card">
@@ -87,11 +86,7 @@ export function OrderTable({ rows }: Props) {
                   </p>
                 </td>
 
-                <td className="px-4 py-3 text-right font-semibold tabular-nums text-foreground">
-                  {formatMoney(order.total)}
-                </td>
-
-                <td className="px-4 py-3">
+                                <td className="px-4 py-3">
                   <span
                     className={cn(
                       "inline-flex min-w-23 justify-center whitespace-nowrap rounded-full px-2 py-0.5 text-xs",
@@ -102,6 +97,27 @@ export function OrderTable({ rows }: Props) {
                   >
                     {status.label}
                   </span>
+                </td>
+
+                <td className="px-4 py-3 text-right">
+                  {order.status === "CANCELLED" ? (
+                    <span
+                      title={order.cancelReason ?? ""}
+                      className="text-xs text-muted-foreground"
+                    >
+                      Dibatalkan
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={function askCancel() {
+                        onCancel(order);
+                      }}
+                      className="text-xs text-muted-foreground hover:text-danger-soft"
+                    >
+                      Batalkan
+                    </button>
+                  )}
                 </td>
               </tr>
             );
