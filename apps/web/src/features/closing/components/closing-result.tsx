@@ -6,6 +6,13 @@ type RowProps = {
   value: string;
 };
 
+type Props = {
+  record: ClosingRecord;
+  canReopen: boolean;
+  isReopening: boolean;
+  onReopen: () => void;
+};
+
 function Row({ label, value }: RowProps) {
   return (
     <li className="flex items-center justify-between gap-4">
@@ -23,16 +30,31 @@ function differenceText(difference: number) {
     : `Lebih ${formatMoney(difference)}`;
 }
 
-export function ClosingResult({ record }: { record: ClosingRecord }) {
+export function ClosingResult({
+  record,
+  canReopen,
+  isReopening,
+  onReopen,
+}: Props) {
   return (
     <div className="rounded-card border border-border bg-card p-5">
-      <p className="text-sm font-medium text-foreground">Kas sudah ditutup</p>
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-sm font-medium text-foreground">Kas sudah ditutup</p>
+
+        {canReopen ? (
+          <button
+            type="button"
+            onClick={onReopen}
+            disabled={isReopening}
+            className="h-8 rounded-card border border-border px-3 text-xs text-muted-foreground hover:text-foreground disabled:opacity-40"
+          >
+            {isReopening ? "Membuka…" : "Buka kembali"}
+          </button>
+        ) : null}
+      </div>
 
       <ul className="mt-4 space-y-2.5">
-        <Row
-          label="Tunai seharusnya"
-          value={formatMoney(record.expectedCash)}
-        />
+        <Row label="Tunai seharusnya" value={formatMoney(record.expectedCash)} />
         <Row label="Dihitung kasir" value={formatMoney(record.countedCash)} />
         <Row label="Selisih" value={differenceText(record.difference)} />
         <Row label="Ditutup oleh" value={record.closedBy} />
