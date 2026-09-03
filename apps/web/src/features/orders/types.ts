@@ -22,4 +22,5 @@ export type OrderRow = {
   createdAt: string;
   total: number;
   items: OrderItemRow[];
+  cancelReason: string | null;
 };
