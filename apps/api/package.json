@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed:orders": "tsx prisma/seed-orders.ts",
+    "seed:orders": "tsx --env-file=.env prisma/seed-orders.ts",
     "prisma": "npm exec -w api -- prisma",
     "ui": "npm exec -w web -- shadcn"
   },

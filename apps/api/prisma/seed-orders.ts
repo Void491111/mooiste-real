@@ -12,13 +12,6 @@ import {
   randomInt,
 } from "./seed-orders.lib";
 
-/**
- * Bikin riwayat order palsu buat nguji dasbor & laporan.
- *
- * Sengaja TIDAK menyentuh Menu.stock. Ini data 30 hari ke belakang —
- * kalau stok ikut dikurangi, semua menu bakal habis sebelum kafe buka.
- * Beda dari order.service.ts yang memang harus ngurangin stok.
- */
 
 const prisma = new PrismaClient();
 
