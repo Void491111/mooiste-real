@@ -1,5 +1,5 @@
 import { apiGet, apiPost, apiDelete } from "@/lib/api";
-import type { ClosingSummary } from "../types";
+import type { ClosingSummary, ClosingHistoryRow } from "../types";
 
 export function getClosingSummary() {
   return apiGet<ClosingSummary>("/closings/summary");
@@ -13,3 +13,6 @@ export function reopenCash() {
   return apiDelete<ClosingSummary>("/closings");
 }
 
+export function fetchClosingHistory() {
+  return apiGet<ClosingHistoryRow[]>("/closings/history");
+}

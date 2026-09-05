@@ -7,13 +7,14 @@ import { ClosingResult } from "@/features/closing/components/closing-result";
 import { ClosingStats } from "@/features/closing/components/closing-stats";
 import { useClosing } from "@/features/closing/hooks/use-closing";
 import { useSession } from "@/features/auth/hooks/use-session";
+import { ClosingHistory } from "@/features/closing/components/closing-history";
 
 export default function ClosingPage() {
   const closing = useClosing();
   const { user } = useSession();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const isAdmin = user?.role === "ADMIN";
 
-  const canReopen = user?.role === "ADMIN";
 
   function askReopen() {
     setIsConfirmOpen(true);
@@ -47,8 +48,8 @@ export default function ClosingPage() {
 
           {closing.summary.closing ? (
             <ClosingResult
+              canReopen={isAdmin}
               record={closing.summary.closing}
-              canReopen={canReopen}
               isReopening={closing.isReopening}
               onReopen={askReopen}
             />
@@ -64,8 +65,11 @@ export default function ClosingPage() {
               onSubmit={closing.submit}
             />
           )}
+          {isAdmin ? <ClosingHistory /> : null}
         </>
       )}
+
+      
 
       <ConfirmDialog
         open={isConfirmOpen}
