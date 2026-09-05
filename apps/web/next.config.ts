@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
     position: "bottom-right",
   },
 
+    async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${process.env.API_ORIGIN}/:path*`,
+      },
+    ];
+  },
+
   images: {
     remotePatterns: [
       {
@@ -17,3 +26,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+

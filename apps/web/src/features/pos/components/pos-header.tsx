@@ -1,15 +1,9 @@
 "use client";
 
-import { motion } from "motion/react";
-import { Search, Settings, User } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { ThemeToggle } from "@/components/theme-toggle"; 
-import { ICON_MOTION, SPRING } from "@/config/motion.config";
-
-const ACTIONS = [
-  { key: "settings", icon: Settings, label: "Pengaturan", motion: "spin" },
-  { key: "profile", icon: User, label: "Profil", motion: "pop" },
-] as const;
+import { ThemeToggle } from "@/components/theme-toggle";
+import { NotificationBell } from "@/features/notifications/components/notification-bell";
 
 type Props = {
   keyword: string;
@@ -32,26 +26,7 @@ export function PosHeader({ keyword, onKeywordChange }: Props) {
       </div>
 
       <ThemeToggle />
-
-      {ACTIONS.map(function renderAction(action) {
-        const Icon = action.icon;
-
-        return (
-          <motion.button
-            key={action.key}
-            type="button"
-            aria-label={action.label}
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.9 }}
-            transition={SPRING.snappy}
-            className="grid size-11 shrink-0 place-items-center rounded-card bg-card shadow-sm"
-          >
-            <motion.span whileHover={ICON_MOTION[action.motion]}>
-              <Icon className="size-4 text-foreground" />
-            </motion.span>
-          </motion.button>
-        );
-      })}
+      <NotificationBell />
     </header>
   );
 }

@@ -141,8 +141,6 @@ export function AppSidebar() {
           })}
         </nav>
 
-        {user?.role === "CASHIER" ? <NotificationBell /> : null}
-
         <motion.button
           type="button"
           aria-label="Keluar"
