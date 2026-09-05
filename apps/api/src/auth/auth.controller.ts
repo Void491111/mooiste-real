@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
-import type { Request, Response } from "express";
+import type { Request, response, Response } from "express";
 import { AUTH_CONFIG } from "../config/auth.config";
 import { Public } from "./auth.decorators";
 import { AuthService } from "./auth.service";
@@ -26,8 +26,12 @@ export class AuthController {
 
   @Post("logout")
   logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie(AUTH_CONFIG.cookieName);
-    return { ok: true };
+      response.clearCookie(AUTH_CONFIG.cookieName, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      });
+      return { ok:true };
   }
 
   @Get("me")

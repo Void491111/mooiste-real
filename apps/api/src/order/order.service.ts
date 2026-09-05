@@ -1,105 +1,59 @@
-import { BadRequestException, Injectable, NotFoundException, ConflictException, UnauthorizedException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { OrderSource, OrderStatus } from "@prisma/client";
 import { POS_CONFIG } from "../config/pos.config";
 import { PrismaService } from "../prisma/prisma.service";
-import { CreateOrderDto } from "./dto/create-order.dto";
-import { nextOrderNumber, startOfBusinessDay, businessDateFrom } from "./order.number";
+import {
+  loadAvailableMenus,
+  qtyByMenuOf,
+  toOrderLines,
+  totalsOf,
+} from "./order.build";
+import { assertCancellable, assertDayIsOpen } from "./order.guard";
+import {
+  businessDateFrom,
+  nextOrderNumber,
+  startOfBusinessDay,
+} from "./order.number";
+import { restoreStock, takeStock } from "./order.stock";
 import { CancelOrderDto } from "./dto/cancel-order-dto";
+import { CreateOrderDto } from "./dto/create-order.dto";
 
 @Injectable()
 export class OrderService {
   constructor(private readonly prisma: PrismaService) {}
 
-  
-
-    async create(dto: CreateOrderDto, cashierId: string | null) {
+  async create(dto: CreateOrderDto, cashierId: string | null) {
     const source = dto.source ?? OrderSource.CASHIER;
     const isPaidOnCreate = source === OrderSource.CASHIER;
 
-    if (dto.idempotencyKey) {
-      const existing = await this.prisma.order.findUnique({
-        where: { idempotencyKey: dto.idempotencyKey },
-        include: { items: true },
-      });
-
-      if (existing) return existing;
+    if (isPaidOnCreate && !dto.paymentMethod) {
+      throw new BadRequestException("Cara bayar wajib diisi");
     }
+
+    const existing = await this.findByKey(dto.idempotencyKey);
+
+    if (existing) return existing;
 
     const now = new Date();
     const businessDate = startOfBusinessDay(now);
-    const closed = await this.prisma.cashClosing.findUnique({
-      where: { businessDate },
-    });
 
-    if (closed) {
-      throw new ConflictException(
-        "Kas hari ini sudah ditutup. Buka kembali dulu di halaman Tutup Kas.",
-      );
-    }
+    await assertDayIsOpen(this.prisma, businessDate);
 
     return this.prisma.$transaction(async function runCreateOrder(tx) {
-      const qtyByMenu = new Map<string, number>();
+      const qtyByMenu = qtyByMenuOf(dto.items);
+      const menuById = await loadAvailableMenus(tx, qtyByMenu);
+      const lines = toOrderLines(dto.items, menuById);
 
-      for (const item of dto.items) {
-        qtyByMenu.set(item.menuId, (qtyByMenu.get(item.menuId) ?? 0) + item.qty);
-      }
-
-      const menus = await tx.menu.findMany({
-        where: { id: { in: [...qtyByMenu.keys()] }, isActive: true },
-        include: { category: true },
-      });
-
-      const menuById = new Map(menus.map((menu) => [menu.id, menu]));
-
-      for (const [menuId, totalQty] of qtyByMenu) {
-        const menu = menuById.get(menuId);
-
-        if (!menu) {
-          throw new NotFoundException(`Menu tidak ditemukan: ${menuId}`);
-        }
-
-        const available = menu.stock - menu.reservedQty;
-
-        if (totalQty > available) {
-          throw new BadRequestException(
-            `Stok ${menu.name} tinggal ${available}`,
-          );
-        }
-      }
-
-      const items = dto.items.map(function toOrderItem(item) {
-        const menu = menuById.get(item.menuId)!;
-
-        return {
-          menuId: menu.id,
-          name: menu.name,
-          price: menu.price,
-          qty: item.qty,
-          note: item.note ?? "",
-          station: menu.category.station,
-        };
-      });
-
-      const subtotal = items.reduce(function sumLine(total, item) {
-        return total + item.price * item.qty;
-      }, 0);
-
-      const tax = Math.round(subtotal * POS_CONFIG.tax.rate);
-
-      for (const [menuId, totalQty] of qtyByMenu) {
-        await tx.menu.update({
-          where: { id: menuId },
-          data: isPaidOnCreate
-            ? { stock: { decrement: totalQty } }
-            : { reservedQty: { increment: totalQty } },
-        });
-      }
-
-      const number = await nextOrderNumber(tx, businessDate);
+      await takeStock(tx, qtyByMenu, isPaidOnCreate);
 
       return tx.order.create({
         data: {
-          number,
+          number: await nextOrderNumber(tx, businessDate),
           businessDate,
           type: dto.type,
           source,
@@ -107,13 +61,50 @@ export class OrderService {
             ? OrderStatus.PAID
             : OrderStatus.PENDING_PAYMENT,
           paidAt: isPaidOnCreate ? now : null,
-          subtotal,
-          tax,
-          total: subtotal + tax,
+          ...totalsOf(lines),
           idempotencyKey: dto.idempotencyKey ?? null,
-          items: { create: items },
           paymentMethod: dto.paymentMethod ?? null,
           cashierId,
+          items: { create: lines },
+        },
+        include: { items: true },
+      });
+    });
+  }
+
+  async cancel(
+    orderId: string,
+    dto: CancelOrderDto,
+    cancelledById: string | null,
+  ) {
+    if (!cancelledById) {
+      throw new UnauthorizedException("Sesi tidak dikenali");
+    }
+
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      include: { items: true },
+    });
+
+    if (!order) {
+      throw new NotFoundException("Pesanan tidak ditemukan");
+    }
+
+    assertCancellable(order.status);
+    await assertDayIsOpen(this.prisma, order.businessDate);
+
+    const stockWasTaken = order.source === OrderSource.CASHIER;
+
+    return this.prisma.$transaction(async function runCancel(tx) {
+      await restoreStock(tx, order.items, stockWasTaken);
+
+      return tx.order.update({
+        where: { id: orderId },
+        data: {
+          status: OrderStatus.CANCELLED,
+          cancelReason: dto.reason.trim(),
+          cancelledAt: new Date(),
+          cancelledById,
         },
         include: { items: true },
       });
@@ -122,7 +113,10 @@ export class OrderService {
 
   findQueue() {
     return this.prisma.order.findMany({
-      where: { status: { in: [OrderStatus.PAID, OrderStatus.IN_PROGRESS] } },
+      where: {
+        businessDate: startOfBusinessDay(new Date()),
+        status: { in: [OrderStatus.PAID, OrderStatus.IN_PROGRESS] },
+      },
       include: { items: true },
       orderBy: { createdAt: "asc" },
     });
@@ -137,14 +131,12 @@ export class OrderService {
     });
   }
 
-        findByDate(date: string | undefined, status?: OrderStatus) {
-    const businessDate = date
-      ? businessDateFrom(date)
-      : startOfBusinessDay(new Date());
-
+  findByDate(date: string | undefined, status?: OrderStatus) {
     return this.prisma.order.findMany({
       where: {
-        businessDate,
+        businessDate: date
+          ? businessDateFrom(date)
+          : startOfBusinessDay(new Date()),
         ...(status ? { status } : {}),
       },
       include: { items: true },
@@ -180,60 +172,12 @@ export class OrderService {
     });
   }
 
-    async cancel(
-    orderId: string,
-    dto: CancelOrderDto,
-    cancelledById: string | null,
-  ) {
-    if (!cancelledById) {
-      throw new UnauthorizedException("Sesi tidak dikenali");
-    }
+  private findByKey(key: string | undefined) {
+    if (!key) return null;
 
-    const order = await this.prisma.order.findUnique({
-      where: { id: orderId },
+    return this.prisma.order.findUnique({
+      where: { idempotencyKey: key },
       include: { items: true },
-    });
-
-    if (!order) {
-      throw new NotFoundException("Pesanan tidak ditemukan");
-    }
-
-    if (order.status === OrderStatus.CANCELLED) {
-      throw new ConflictException("Pesanan ini sudah dibatalkan");
-    }
-
-    const closed = await this.prisma.cashClosing.findUnique({
-      where: { businessDate: order.businessDate },
-    });
-
-    if (closed) {
-      throw new ConflictException(
-        "Kas tanggal ini sudah ditutup, pesanan tidak bisa dibatalkan.",
-      );
-    }
-
-    const stockWasTaken = order.source === OrderSource.CASHIER;
-
-    return this.prisma.$transaction(async function runCancel(tx) {
-      for (const item of order.items) {
-        await tx.menu.update({
-          where: { id: item.menuId },
-          data: stockWasTaken
-            ? { stock: { increment: item.qty } }
-            : { reservedQty: { decrement: item.qty } },
-        });
-      }
-
-      return tx.order.update({
-        where: { id: orderId },
-        data: {
-        status: OrderStatus.CANCELLED,
-        cancelReason: dto.reason.trim(),
-        cancelledAt: new Date(),
-        cancelledById,
-        },
-        include: { items: true },
-      });
     });
   }
 }
