@@ -8,6 +8,7 @@ import { POS_CONFIG } from "../config/pos.config";
 import { businessDateFrom, startOfBusinessDay } from "../order/order.number";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateClosingDto } from "./closing.dto";
+import { CLOSING_CONFIG } from "./closing.config";
 
 @Injectable()
 export class ClosingService {
