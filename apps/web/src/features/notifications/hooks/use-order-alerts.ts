@@ -12,7 +12,7 @@ function isSelfOrder(order: PaidOrder) {
   return order.source === "QR";
 }
 
-export function useOrderAlerts() {
+export function useOrderAlerts(isEnabled: boolean) {
   const isReady = useNotificationStore((state) => state.isReady);
   const seenIds = useNotificationStore((state) => state.seenIds);
   const markReady = useNotificationStore((state) => state.markReady);
@@ -23,6 +23,7 @@ export function useOrderAlerts() {
 
   useEffect(
     function startPolling() {
+        if (!isEnabled) return;
       let isActive = true;
 
       async function check() {
@@ -82,6 +83,6 @@ export function useOrderAlerts() {
         window.removeEventListener("pointerdown", unlockChime);
       };
     },
-    [markReady, push],
+    [markReady, push, isEnabled],
   );
 }

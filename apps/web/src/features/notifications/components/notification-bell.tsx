@@ -3,12 +3,9 @@
 import { Bell } from "lucide-react";
 import { useState } from "react";
 import { formatMoney, formatTime } from "@/lib/format";
-import { useOrderAlerts } from "../hooks/use-order-alerts";
 import { useNotificationStore } from "../store/notifications.store";
 
 export function NotificationBell() {
-  useOrderAlerts();
-
   const alerts = useNotificationStore((state) => state.alerts);
   const unread = useNotificationStore((state) => state.unread);
   const clear = useNotificationStore((state) => state.clear);
@@ -21,24 +18,24 @@ export function NotificationBell() {
     clear();
   }
 
-    return (
+  return (
     <div className="relative shrink-0">
       <button
         type="button"
         onClick={toggle}
         aria-label="Notifikasi pesanan"
-        className="relative grid size-10 place-items-center rounded-xl text-white/50 transition-colors hover:text-white"
+        className="relative grid size-11 place-items-center rounded-card bg-card shadow-sm"
       >
-        <Bell className="size-5" />
+        <Bell className="size-4 text-foreground" />
         {unread > 0 ? (
-          <span className="absolute right-1 top-1 grid size-4 place-items-center rounded-full bg-danger-soft text-[10px] font-medium text-white">
+          <span className="absolute right-1.5 top-1.5 grid size-4 place-items-center rounded-full bg-danger-soft text-[10px] font-medium text-white">
             {unread > 9 ? "9+" : unread}
           </span>
         ) : null}
       </button>
 
       {isOpen ? (
-        <div className="absolute bottom-0 left-full z-30 ml-2 w-64 rounded-card border border-border bg-card p-2 shadow-lg">
+        <div className="absolute right-0 top-full z-30 mt-2 w-64 rounded-card border border-border bg-card p-2 shadow-lg">
           {alerts.length === 0 ? (
             <p className="px-2 py-3 text-xs text-muted-foreground">
               Belum ada pesanan masuk.
