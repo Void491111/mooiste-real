@@ -2,6 +2,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { DASHBOARD_CONFIG } from "./dashboard.config";
 import type { DateRange } from "./dashboard.range";
 import type { DailyPoint, PaymentSplit, PeriodTotals } from "./dashboard.types";
+import { OrderStatus } from "@prisma/client";
 
 const REVENUE_STATUSES = [...DASHBOARD_CONFIG.revenueStatuses];
 
@@ -16,19 +17,28 @@ export async function fetchTotals(
   prisma: PrismaService,
   range: DateRange,
 ): Promise<PeriodTotals> {
-  const result = await prisma.order.aggregate({
-    where: whereInRange(range),
-    _sum: { total: true },
-    _count: { _all: true },
-  });
+  const [paid, cancelled] = await Promise.all([
+    prisma.order.aggregate({
+      where: whereInRange(range),
+      _sum: { total: true },
+      _count: { _all: true },
+    }),
+    prisma.order.count({
+      where: {
+        businessDate: { gte: range.from, lte: range.to },
+        status: OrderStatus.CANCELLED,
+      },
+    }),
+  ]);
 
-  const revenue = result._sum.total ?? 0;
-  const orders = result._count._all;
+  const revenue = paid._sum.total ?? 0;
+  const orders = paid._count._all;
 
   return {
     revenue,
     orders,
     averageTicket: orders > 0 ? Math.round(revenue / orders) : 0,
+    cancelled,
   };
 }
 

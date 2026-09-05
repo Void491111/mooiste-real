@@ -2,6 +2,7 @@ export type PeriodTotals = {
     revenue: number;
     orders: number;
     averageTicket: number;
+    cancelled: number;
 };
 
 export type DailyPoint = {
