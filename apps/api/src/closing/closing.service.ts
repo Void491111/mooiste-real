@@ -3,12 +3,13 @@ import {
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
-import { PaymentMethod } from "@prisma/client";
+import { PaymentMethod, Prisma } from "@prisma/client";
 import { POS_CONFIG } from "../config/pos.config";
 import { businessDateFrom, startOfBusinessDay } from "../order/order.number";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateClosingDto } from "./closing.dto";
 import { CLOSING_CONFIG } from "./closing.config";
+
 
 @Injectable()
 export class ClosingService {
@@ -67,15 +68,24 @@ export class ClosingService {
     return this.getSummary(undefined);
   }
 
+    async history(limit: number) {
+    const take = Math.min(Math.max(limit, 1), CLOSING_CONFIG.history.maxLimit);
+
+    const rows = await this.prisma.cashClosing.findMany({
+      orderBy: { businessDate: "desc" },
+      take,
+      include: { closedBy: { select: { name: true } } },
+    });
+
+    return rows.map(toHistoryRow);
+  }
+
   async close(dto: CreateClosingDto, closedById: string | null) {
     if (!closedById) {
       throw new UnauthorizedException("Sesi tidak dikenali");
     }
 
     const summary = await this.getSummary(dto.date);
-
-    // Sekali sehari. Kalau sudah ditutup lalu ada koreksi, itu perlu
-    // pembatalan yang tercatat — bukan diam-diam ditimpa.
     if (summary.closing) {
       throw new ConflictException("Kas tanggal ini sudah ditutup");
     }
@@ -99,6 +109,26 @@ export class ClosingService {
 
     
 
+    
+
     return this.getSummary(dto.date);
   }
+}
+
+type ClosingWithUser = Prisma.CashClosingGetPayload<{
+  include: { closedBy: { select: { name: true } } };
+}>;
+
+function toHistoryRow(row: ClosingWithUser) {
+  return {
+    id: row.id,
+    businessDate: row.businessDate,
+    totalRevenue: row.totalRevenue,
+    orderCount: row.orderCount,
+    expectedCash: row.expectedCash,
+    countedCash: row.countedCash,
+    difference: row.difference,
+    closedBy: row.closedBy.name,
+    note: row.note,
+  };
 }

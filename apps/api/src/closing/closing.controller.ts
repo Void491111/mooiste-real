@@ -8,6 +8,8 @@ import {
 } from "../auth/auth.decorators";
 import { CreateClosingDto } from "./closing.dto";
 import { ClosingService } from "./closing.service";
+import { CLOSING_CONFIG } from "./closing.config";
+
 
 @Controller("closings")
 export class ClosingController {
@@ -23,10 +25,17 @@ export class ClosingController {
     return this.closing.close(dto, userIdOf(user));
   }
 
-  // Koreksi administratif, bukan transaksi — jadi dikunci ke admin.
   @Roles(Role.ADMIN)
   @Delete()
   reopen() {
     return this.closing.reopen();
+  }
+
+  @Roles(Role.ADMIN)
+  @Get("history")
+  history(@Query("limit") limit?: string) {
+  return this.closing.history(
+  Number(limit) || CLOSING_CONFIG.history.defaultLimit,
+    );
   }
 }
