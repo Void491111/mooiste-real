@@ -10,10 +10,10 @@ import type { DashboardSummary } from "../types";
 import { CategoryDonut } from "./category-donut";
 import { HourlyChart } from "./hourly-chart";
 import { MenuTable } from "./menu-table";
-import { Panel } from "./panel";
 import { PaymentMeter } from "./payment-meter";
 import { RevenueChart } from "./revenue-chart";
 import { StatRow } from "./stat-row";
+import { Panel } from "@/components/panel";
 
 export function DashboardBody({ summary }: { summary: DashboardSummary }) {
   const peak = busiestHour(summary.hourly);
