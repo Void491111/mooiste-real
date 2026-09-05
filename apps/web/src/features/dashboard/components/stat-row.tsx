@@ -5,7 +5,7 @@ export function StatRow({ summary }: { summary: DashboardSummary }) {
   const { current, previous } = summary;
 
   return (
-    <div className="grid gap-4 sm:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <StatCard
         label="Omzet"
         kind="money"
@@ -23,6 +23,13 @@ export function StatRow({ summary }: { summary: DashboardSummary }) {
         kind="money"
         value={current.averageTicket}
         previous={previous.averageTicket}
+      />
+      <StatCard
+        label="Pembatalan"
+        kind="count"
+        value={current.cancelled}
+        previous={previous.cancelled}
+        isLowerBetter
       />
     </div>
   );

@@ -2,6 +2,7 @@ export type PeriodTotals = {
   revenue: number;
   orders: number;
   averageTicket: number;
+  cancelled: number;
 };
 
 export type DailyPoint = {
@@ -38,6 +39,14 @@ export type DashboardSummary = {
   menus: MenuRank[];
   payments: PaymentSplit[];
 };
+
+export type StatCardProps = {
+  label: string;
+  value: number;
+  previous: number;
+  kind: "money" | "count";
+  isLowerBetter?: boolean;
+} ;
 
 /** 1200000 -> "1,2jt". Buat sumbu Y, biar angkanya tidak menabrak. */
 export function formatCompactMoney(value: number) {
