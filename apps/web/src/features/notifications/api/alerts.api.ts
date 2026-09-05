@@ -2,7 +2,7 @@ import { apiGet } from "@/lib/api";
 export type PaidOrder = {
     id: string;
     number: string;
-    total: Number;
+    total: number;
     source: "CASHIER" | "QR";
     createdAt: string;
 };

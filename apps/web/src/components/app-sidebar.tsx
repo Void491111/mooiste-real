@@ -14,6 +14,7 @@ import { logout } from "@/features/auth/api/auth.api";
 import { useSession } from "@/features/auth/hooks/use-session";
 import { useSessionStore } from "@/features/auth/store/session.store";
 import { toast } from "sonner";
+import { NotificationBell } from "@/features/notifications/components/notification-bell";
 
 type NavItemProps = {
   item: (typeof NAV_ITEMS)[number];
@@ -102,8 +103,6 @@ export function AppSidebar() {
     try {
       await logout();
     } catch {
-      // Cookie di server mungkin gagal dihapus, tapi sesi di sisi ini
-      // tetap dibersihkan — jangan sampai orang terjebak di dalam aplikasi.
       toast.error("Gagal menghubungi server, sesi tetap ditutup");
     }
 
@@ -141,6 +140,8 @@ export function AppSidebar() {
             );
           })}
         </nav>
+
+        {user?.role === "CASHIER" ? <NotificationBell /> : null}
 
         <motion.button
           type="button"
