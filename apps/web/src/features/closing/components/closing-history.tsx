@@ -74,7 +74,7 @@ export function ClosingHistory() {
       <div className="overflow-x-auto">
         <table className="w-full table-fixed text-left text-sm">
           <colgroup>
-            <col className="w-[8.5rem]" />
+            <col className="w-34" />
             <col className="w-20" />
             <col className="w-36" />
             <col className="w-36" />
