@@ -1,3 +1,4 @@
+import { Panel } from "@/components/panel";
 import { formatMoney } from "@/lib/format";
 import type { ClosingSummary } from "../types";
 
@@ -9,7 +10,7 @@ type StatProps = {
 
 function Stat({ label, value, isPrimary }: StatProps) {
   return (
-    <div className="rounded-card border border-border bg-card p-5">
+    <Panel>
       <p className="text-xs text-muted-foreground">{label}</p>
       <p
         className={
@@ -20,7 +21,7 @@ function Stat({ label, value, isPrimary }: StatProps) {
       >
         {value}
       </p>
-    </div>
+    </Panel>
   );
 }
 

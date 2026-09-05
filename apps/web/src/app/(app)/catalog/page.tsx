@@ -4,6 +4,7 @@ import { CatalogTable } from "@/features/catalog/components/catalog-table";
 import { MenuForm } from "@/features/catalog/components/menu-form";
 import { useCatalog } from "@/features/catalog/hooks/use-catalog";
 import { useMenuForm } from "@/features/catalog/hooks/use-menu-form";
+import { Panel } from "@/components/panel";
 
 export default function CatalogPage() {
   const catalog = useCatalog();
@@ -46,7 +47,7 @@ export default function CatalogPage() {
         <p className="text-sm text-danger-soft">{catalog.error}</p>
       ) : null}
 
-      <div className="rounded-(--radiurs-card) border border-border bg-card p-5">
+            <Panel>
         {catalog.isLoading ? (
           <p className="text-sm text-muted-foreground">Memuat…</p>
         ) : (
@@ -57,7 +58,7 @@ export default function CatalogPage() {
             onToggleActive={catalog.toggleActive}
           />
         )}
-      </div>
+      </Panel>
     </div>
   );
 }
