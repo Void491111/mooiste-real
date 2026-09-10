@@ -63,6 +63,8 @@
   --color-viz-4: var(--viz-4);
   --color-viz-grid: var(--viz-grid);
   --color-viz-axis: var(--viz-axis);
+
+  --color-glass: var(--glass);
 }
 
 :root {
@@ -115,6 +117,8 @@
   --viz-4: #a08616;
   --viz-grid: #e1e0d9;
   --viz-axis: #898781;
+
+  --glass: rgba(226, 228, 232, 0.55);
 }
 
 .dark {
@@ -164,6 +168,8 @@
   --chart-2: #d95926;
   --chart-grid: #2c2c2a;
   --chart-axis: #898781;
+
+  --glass: rgba(28, 30, 34, 0, 0.55);
 }
 
 @layer base {
