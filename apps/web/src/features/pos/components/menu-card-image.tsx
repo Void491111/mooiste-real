@@ -13,22 +13,22 @@ export function MenuCardImage({ src, name, isOut }: MenuCardImageProps) {
   return (
     <div
       className={cn(
-        "relative grid aspect-4/3 place-items-center overflow-hidden rounded-card",
-        isOut && "opacity-45",
+        "absolute inset-0 grid place-items-center bg-muted",
+        isOut && "opacity-45 grayscale"
       )}
     >
       {src ? (
-        <Image
+        <Image 
           src={src}
           alt={name}
           fill
-          sizes="(max-width: 1024px) 40vw, 220px"
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+          sizes="(max-width: 1024px) 40vw, 240px"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
-      ) : (
-        <div className="grid size-20 place-items-center rounded-card bg-muted-foreground/15 text-3xl font-bold text-muted-foreground/60 transition-transform duration-500 ease-out group-hover:scale-110">
-          {name.slice(0, 1)}
-        </div>
+      ): (
+        <span className="text-5xl font-bold text-muted-foreground">
+          {name.slice(0,1)}
+        </span>
       )}
     </div>
   );
