@@ -12,29 +12,28 @@ type Props = {
 
 export function MenuCardHeader({ stock, qty, isOut, isSelected }: Props) {
   return (
-    <div className="absolute inset-x-0 top-0 flex h-11 items-center justify-between gap-2 border-b border-white/20 bg-glass px-2.5 backdrop-blur-md">
+    <>
       {isSelected && !isOut ? (
         <motion.span
           key={qty}
           initial={{ scale: 0.5 }}
           animate={{ scale: 1 }}
           transition={SPRING.snappy}
-          className="grid size-6 shrink-0 place-items-center rounded-full bg-foreground text-[11px] font-bold text-background"
+          className="absolute left-2 top-2 z-10 grid size-6 place-items-center rounded-full bg-foreground text-[11px] font-bold text-background shadow-sm"
         >
           {qty}
         </motion.span>
       ) : null}
 
       {isOut ? (
-        <span className="ml-auto rounded-full bg-danger-soft px-2.5 py-0.5 text-[11px] font-bold text-danger-soft-fg">
+        <span className="absolute right-2 top-2 z-10 rounded-full bg-danger-soft px-2 py-0.5 text-[10px] font-bold text-danger-soft-fg shadow-sm">
           Habis
         </span>
       ) : (
-        <span className="ml-auto rounded-full border-2 border-stock-ok bg-card/80 px-2.5 py-0.5 text-[11px] font-bold">
-          <span className="text-foreground">Stock: </span>
-          <span className="text-stock-ok">{stock}</span>
+        <span className="absolute right-2 top-2 z-10 rounded-full bg-card/95 px-2 py-0.5 text-[10px] font-semibold tabular-nums text-stock-ok shadow-sm">
+          {stock}
         </span>
       )}
-    </div>
+    </>
   );
 }
