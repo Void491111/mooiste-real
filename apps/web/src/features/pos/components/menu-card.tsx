@@ -31,12 +31,13 @@ export function MenuCard({ menu, index }: Props) {
       whileTap={card.isOut ? undefined : { scale: 0.97 }}
       onClick={card.increase}
       className={cn(
-        "group relative aspect-3/4 overflow-hidden rounded-card border shadow-sm transition-shadow duration-300",
+        "group relative flex flex-col overflow-hidden rounded-card border bg-card shadow-sm transition-shadow duration-300",
         card.isOut
           ? "cursor-not-allowed border-border"
           : "cursor-pointer hover:shadow-lg",
-        card.isSelected && !card.isOut && "border-selected-ring",
-        !card.isSelected && "border-border",
+        card.isSelected && !card.isOut
+          ? "border-selected-ring ring-1 ring-selected-ring"
+          : "border-border",
       )}
     >
       <MenuCardImage src={menu.image} name={menu.name} isOut={card.isOut} />
