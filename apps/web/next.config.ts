@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
   },
 
     async rewrites() {
+      if (!process.env.API_ORIGIN) return [];
+
     return [
       {
         source: "/api/:path*",
