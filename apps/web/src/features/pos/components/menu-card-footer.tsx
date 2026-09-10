@@ -29,22 +29,17 @@ export function MenuCardFooter({
   onIncrease,
 }: Props) {
   return (
-    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 border-t border-white/20 bg-glass px-3 py-2.5 backdrop-blur-md">
+    <div className="flex min-h-14 items-center justify-between gap-2 px-3 py-2">
       <div className="min-w-0">
         <p
           className={cn(
-            "truncate text-[15px] font-bold",
+            "truncate text-sm font-semibold",
             isOut ? "text-muted-foreground" : "text-foreground",
           )}
         >
           {name}
         </p>
-        <p
-          className={cn(
-            "text-sm",
-            isOut ? "text-muted-foreground" : "text-foreground/70",
-          )}
-        >
+        <p className="text-xs tabular-nums text-muted-foreground">
           {formatMoney(price)}
         </p>
       </div>
