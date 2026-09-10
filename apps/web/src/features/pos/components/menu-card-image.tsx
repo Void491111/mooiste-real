@@ -13,7 +13,7 @@ export function MenuCardImage({ src, name, isOut }: MenuCardImageProps) {
   return (
     <div
       className={cn(
-        "relative aspect-4/3 shrink-0 overflow-hidden bg-brand-soft",
+        "relative aspect-4/5 shrink-0 overflow-hidden bg-brand-soft",
         isOut && "opacity-40 grayscale",
       )}
     >
