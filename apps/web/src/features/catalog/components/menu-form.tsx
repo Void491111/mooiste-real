@@ -110,10 +110,14 @@ export function MenuForm({
               name="stock"
               type="number"
               min={0}
+              placeholder="0"
               className={FIELD_CLASS}
               value={draft.stock}
               onChange={handleChange}
             />
+            <span className="mt-1 block text-[11px] text-muted-foreground">
+              Wajib diisi. Ubah nanti lewat halaman Stok.
+            </span>
           </label>
         ) : null}
       </div>
