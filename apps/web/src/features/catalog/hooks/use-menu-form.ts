@@ -8,7 +8,7 @@ const EMPTY_DRAFT: MenuDraft = {
   name: "",
   price: "",
   categoryId: "",
-  stock: "0",
+  stock: "",
   image: "",
 };
 
@@ -31,12 +31,18 @@ export function useMenuForm(onSaved: (row: MenuRow) => void) {
   const [error, setError] = useState<string | null>(null);
 
   const price = Number(draft.price);
+  const stock = Number(draft.stock);
+
+  const isStockValid =
+    editing !== null ||
+    (draft.stock.trim().length > 0 && Number.isInteger(stock) && stock >= 0);
 
   const canSubmit =
     draft.name.trim().length > 0 &&
     draft.categoryId.length > 0 &&
     Number.isFinite(price) &&
-    price >= 0;
+    price >= 0 &&
+    isStockValid;
 
   function openCreate() {
     setEditing(null);
@@ -63,9 +69,6 @@ export function useMenuForm(onSaved: (row: MenuRow) => void) {
     });
   }
 
-  // Gambar diunggah begitu dipilih, bukan menunggu tombol Simpan.
-  // Jadi hasilnya langsung kelihatan, dan kalau formatnya ditolak
-  // ketahuan sekarang — bukan setelah semua kolom diisi.
   async function pickImage(file: File) {
     setIsUploading(true);
     setError(null);
@@ -93,8 +96,6 @@ export function useMenuForm(onSaved: (row: MenuRow) => void) {
     setError(null);
 
     try {
-      // Stok sengaja tidak ikut saat mengubah — itu urusan halaman Stok,
-      // dan angkanya bisa berubah karena penjualan sambil form dibuka.
       const saved = editing
         ? await updateMenu(editing.id, {
             name: draft.name.trim(),
@@ -106,7 +107,7 @@ export function useMenuForm(onSaved: (row: MenuRow) => void) {
             name: draft.name.trim(),
             price,
             categoryId: draft.categoryId,
-            stock: Number(draft.stock) || 0,
+            stock,
             image: draft.image,
           });
 
