@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { getCategories, getMenusForManage, setMenuActive } from "../api/catalog.api";
 import type { CategoryOption, MenuRow } from "../types";
+import { filterMenus } from "../lib/catalog";
 import { toast } from "sonner";
 
 export function useCatalog() {
@@ -11,6 +12,14 @@ export function useCatalog() {
   const [isLoading, setIsLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [keyword, setKeyword] = useState("")
+
+    const visibleRows = useMemo(
+    function filterByKeyword() {
+      return filterMenus(rows, keyword);
+    },
+    [rows, keyword],
+  );
 
   const load = useCallback(async function loadCatalog() {
     setIsLoading(true);
@@ -38,8 +47,6 @@ export function useCatalog() {
     [load],
   );
 
-  // Dipakai setelah simpan: baris yang sudah ada ditukar,
-  // menu baru ditambahkan di akhir. Tidak perlu muat ulang semuanya.
   function upsertRow(row: MenuRow) {
     setRows(function replaceOrAppend(current) {
       const exists = current.some(function byId(item) {
@@ -67,8 +74,6 @@ export function useCatalog() {
           ? `${saved.name} ditampilkan di kasir`
           : `${saved.name} disembunyikan dari kasir`,
         {
-          // row masih memegang keadaan sebelum diubah, jadi memanggil
-          // toggleActive dengan row yang sama mengembalikannya.
           action: {
             label: "Urungkan",
             onClick: function undoToggle() {
@@ -88,8 +93,11 @@ export function useCatalog() {
     }
   }
 
-  return {
-    rows,
+    return {
+    rows: visibleRows,
+    keyword,
+    setKeyword,
+    isFiltered: keyword.trim().length > 0,
     categories,
     isLoading,
     busyId,

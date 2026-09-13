@@ -27,6 +27,7 @@ export function PosHeader({ keyword, onKeywordChange }: Props) {
 
       <ThemeToggle />
       <NotificationBell />
+      
     </header>
   );
 }
