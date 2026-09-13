@@ -10,7 +10,6 @@ import { CartSummary } from "./cart-summary";
 import { ConfirmDialog } from "./confirm-dialog";
 import { IconButton } from "./icon-button";
 import { OrderTypeTabs } from "./order-type-tabs";
-import { cn } from "@/lib/utils";
 import { PaymentTabs } from "./payment-tabs";
 
 type Props = {
@@ -41,7 +40,11 @@ export function CartPanel({ onCheckoutSuccess }: Props) {
         </div>
 
         {!panel.isEmpty && (
-          <IconButton label="Kosongkan pesanan" onClick={panel.askClear} className="hover:text-danger-soft">
+          <IconButton
+            label="Kosongkan pesanan"
+            onClick={panel.askClear}
+            className="hover:text-danger-soft"
+          >
             <Trash2 className="size-4" />
           </IconButton>
         )}
@@ -49,23 +52,25 @@ export function CartPanel({ onCheckoutSuccess }: Props) {
 
       <OrderTypeTabs value={panel.orderType} onChange={panel.setOrderType} />
 
-      {panel.isEmpty ? (
-        <div className="flex flex-1 flex-col items-center justify-center gap-2 text-muted-foreground/40">
-          <ShoppingBag className="size-10" />
-          <p className="text-sm">Belum ada pesanan</p>
-          {submit.lastNumber !== null && (
-            <p className="text-xs text-stock-ok">Order {submit.lastNumber} terkirim</p>
-          )}
-        </div>
-      ) : (
-        <div className="flex flex-1 flex-col gap-2 overflow-y-auto">
-          <AnimatePresence mode="popLayout">
+      <div className="flex flex-1 flex-col gap-2 overflow-y-auto">
+        {panel.isEmpty ? (
+          <div className="flex flex-1 flex-col items-center justify-center gap-2 text-muted-foreground/40">
+            <ShoppingBag className="size-10" />
+            <p className="text-sm">Belum ada pesanan</p>
+            {submit.lastNumber !== null && (
+              <p className="text-xs text-stock-ok">
+                Order {submit.lastNumber} terkirim
+              </p>
+            )}
+          </div>
+        ) : (
+          <AnimatePresence mode="popLayout" initial={false}>
             {panel.items.map(function renderRow(item) {
               return <CartRow key={item.lineId} item={item} />;
             })}
           </AnimatePresence>
-        </div>
-      )}
+        )}
+      </div>
 
       {submit.error !== null && (
         <p className="rounded-card bg-danger-soft px-3 py-2 text-xs text-danger-soft-fg">
@@ -75,14 +80,15 @@ export function CartPanel({ onCheckoutSuccess }: Props) {
 
       <CartSummary totals={panel.totals} />
 
-      {!panel.isEmpty && (
-        <PaymentTabs
-          value={submit.paymentMethod}
-          onChange={submit.setPaymentMethod}
-        />
-      )}
+      <PaymentTabs
+        value={submit.paymentMethod}
+        onChange={submit.setPaymentMethod}
+      />
 
-      <motion.div whileTap={isDisabled ? undefined : { scale: 0.98 }} transition={SPRING.snappy}>
+      <motion.div
+        whileTap={isDisabled ? undefined : { scale: 0.98 }}
+        transition={SPRING.snappy}
+      >
         <button
           type="button"
           suppressHydrationWarning
