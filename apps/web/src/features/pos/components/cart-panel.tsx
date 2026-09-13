@@ -21,7 +21,11 @@ export function CartPanel({ onCheckoutSuccess }: Props) {
   const panel = useCartPanel();
   const submit = useCheckout(onCheckoutSuccess);
 
-  const isDisabled = !panel.isReady || panel.isEmpty || submit.isSubmitting;
+  const isDisabled =
+    !panel.isReady ||
+    panel.isEmpty ||
+    submit.paymentMethod === null ||
+    submit.isSubmitting; 
 
   return (
     <aside className="flex w-85 shrink-0 flex-col gap-3 rounded-card bg-card p-4 shadow-sm">

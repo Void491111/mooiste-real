@@ -4,7 +4,7 @@ import { PAYMENT_METHODS, type PaymentMethod } from "@/config/pos.config";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  value: PaymentMethod;
+  value: PaymentMethod | null;
   onChange: (value: PaymentMethod) => void;
 };
 
