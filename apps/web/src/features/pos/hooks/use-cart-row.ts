@@ -1,9 +1,8 @@
 "use client";
-
-
 import { useState } from "react";
 import { useCartStore } from "../store/cart.store";
 import type { CartItem } from "../types";
+import { toast } from "sonner";
 
 export function useCartRow(item: CartItem) {
     const setQty = useCartStore((state) => state.setQty);
@@ -19,6 +18,13 @@ export function useCartRow(item: CartItem) {
 
     function decrease() {
         setQty(item.lineId, item.qty - 1);
+            function changeQty(next: number) {
+        if (next > item.stock) {
+            toast.error(`Stok ${item.name} tinggal ${item.stock}`);
+        }
+
+        setQty(item.lineId, next);
+    }
     }
 
     function removeLine() {
