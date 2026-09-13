@@ -25,54 +25,57 @@ export function CartRow({ item }: Props) {
       animate={VARIANTS.cartRow.animate}
       exit={VARIANTS.cartRow.exit}
       transition={SPRING.snappy}
-      className="shrinked-0 overflow-hidden rounded-card bg-muted p-2"
+      className="shrink-0 rounded-card bg-muted px-3 py-2"
     >
-      <div className="flex gap-2">
-        <div className="grid size-10 shrink-0 place-items-center rounded-card bg-muted-foreground/15 text-sm font-bold text-muted-foreground/60">
-          {item.name.slice(0, 1)}
+      <div className="flex items-center gap-2">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold text-foreground">
+            {item.name}
+          </p>
+          <p className="text-xs tabular-nums text-muted-foreground">
+            {formatMoney(item.price)}
+          </p>
         </div>
 
-        <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-2">
-            <p className="truncate text-sm font-semibold text-foreground">{item.name}</p>
-            <p className="shrink-0 text-sm font-bold tabular-nums">{formatMoney(lineTotal(item))}</p>
-          </div>
+        <QtyStepper
+          qty={item.qty}
+          onDecrease={row.decrease}
+          onIncrease={row.increase}
+          canIncrease={row.canIncrease}
+          size="sm"
+        />
 
-          <p className="text-xs text-muted-foreground">{formatMoney(item.price)}</p>
+        <p className="w-20 shrink-0 text-right text-sm font-bold tabular-nums">
+          {formatMoney(lineTotal(item))}
+        </p>
 
-          {item.note && !row.isEditing && (
-            <p className="mt-1 truncate text-xs italic text-muted-foreground">{item.note}</p>
-          )}
-
-          <div className="mt-1.5 flex items-center justify-between">
-            <QtyStepper
-              qty={item.qty}
-              onDecrease={row.decrease}
-              onIncrease={row.increase}
-              canIncrease={row.canIncrease}
-              size="sm"
-            />
-
-            <div className="flex">
-              <IconButton label="Catatan" onClick={row.toggleEdit}>
-                <SquarePen className="size-4" />
-              </IconButton>
-              <IconButton label="Hapus" onClick={row.removeLine} className="hover:text-danger-soft">
-                <Trash2 className="size-4" />
-              </IconButton>
-            </div>
-          </div>
+        <div className="flex shrink-0">
+          <IconButton label="Catatan" onClick={row.toggleEdit}>
+            <SquarePen className="size-4" />
+          </IconButton>
+          <IconButton
+            label="Hapus"
+            onClick={row.removeLine}
+            className="hover:text-danger-soft"
+          >
+            <Trash2 className="size-4" />
+          </IconButton>
         </div>
       </div>
+
+      {item.note && !row.isEditing && (
+        <p className="mt-1 truncate text-xs italic text-muted-foreground">
+          {item.note}
+        </p>
+      )}
 
       <AnimatePresence>
         {row.isEditing && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={SPRING.snappy}
-            className="overflow-hidden"
           >
             <Textarea
               autoFocus
