@@ -25,7 +25,7 @@ export function CartRow({ item }: Props) {
       animate={VARIANTS.cartRow.animate}
       exit={VARIANTS.cartRow.exit}
       transition={SPRING.snappy}
-      className="overflow-hidden rounded-card bg-muted p-2"
+      className="shrinked-0 overflow-hidden rounded-card bg-muted p-2"
     >
       <div className="flex gap-2">
         <div className="grid size-10 shrink-0 place-items-center rounded-card bg-muted-foreground/15 text-sm font-bold text-muted-foreground/60">

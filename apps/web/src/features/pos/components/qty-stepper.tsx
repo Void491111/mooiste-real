@@ -53,14 +53,14 @@ export function QtyStepper({
 }: Props) {
   const style = SIZES[size];
 
-  return (
-    <div
-      className={cn(
-        "flex w-fit items-center rounded-full border border-border bg-card p-0.5",
-        disabled && "opacity-40",
-      )}
-    >
-      <StepButton label="Kurangi" disabled={disabled || qty <= 0} sizeClass={style.button} onClick={onDecrease}>
+    return (
+    <div className={cn("flex w-fit items-center gap-1", disabled && "opacity-40")}>
+      <StepButton
+        label="Kurangi"
+        disabled={disabled || qty <= 0}
+        sizeClass={cn(style.button, "border border-border bg-card")}
+        onClick={onDecrease}
+      >
         <Minus className={style.icon} />
       </StepButton>
 
@@ -75,10 +75,17 @@ export function QtyStepper({
           {qty}
         </motion.span>
       ) : (
-        <span className={cn("text-center text-muted-foreground/40", style.qty)}>|</span>
+        <span className={cn("text-center text-muted-foreground/40", style.qty)}>
+          |
+        </span>
       )}
 
-      <StepButton label="Tambah" disabled={disabled || !canIncrease} sizeClass={style.button} onClick={onIncrease}>
+      <StepButton
+        label="Tambah"
+        disabled={disabled || !canIncrease}
+        sizeClass={cn(style.button, "border border-border bg-card")}
+        onClick={onIncrease}
+      >
         <Plus className={style.icon} />
       </StepButton>
     </div>

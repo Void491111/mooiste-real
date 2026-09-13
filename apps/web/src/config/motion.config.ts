@@ -42,9 +42,9 @@ export const VARIANTS = {
     exit: { opacity: 0, scale: 0.96 },
   },
   cartRow: {
-    initial: { opacity: 0, x: 24, height: 0 },
-    animate: { opacity: 1, x: 0, height: "auto" },
-    exit: { opacity: 0, x: 24, height: 0 },
+    initial: { opacity: 0, x: 24 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 24 },
   },
   panel: {
     initial: { opacity: 0, y: 12 },
