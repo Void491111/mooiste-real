@@ -42,12 +42,14 @@ type Props = {
   disabled?: boolean;
   canIncrease?: boolean;
   size?: keyof typeof SIZES;
+  onQtyChange?: (qty: number) => void;
 };
 
 export function QtyStepper({
   qty,
   onDecrease,
   onIncrease,
+  onQtyChange,
   disabled = false,
   canIncrease = true,
   size = "md",
@@ -61,20 +63,25 @@ export function QtyStepper({
         disabled={disabled || qty <= 0}
         sizeClass={cn(style.button, "border border-border bg-card")}
         onClick={onDecrease}
+        
       >
         <Minus className={style.icon} />
       </StepButton>
 
-      {qty > 0 ? (
-        <motion.span
-          key={qty}
-          initial={{ scale: 0.6, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={SPRING.snappy}
-          className={cn("text-center font-semibold tabular-nums", style.qty)}
-        >
-          {qty}
-        </motion.span>
+            {qty > 0 ? (
+        onQtyChange ? (
+          <QtyInput qty={qty} className={style.qty} onCommit={onQtyChange} />
+        ) : (
+          <motion.span
+            key={qty}
+            initial={{ scale: 0.6, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={SPRING.snappy}
+            className={cn("text-center font-semibold tabular-nums", style.qty)}
+          >
+            {qty}
+          </motion.span>
+        )
       ) : (
         <span className={cn("text-center text-muted-foreground/40", style.qty)}>
           |
