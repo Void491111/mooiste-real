@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { Minus, Plus } from "lucide-react";
 import { SPRING } from "@/config/motion.config";
 import { cn } from "@/lib/utils";
+import { QtyInput } from "./qty-input";
 
 const SIZES = {
   sm: { button: "size-6", icon: "size-3", qty: "w-5 text-xs" },
