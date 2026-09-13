@@ -19,7 +19,7 @@ export function MenuCardHeader({ stock, qty, isOut, isSelected }: Props) {
           initial={{ scale: 0.5 }}
           animate={{ scale: 1 }}
           transition={SPRING.snappy}
-          className="absolute left-2 top-2 z-10 grid size-6 place-items-center rounded-full bg-foreground text-[11px] font-bold text-background shadow-sm"
+          className="absolute left-2 top-2 z-10 grid size-6 place-items-center rounded-full bg-brand text-[11px] font-bold text-white shadow-sm"
         >
           {qty}
         </motion.span>

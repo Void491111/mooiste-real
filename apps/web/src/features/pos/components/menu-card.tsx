@@ -36,7 +36,7 @@ export function MenuCard({ menu, index }: Props) {
           ? "cursor-not-allowed border-border"
           : "cursor-pointer hover:shadow-lg",
         card.isSelected && !card.isOut
-          ? "border-selected-ring ring-1 ring-selected-ring"
+          ? "border-brand ring-1 ring-brand"
           : "border-border",
       )}
     >

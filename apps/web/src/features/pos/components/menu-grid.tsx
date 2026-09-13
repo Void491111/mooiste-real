@@ -20,7 +20,7 @@ export function MenuGrid({ menus }: Props) {
 
   return (
     <div
-      className="grid flex-1 auto-rows-min content-start gap-3 overflow-y-auto pb-2"
+      className="grid flex-1 auto-rows-min content-start gap-3 overflow-y-auto p-1 pb-2"
       style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${POS_CONFIG.grid.cardWidth}px, 1fr))` }}
     >
       <AnimatePresence mode="popLayout">
