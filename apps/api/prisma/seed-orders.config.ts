@@ -6,7 +6,7 @@ import { OrderSource, OrderType, PaymentMethod } from "@prisma/client";
  */
 export const SEED_ORDERS_CONFIG = {
   /** Berapa hari ke belakang data disebar. */
-  days: 180,
+  days: 60,
 
   /** Rata-rata order per hari. Angka harian diacak di sekitar ini. */
   ordersPerDay: 10,
