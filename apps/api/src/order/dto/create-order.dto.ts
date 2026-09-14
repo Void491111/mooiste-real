@@ -45,6 +45,11 @@ export class CreateOrderDto {
   @MaxLength(100)
   idempotencyKey?: string;
 
+  @IsOptional()
+  @IsString()
+  @MaxLength(8)
+  tableNumber?: string;
+
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })
