@@ -78,6 +78,7 @@ model Order {
   total    Int
 
   idempotencyKey String? @unique
+  tableNumber    String?
 
   items OrderItem[]
 
@@ -88,18 +89,18 @@ model Order {
   paymentMethod PaymentMethod?
 
   cashierId String?
-  cashier User? @relation("CashierOrders", fields: [cashierId], references: [id])
-
-  @@unique([businessDate, number])
-  @@index([status, createdAt])
-  @@index([cashierId])
-  @@index([cancelledById])
+  cashier   User?   @relation("CashierOrders", fields: [cashierId], references: [id])
 
   cancelReason  String?
   cancelledAt   DateTime?
   cancelledById String?
   cancelledBy   User?     @relation("CancelledOrders", fields: [cancelledById], references: [id])
-}
+
+  @@unique([businessDate, number])
+  @@index([status, createdAt])
+  @@index([cashierId])
+  @@index([cancelledById])
+} 
 
 model OrderItem {
   id String @id @default(cuid())
