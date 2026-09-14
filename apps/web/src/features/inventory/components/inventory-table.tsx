@@ -13,8 +13,10 @@ type Props = {
 
 const HEADERS = [
   { key: "menu", label: "Menu", className: "text-left" },
-  { key: "available", label: "Stok", className: "pr-8 text-right" },
-  { key: "action", label: "", className: "text-right" },
+  { key: "stock", label: "Stok", className: "text-right" },
+  { key: "reserved", label: "Dipesan", className: "text-right" },
+  { key: "available", label: "Tersedia", className: "pr-6 text-right" },
+  { key: "action", label: "Aksi", className: "sr-only" },
 ];
 
 export function InventoryTable({ rows, canEditStock, onUpdated }: Props) {
@@ -22,14 +24,25 @@ export function InventoryTable({ rows, canEditStock, onUpdated }: Props) {
 
   return (
     <div className="flex-1 overflow-auto rounded-card border border-border">
-      <table className="w-full text-sm">
+      <table className="w-full table-fixed text-sm">
+        <colgroup>
+          <col />
+          <col className="w-28" />
+          <col className="w-24" />
+          <col className="w-32" />
+          <col className="w-32" />
+        </colgroup>
+
         <thead className="sticky top-0 z-10 bg-card">
           <tr className="border-b border-border text-xs text-muted-foreground">
             {HEADERS.map(function renderHeader(header) {
               return (
                 <th
                   key={header.key}
-                  className={cn("whitespace-nowrap px-4 py-3 font-medium", header.className)}
+                  className={cn(
+                    "whitespace-nowrap px-4 py-3 font-medium",
+                    header.className,
+                  )}
                 >
                   {header.label}
                 </th>

@@ -20,6 +20,9 @@ const LEVEL_CLASS = {
   ok: "text-foreground",
 } as const;
 
+const NUMBER_INPUT =
+  "ml-auto h-8 w-20 rounded-card text-right tabular-nums [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
+
 export function InventoryRow({ row, canEditStock, onUpdated }: Props) {
   const control = useInventoryRow(row, onUpdated);
   const level = stockLevelOf(row);
@@ -50,7 +53,7 @@ export function InventoryRow({ row, canEditStock, onUpdated }: Props) {
             }}
             onBlur={control.save}
             onKeyDown={handleKeyDown}
-            className="ml-auto h-8 w-18 rounded-card text-right tabular-nums"
+            className={NUMBER_INPUT}
           />
         ) : (
           <span className="tabular-nums text-muted-foreground">{row.stock}</span>
@@ -75,7 +78,7 @@ export function InventoryRow({ row, canEditStock, onUpdated }: Props) {
           onClick={control.soldOut}
           whileTap={{ scale: 0.94 }}
           transition={SPRING.snappy}
-          className="whitespace-nowrap rounded-card px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-danger-soft disabled:opacity-30"
+          className="whitespace-nowrap rounded-card border border-border px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-danger-soft hover:text-danger-soft disabled:opacity-30"
         >
           Tandai habis
         </motion.button>
