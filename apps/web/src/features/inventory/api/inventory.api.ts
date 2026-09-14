@@ -6,7 +6,7 @@ export function getInventory() {
 }
 
 export function markSoldOut(menuId: string) {
-    return apiPatch<InventoryRow>("/menus/${menuId}/sold-out");
+    return apiPatch<InventoryRow>(`/menus/${menuId}/sold-out`);
 }
 
 export function setStock(menuId: string, stock: number) {
