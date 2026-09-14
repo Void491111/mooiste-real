@@ -1,59 +1,63 @@
 "use client";
+
 import { useState } from "react";
+import { toast } from "sonner";
 import { useCartStore } from "../store/cart.store";
 import type { CartItem } from "../types";
-import { toast } from "sonner";
 
 export function useCartRow(item: CartItem) {
-    const setQty = useCartStore((state) => state.setQty);
-    const setNote = useCartStore((state) => state.setNote);
-    const remove = useCartStore((state) => state.remove);
+  const setQty = useCartStore((state) => state.setQty);
+  const setNote = useCartStore((state) => state.setNote);
+  const remove = useCartStore((state) => state.remove);
 
-    const [isEditing, setIsEditing] = useState(false);
-    const [draftNote, setDraftNote] = useState(item.note);
+  const [isEditing, setIsEditing] = useState(false);
+  const [draftNote, setDraftNote] = useState(item.note);
 
-    function increase() {
-        setQty(item.lineId, item.qty + 1);
+  function increase() {
+    setQty(item.lineId, item.qty + 1);
+  }
+
+  function decrease() {
+    setQty(item.lineId, item.qty - 1);
+  }
+
+  function changeQty(next: number) {
+    if (next > item.stock) {
+      toast.error(`Stok ${item.name} tinggal ${item.stock}`);
     }
 
-    function decrease() {
-        setQty(item.lineId, item.qty - 1);
-            function changeQty(next: number) {
-        if (next > item.stock) {
-            toast.error(`Stok ${item.name} tinggal ${item.stock}`);
-        }
+    setQty(item.lineId, next);
+  }
 
-        setQty(item.lineId, next);
-    }
-    }
+  function removeLine() {
+    remove(item.lineId);
+  }
 
-    function removeLine() {
-        remove(item.lineId);
-    }
+  function commitNote() {
+    setIsEditing(false);
+    setNote(item.lineId, draftNote);
+  }
 
-    function commitNote() {
-        setIsEditing(false);
-        setNote(item.lineId, draftNote);
+  function toggleEdit() {
+    if (isEditing) {
+      commitNote();
+      return;
     }
 
-    function toggleEdit() {
-        if (isEditing) {
-            commitNote();
-            return;
-        }
-        setDraftNote(item.note);
-        setIsEditing(true);
-    }
+    setDraftNote(item.note);
+    setIsEditing(true);
+  }
 
-    return {
-        isEditing,
-        draftNote,
-        canIncrease: item.qty < item.stock,
-        setDraftNote,
-        increase,
-        decrease,
-        removeLine,
-        commitNote,
-        toggleEdit,
-    };
+  return {
+    isEditing,
+    draftNote,
+    canIncrease: item.qty < item.stock,
+    setDraftNote,
+    increase,
+    decrease,
+    changeQty,
+    removeLine,
+    commitNote,
+    toggleEdit,
+  };
 }

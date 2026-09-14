@@ -11,6 +11,7 @@ import type { CartItem } from "../types";
 import { IconButton } from "./icon-button";
 import { QtyStepper } from "./qty-stepper";
 
+
 type Props = {
   item: CartItem;
 };
@@ -41,6 +42,7 @@ export function CartRow({ item }: Props) {
           qty={item.qty}
           onDecrease={row.decrease}
           onIncrease={row.increase}
+          onQtyChange={row.changeQty}
           canIncrease={row.canIncrease}
           size="sm"
         />
