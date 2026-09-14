@@ -65,6 +65,7 @@ export class OrderService {
           idempotencyKey: dto.idempotencyKey ?? null,
           paymentMethod: dto.paymentMethod ?? null,
           cashierId,
+          tableNumber: dto.tableNumber ?? null,
           items: { create: lines },
         },
         include: { items: true },
