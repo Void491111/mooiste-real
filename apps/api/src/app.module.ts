@@ -9,6 +9,7 @@ import { OrderModule } from "./order/order.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { ClosingModule } from "./closing/closing.module";
 import { ReportModule } from "./report/report.module";
+import { PublicModule } from "./public/public.module";
 
 
 
@@ -21,8 +22,9 @@ import { ReportModule } from "./report/report.module";
     DashboardModule,
     ClosingModule,
     ReportModule,
-    
+    PublicModule,
   ],
+
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
