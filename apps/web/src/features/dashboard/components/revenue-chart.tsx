@@ -18,7 +18,7 @@ import { ChartTip } from "./chart-tip";
 export function RevenueChart({ daily }: { daily: DailyPoint[] }) {
   return (
     <ResponsiveContainer width="100%" height={DASHBOARD_CONFIG.chartHeight}>
-      <AreaChart data={daily} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+      <AreaChart data={daily} margin={{ top: 4, right: 8, bottom: 4, left: 0 }}>
         <defs>
           <linearGradient id="revenueFill" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="var(--viz-1)" stopOpacity={0.28} />
@@ -34,6 +34,7 @@ export function RevenueChart({ daily }: { daily: DailyPoint[] }) {
           tickLine={false}
           axisLine={false}
           minTickGap={24}
+          tickMargin={14}
           tick={{ fill: "var(--viz-axis)", fontSize: 11 }}
         />
 
@@ -42,6 +43,7 @@ export function RevenueChart({ daily }: { daily: DailyPoint[] }) {
           tickFormatter={formatCompactMoney}
           tickLine={false}
           axisLine={false}
+          tickMargin={12}
           tick={{ fill: "var(--viz-axis)", fontSize: 11 }}
         />
 
