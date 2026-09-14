@@ -21,6 +21,7 @@ import { ReportModule } from "./report/report.module";
     DashboardModule,
     ClosingModule,
     ReportModule,
+    
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
