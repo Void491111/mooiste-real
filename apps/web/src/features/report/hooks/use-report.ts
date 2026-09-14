@@ -45,6 +45,8 @@ export function useReport() {
       return [day.date, day.revenue, day.orders];
     });
 
+    rows.push(["Total", report.totals.revenue, report.totals.orders])
+
     downloadCsv(
       `laporan-harian-${from}-sd-${to}.csv`,
       toCsv(["Tanggal", "Omzet", "Jumlah order"], rows),
@@ -57,6 +59,16 @@ export function useReport() {
     const rows = report.menus.map(function toRow(menu) {
       return [menu.name, menu.category, menu.qty, menu.revenue];
     });
+
+    const totalQty = report.menus.reduce(function sumQty(sum, menu) {
+        return sum + menu.qty;
+    }, 0);
+
+    const totalRevenue = report.menus.reduce(function sumRevenue(sum, menu) {
+        return sum + menu.revenue;
+    }, 0);
+
+    rows.push(["Total", "", totalQty, totalRevenue]);
 
     downloadCsv(
       `laporan-menu-${from}-sd-${to}.csv`,

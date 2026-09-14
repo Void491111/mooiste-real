@@ -19,7 +19,6 @@ type NavItem = {
   roles: Role[];
 };
 
-/** Halaman pertama yang boleh diakses peran ini. Urutan NAV_ITEMS yang menentukan. */
 export function homeHrefFor(role: Role) {
   const first = NAV_ITEMS.find(function byRole(item) {
     return item.roles.includes(role);
