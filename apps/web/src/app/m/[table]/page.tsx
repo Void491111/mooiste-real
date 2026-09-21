@@ -1,4 +1,4 @@
-import { GuestScreen } from "@/features/guest/components/guest-screen";
+import { GuestScreen } from "@/features/guest/components/guest-screen"
 
 export default async function GuestTablePage({
   params,
