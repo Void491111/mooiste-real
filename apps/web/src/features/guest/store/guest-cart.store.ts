@@ -21,9 +21,6 @@ export const useGuestCartStore = create<GuestCartState>()(
         tableNumber: "",
         items: [],
         activeOrderId: null,
-
-        // Ganti meja artinya pelanggan lain. Keranjang dan pesanan
-        // aktif dibuang, biar pesanan meja sebelumnya tidak terbawa.
         openTable: function openTable(tableNumber) {
           set(function applyTable(state) {
             if (state.tableNumber === tableNumber) return { tableNumber };
