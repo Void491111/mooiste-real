@@ -24,67 +24,68 @@ export function GuestCartSheet({ isOpen, tableNumber, onClose }: Props) {
 
   const totals = totalsOf(items);
 
-  return (
+    return (
     <GuestSheet isOpen={isOpen} onClose={onClose}>
-      <div className="px-4 pb-5">
-        <h2 className="text-base font-bold text-foreground">Pesanan kamu</h2>
+      <h2 className="shrink-0 px-4 pb-3 text-base font-bold text-foreground">
+        Pesanan kamu
+      </h2>
 
-        <div className="mt-3 flex flex-col gap-2">
-          {items.map(function renderItem(item) {
-            return (
-              <div
-                key={item.menuId}
-                className="flex items-center gap-3 rounded-card bg-muted px-3 py-2"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-foreground">
-                    {item.name}
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4">
+        {items.map(function renderItem(item) {
+          return (
+            <div
+              key={item.menuId}
+              className="flex items-center gap-3 border-b border-border py-3 last:border-0"
+            >
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-foreground">
+                  {item.name}
+                </p>
+                {item.note ? (
+                  <p className="truncate text-xs italic text-muted-foreground">
+                    {item.note}
                   </p>
-                  {item.note ? (
-                    <p className="truncate text-xs italic text-muted-foreground">
-                      {item.note}
-                    </p>
-                  ) : null}
-                </div>
-
-                <div className="flex shrink-0 items-center gap-2">
-                  <button
-                    type="button"
-                    aria-label="Kurangi"
-                    onClick={function decrease() {
-                      setQty(item.menuId, item.qty - 1);
-                    }}
-                    className="grid size-7 place-items-center rounded-full border border-border"
-                  >
-                    <Minus className="size-3" />
-                  </button>
-
-                  <span className="w-5 text-center text-sm font-semibold tabular-nums">
-                    {item.qty}
-                  </span>
-
-                  <button
-                    type="button"
-                    aria-label="Tambah"
-                    disabled={item.qty >= item.stock}
-                    onClick={function increase() {
-                      setQty(item.menuId, item.qty + 1);
-                    }}
-                    className="grid size-7 place-items-center rounded-full border border-border disabled:opacity-30"
-                  >
-                    <Plus className="size-3" />
-                  </button>
-                </div>
-
-                <span className="w-20 shrink-0 text-right text-sm font-bold tabular-nums">
+                ) : null}
+                <p className="text-xs tabular-nums text-muted-foreground">
                   {formatMoney(item.price * item.qty)}
-                </span>
+                </p>
               </div>
-            );
-          })}
-        </div>
 
-        <div className="mt-4 flex gap-1 rounded-card bg-muted p-1">
+              <div className="flex shrink-0 items-center gap-2">
+                <button
+                  type="button"
+                  aria-label="Kurangi"
+                  onClick={function decrease() {
+                    setQty(item.menuId, item.qty - 1);
+                  }}
+                  className="grid size-8 place-items-center rounded-full border border-border"
+                >
+                  <Minus className="size-3.5" />
+                </button>
+
+                <span className="w-5 text-center text-sm font-semibold tabular-nums">
+                  {item.qty}
+                </span>
+
+                <button
+                  type="button"
+                  aria-label="Tambah"
+                  disabled={item.qty >= item.stock}
+                  onClick={function increase() {
+                    setQty(item.menuId, item.qty + 1);
+                  }}
+                  className="grid size-8 place-items-center rounded-full border border-border disabled:opacity-30"
+                >
+                  <Plus className="size-3.5" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="shrink-0 border-t border-border px-4 pb-5 pt-3">
+        <div className="flex gap-1 rounded-card bg-muted p-1">
           <button
             type="button"
             onClick={function pickDineIn() {
@@ -116,30 +117,25 @@ export function GuestCartSheet({ isOpen, tableNumber, onClose }: Props) {
           </button>
         </div>
 
-        <dl className="mt-4 space-y-1 text-sm">
-          <div className="flex justify-between text-muted-foreground">
-            <dt>Subtotal</dt>
-            <dd className="tabular-nums">{formatMoney(totals.subtotal)}</dd>
-          </div>
-          <div className="flex justify-between text-muted-foreground">
-            <dt>Pajak</dt>
-            <dd className="tabular-nums">{formatMoney(totals.tax)}</dd>
-          </div>
-          <div className="flex justify-between border-t border-border pt-1 font-bold text-foreground">
-            <dt>Total</dt>
-            <dd className="tabular-nums">{formatMoney(totals.total)}</dd>
-          </div>
-        </dl>
+        <div className="mt-3 flex items-baseline justify-between">
+          <span className="text-sm text-muted-foreground">
+            Total{" "}
+            <span className="text-xs">(termasuk pajak)</span>
+          </span>
+          <span className="text-lg font-bold tabular-nums text-foreground">
+            {formatMoney(totals.total)}
+          </span>
+        </div>
 
         {checkout.error !== null ? (
-          <p className="mt-3 text-xs text-danger-soft">{checkout.error}</p>
+          <p className="mt-2 text-xs text-danger-soft">{checkout.error}</p>
         ) : null}
 
         <button
           type="button"
           onClick={checkout.submit}
           disabled={checkout.isSubmitting || items.length === 0}
-          className="mt-4 h-13 w-full rounded-card bg-brand text-sm font-semibold text-white disabled:opacity-40"
+          className="mt-3 h-13 w-full rounded-card bg-brand text-sm font-semibold text-white disabled:opacity-40"
         >
           {checkout.isSubmitting ? "Mengirim…" : "Kirim pesanan"}
         </button>

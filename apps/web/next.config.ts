@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+console.log("API_ORIGIN =", process.env.API_ORIGIN);
+
 const nextConfig: NextConfig = {
   devIndicators: {
     position: "bottom-right",

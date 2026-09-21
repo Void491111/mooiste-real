@@ -50,7 +50,7 @@ export function GuestItemSheet({ menu, onClose, onAdd }: Props) {
   return (
     <GuestSheet isOpen={menu !== null} onClose={onClose}>
       {menu === null ? null : (
-        <div className="px-4 pb-5">
+        <div className="overflow-y-auto overscroll-contain px-4 pb-5">
           <div className="relative aspect-4/3 w-full overflow-hidden rounded-card bg-muted">
             {menu.image ? (
               <Image

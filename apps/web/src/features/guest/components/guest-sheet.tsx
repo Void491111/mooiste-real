@@ -23,14 +23,14 @@ export function GuestSheet({ isOpen, onClose, children }: Props) {
             className="fixed inset-0 z-40 bg-black/40"
           />
 
-          <motion.div
+        <motion.div
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={SPRING.snappy}
-            className="fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-card"
+            className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[85dvh] w-full max-w-md flex-col overflow-hidden rounded-t-3xl bg-card"
           >
-            <div className="sticky top-0 z-10 flex justify-center bg-card pb-2 pt-2.5">
+            <div className="flex shrink-0 justify-center pb-2 pt-2.5">
               <span className="h-1 w-10 rounded-full bg-muted-foreground/30" />
             </div>
 

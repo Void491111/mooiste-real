@@ -29,7 +29,7 @@ export function GuestMenuList({
 
   return (
     <>
-      <div className="sticky top-[57px] z-10 flex gap-2 overflow-x-auto bg-background px-4 py-2 [scrollbar-width:none]">
+      <div className="sticky top-0 z-10 flex gap-2 overflow-x-auto bg-background px-4 py-2 [scrollbar-width:none]">
         <button
           type="button"
           onClick={selectAll}
