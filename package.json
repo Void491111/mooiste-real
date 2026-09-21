@@ -1,5 +1,5 @@
 {
-  "name": "mooiste",
+  "name": "shift",
   "private": true,
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {

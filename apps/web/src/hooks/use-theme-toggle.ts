@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { THEME_TRANSITION_MS } from "@/config/motion.config";
 
-const STORAGE_KEY = "mooiste-theme";
+const STORAGE_KEY = "shift-theme";
 const TRANSITION_CLASS = "theme-transition";
 
 export function useThemeToggle() {

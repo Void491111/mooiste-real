@@ -50,7 +50,7 @@ export const useGuestCartStore = create<GuestCartState>()(
       };
     },
     {
-      name: "mooiste-guest",
+      name: "shift-guest",
       skipHydration: true,
       partialize: function pickPersisted(state) {
         return {

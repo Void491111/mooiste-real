@@ -121,7 +121,7 @@ export function AppSidebar() {
         >
           <Image
             src="/logo.png"
-            alt="De Mooiste"
+            alt="Shift"
             width={44}
             height={44}
             className="size-11"

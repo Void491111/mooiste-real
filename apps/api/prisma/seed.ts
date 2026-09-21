@@ -24,8 +24,8 @@ const MENUS = [
 ];
 
 const USERS = [
-  { email: "admin@mooiste.test", name: "Admin", password: "admin123", role: "ADMIN" as const },
-  { email: "kasir@mooiste.test", name: "Kasir", password: "kasir123", role: "CASHIER" as const },
+  { email: "admin@shift.test", name: "Admin", password: "admin123", role: "ADMIN" as const },
+  { email: "kasir@shift.test", name: "Kasir", password: "kasir123", role: "CASHIER" as const },
 ];
 
 async function seedCategories() {

@@ -10,11 +10,11 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-const THEME_SCRIPT = `try{var t=localStorage.getItem("mooiste-theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme:dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
+const THEME_SCRIPT = `try{var t=localStorage.getItem("shift-theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme:dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
 
 export const metadata: Metadata = {
-  title: "De Mooiste POS",
-  description: "Kasir De Mooiste",
+  title: "Shift POS",
+  description: "Kasir dan manajemen kafe",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const COOKIE_NAME = "mooiste_session";
+const COOKIE_NAME = "shift_session";
 const PUBLIC_PATHS = ["/login"];
 
 export function middleware(request: NextRequest) {

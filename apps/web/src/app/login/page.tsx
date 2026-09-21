@@ -22,9 +22,9 @@ export default function LoginPage() {
       >
         <div className="flex flex-col items-center gap-2">
           <div className="grid size-12 place-items-center rounded-card bg-brand">
-            <Image src="/logo.png" alt="De Mooiste" width={40} height={40} className="size-10" />
+            <Image src="/logo.png" alt="Shift" width={40} height={40} className="size-10" />
           </div>
-          <h1 className="text-lg font-semibold text-foreground">De Mooiste POS</h1>
+          <h1 className="text-lg font-semibold text-foreground">Shift POS</h1>
         </div>
 
         <div className="flex flex-col gap-1.5">

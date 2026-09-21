@@ -55,7 +55,7 @@ export const useCartStore = create<CartState>()(
       };
     },
     {
-      name: "mooiste-cart",
+      name: "shift-cart",
       skipHydration: true,
       partialize: function pickPersisted(state) {
         return { items: state.items, orderType: state.orderType };
