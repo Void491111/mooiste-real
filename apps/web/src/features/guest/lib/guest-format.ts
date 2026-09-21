@@ -1,4 +1,3 @@
-/** "NON_COFFEE" -> "Non Coffee" */
 export function formatCategory(code: string) {
   return code
     .toLowerCase()
