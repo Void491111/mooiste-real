@@ -12,7 +12,7 @@ type Props = {
   onClose: () => void;
   onAdd: (menu: GuestMenu, qty: number, note: string) => void;
 };
-
+ 
 function StepButton({
   label,
   disabled,
