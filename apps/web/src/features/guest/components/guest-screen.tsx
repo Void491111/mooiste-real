@@ -9,17 +9,23 @@ import type { GuestMenu } from "../types";
 import { GuestCartBar } from "./guest-cart-bar";
 import { GuestHeader } from "./guest-header";
 import { GuestMenuList } from "./guest-menu-list";
+import { GuestItemSheet } from "./guest-item-sheet";
 
 export function GuestScreen({ tableNumber }: { tableNumber: string }) {
   const isReady = useGuestHydration(tableNumber);
   const menu = useGuestMenu();
   const items = useGuestCartStore((state) => state.items);
   const [selected, setSelected] = useState<GuestMenu | null>(null);
+  const add = useGuestCartStore((state) => state.add);
+    
 
   const totals = totalsOf(items);
 
+  function closeSheet() {
+    setSelected(null);
+  }
+
   function openCart() {
-    // Diisi di tahap berikutnya.
   }
 
   return (
@@ -43,6 +49,8 @@ export function GuestScreen({ tableNumber }: { tableNumber: string }) {
           onSelect={setSelected}
         />
       )}
+
+    <GuestItemSheet menu={selected} onClose={closeSheet} onAdd={add} />
 
       {isReady ? (
         <GuestCartBar
